@@ -1,0 +1,53 @@
+@charset "UTF-8";
+/*===================
+	样式重置
+===================*/
+/* GIT modify */
+input[type="text"], 
+	input[type="password"], 
+	input[type="email"], 
+	input[type="number"], 
+	input[type="tel"], 
+	input[type="url"], 
+	select, 
+	textarea {min-height:34px;padding:7px 8px;font-size:13px;color:#333;vertical-align:middle;background-color:#fff;background-repeat:no-repeat;background-position:right 8px center;border:1px solid #ccc;border-radius:3px;outline:none;box-shadow:inset 0 1px 2px rgba(0,0,0,0.075);}
+input[type="text"].focus, input[type="text"]:focus, 
+	input[type="password"].focus, input[type="password"]:focus, 
+	input[type="email"].focus, input[type="email"]:focus, 
+	input[type="number"].focus, input[type="number"]:focus, 
+	input[type="tel"].focus, input[type="tel"]:focus, 
+	input[type="url"].focus, input[type="url"]:focus, 
+	select.focus, select:focus, 
+	textarea.focus, textarea:focus {border-color: #51a7e8;box-shadow: inset 0 1px 2px rgba(0,0,0,0.075),0 0 5px rgba(81,167,232,0.5);}
+
+/* 整理重置 */
+body {font: 14px/1.5 Helvetica, 'STHeiti STXihei', 'Microsoft JhengHei', 'Microsoft YaHei', Arial, sans-serif;background: #fff;color: #333;}
+/* 公共组件 */
+.btn {display:inline-block;width:100%;height:42px;line-height:42px;color:#fff;background:#d20000;border:none;border-radius:3px;text-align:center;-webkit-appearance:none;}
+/* 公共主容器 */
+.mod_wrap {margin: 0 auto;padding-bottom: 20px;width: 100%;min-width: 320px; max-width: 640px;}
+/* 头部 */
+.mod_hd {position:relative;height:44px;text-align:center;background:#d20000;}
+	.mod_hd_tit {display:inline-block;margin:0;padding:13.5px 0}
+		.mod_hd_tit a {display:block;height:44px;line-height:44px;color:#fff;}
+	.mod_hd_write {position:absolute;top:0;right:0;width:44px;height:44px;line-height:44px;color:#fff;}
+	.mod_hd_back {position:absolute;top:0;left:0;width:44px;height:44px;line-height:44px;color:#fff;}
+/* 公共确认蒙层 */
+.mod_confirm {position:fixed;top:0;width:100%;height:100%;}
+    .mod_confirm_mask {z-index:1;position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);}
+    .mod_confirm_dialog {z-index:13;position:relative;margin:0 auto;width:100%;height:100%;min-width:320px;max-width:640px;}
+    	.mod_confirm_dialog_cont {position:absolute;width:85%;top:35%;left:7.5%;background:#fafafc;text-align:center;border-radius:3px;}
+    	    .mod_confirm_dialog_cont_hd {padding:1.2em 20px 0.5em;}
+    	        .mod_confirm_dialog_cont_hd_tit {font-weight:400;font-size:17px;}
+    	    .mod_confirm_dialog_cont_bd {padding:0 20px;font-size:15px;color:#888;text-align:left;}
+    	    .mod_confirm_dialog_cont_ft {margin-top:20px;font-size:17px;line-height:42px;border-top:1px solid #D5D5D6;}
+    	        .mod_confirm_dialog_cont_ft a {display:inline-block;width:49%;}
+    	        .mod_confirm_dialog_cont_ft a.mod_confirm_dialog_cont_ft_default {color:#353535;}
+    	        .mod_confirm_dialog_cont_ft a.mod_confirm_dialog_cont_ft_primary {color:#0BB20C;border-left:1px solid #D5D5D6;}
+
+
+	.loading{width:20%;padding-top:20%;background-repeat:no-repeat;background-position:center center;background-size:100% auto;-webkit-animation:bugCrawling linear .25s infinite;margin:20px auto;}
+		@-webkit-keyframes bugCrawling{
+			0%{background-image:url(../img/bug_frame1.png);}
+			100%{background-image:url(../img/bug_frame2.png);}
+		}

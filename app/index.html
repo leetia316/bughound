@@ -1,0 +1,181 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN" ng-app="bughound">
+<head>
+<meta charset="utf-8" />
+<title>BugHound | JDC 轻量级 bug 平台</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<meta name="format-detection" content="telephone=no" />
+<link rel="stylesheet" href="css/normalize.css">
+<link rel="stylesheet" href="css/semantic.min.css">
+<link rel="stylesheet" type="text/css" href="css/gb.css" />
+</head>
+<body ng-controller="mainctrl">
+
+<div class="mod_wrap">
+    <header class="mod_hd">
+        <div ui-sref="list" class="mod_hd_back"><i class="icon list large"></i></div>
+        <div class="mod_hd_tit">
+            <div class="ui pointing dropdown link mainmenu">
+                <span class="text" style="color:#fff;" ng-bind-html="pageTit | scehtml">JDC-BUG 提交平台</span>
+                <i class="dropdown icon" style="color:#fff;"></i>
+                <div class="menu">
+                    <!-- <div class="header">Categories</div> -->
+                    <!-- <div class="item">
+                        <i class="dropdown icon"></i>
+                        <span class="text">Clothing</span>
+                        <div class="menu">
+                            <div class="header">Mens</div>
+                            <div class="item">Shirts</div>
+                            <div class="item">Pants</div>
+                            <div class="item">Jeans</div>
+                            <div class="item">Shoes</div>
+                            <div class="divider"></div>
+                            <div class="header">Womens</div>
+                            <div class="item">Dresses</div>
+                            <div class="item">Shoes</div>
+                            <div class="item">Bags</div>
+                        </div>
+                    </div> -->
+                    <div class="item" ui-sref="list"><i class="list icon"></i>bug 列表</div>
+                    <!-- <div class="divider"></div> -->
+                    <div class="item" ui-sref="apply"><i class="icon write square"></i>bug 提交</div>
+                    <div class="item" ui-sref="idlist"><i class="spy icon"></i>开发者</div>
+                </div>
+            </div>
+            <!-- <a href="#">JDC-BUG 提交平台</a> -->
+        </div>
+        <div ui-sref="apply" class="mod_hd_write"><i class="icon write large"></i></div>
+    </header>
+    
+    <div ui-view></div>
+</div>
+
+<div class="mod_confirm" ng-show="isPopupModConfirm">
+    <div class="mod_confirm_mask"></div>
+    <div class="mod_confirm_dialog">
+        <div class="mod_confirm_dialog_cont">
+            <div class="mod_confirm_dialog_cont_hd"><strong class="mod_confirm_dialog_cont_hd_tit" ng-bind="modConfirmTit">标题</strong></div>
+            <div class="mod_confirm_dialog_cont_bd" ng-bind="modConfirmCont">这是内容</div>
+            <div class="mod_confirm_dialog_cont_ft">
+                <a href="" class="mod_confirm_dialog_cont_ft_default" ng-click="modConfirmCancel()">取消</a>
+                <a href="" class="mod_confirm_dialog_cont_ft_primary" ng-click="modConfirmConfirm()">确定</a>
+            </div>
+        </div>
+    </div> 
+</div>
+
+<script src="js/jquery-2.1.4.min.js"></script>
+
+<script src="js/angular.min.js"></script>
+<script src="js/angular-ui-router.js"></script><!--NG 路由插件-->
+<script src="js/ui-bootstrap-tpls-0.13.4.min.js"></script><!--NG 翻页插件-->
+<script src="js/ua-parser.min.js"></script>
+
+<script src="js/semantic.min.js"></script>
+
+<script src="state/stateApply.js"></script>
+<script src="state/stateList.js"></script>
+<script src="state/stateDetail.js"></script>
+<script src="state/stateIdlist.js"></script>
+<script>
+var jQuery = $;
+
+angular.module('bughound', [
+    'ui.router',
+    'ui.bootstrap'
+], angular.noop)
+
+.filter('scehtml', ['$sce', function($sce) {
+    return function(text) {
+        return $sce.trustAsHtml(text);
+    }  
+}])
+
+.filter('fmtDateNormal', [function() {
+    return function(text) {
+        var date = new Date(text);
+        if(date=='Invalid Date') {
+            return '';
+        }
+        var now = new Date(),
+            sepdays = Math.floor(now.getTime()/86400000) - Math.floor(date.getTime()/86400000);
+        if(sepdays>7) {
+            if(now.getFullYear()-date.getFullYear()>0) {
+                return date.getFullYear()+'年'+(date.getMonth()+1)+'月'+date.getDate()+'日';
+            } else {
+                return (date.getMonth()+1)+'月'+date.getDate()+'日';
+            }
+        } else if(sepdays>0) {
+            return sepdays + '天前';
+        } else {
+            if(now.getHours()-date.getHours()>0) {
+                return (now.getHours()-date.getHours())+'小时前';
+            } else if(now.getMinutes()-date.getMinutes()>0) {
+                return (now.getMinutes()-date.getMinutes())+'分钟前';
+            } else {
+                return (now.getSeconds()-date.getSeconds())+'秒前';
+            }
+        }
+    }
+}])
+
+.filter('slice', function () {
+    return function (inputArr, start, end) {
+        var resultArr = [];
+
+        if (!angular.isArray(inputArr)) { return inputArr; }
+        if (start < 0) { start = 0; }
+        if (end > inputArr.length) { end = inputArr.length; }
+
+        for (var i = start; i < end; ++i) {
+            resultArr.push(inputArr[i]);
+        }
+        return resultArr;
+    };
+})
+
+.directive('fileModel', ['$parse', function ($parse) {
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs, ngModel) {
+            var model = $parse(attrs.fileModel);
+            var modelSetter = model.assign;
+            element.bind('change', function(event){
+                scope.$apply(function(){
+                    modelSetter(scope, element[0].files[0]);
+                });
+                //附件预览
+                scope.files = (event.srcElement || event.target).files || event.dataTransfer.files;
+                scope.getFile();
+            });
+        }
+    };
+}])
+
+.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
+    $urlRouterProvider.otherwise('list');  //无效路由
+
+    $stateProvider
+        .state('apply', stateApply)
+        .state('list', stateList)
+        .state('detail', stateDetail)
+        .state('idlist', stateIdlist);
+})
+
+.controller('mainctrl', function($scope, $http, $state) {
+    jQuery('.mod_hd_tit .mainmenu').dropdown();
+    $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
+        // $scope.pageState = toState.name;
+        switch(toState.name) {
+            case 'apply': $scope.pageTit = '<i class="icon write square"></i>bug 提交';break;
+            case 'list': $scope.pageTit = '<i class="list icon"></i>bug 列表';break;
+            case 'detail': $scope.pageTit = '<i class="pin icon"></i>bug 详情';break;
+            case 'idlist': $scope.pageTit = '<i class="spy icon"></i>开发者';break;
+        }
+    });
+});
+</script>
+</body>
+</html>

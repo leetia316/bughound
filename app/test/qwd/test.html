@@ -1,0 +1,65 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8" />
+	<title>移动端   bug跟踪系统</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	<meta name="format-detection" content="telephone=no" />
+</head>
+<!-- 注：加ontouchstart使css：active生效 -->
+<body ontouchstart="">
+    <h1 class="top_bar"><i></i>移动端bug跟踪系统</h1>
+    <form class="search_label">
+        <input class="search" type="text" placeholder="请输入bug编号" />
+        <button type="button" class="search_btn">搜索</button>
+    </form>
+    <div class="filter">
+        <div class="filter_blk">
+            <select id="filter_dev">
+                <option value="all" id="filterDev_all">所有开发者</option>
+            </select>
+        </div>
+        <div class="filter_blk">
+            <select id="filter_solvestate">
+                <option value="all" id="filterSta_all">所有状态</option>
+                <option value="-1" id="filterSta_-1">未解决</option>
+                <option value="0" id="filterSta_0">解决中</option>
+                <option value="1" id="filterSta_1">已解决</option>
+            </select>
+        </div>
+    </div>
+    <div class="cont">
+        <div class="loading"></div>
+        <!-- 解决中 solving
+        已解决 solved -->
+        <!-- <a href="#" class="bug_item">
+            <div class="bug_pic" style="background-image:url(http://img.qiang.it/640);"></div>
+            <p class="bug_no">No.<span>20150619-1525</span></p>
+            <p class="bug_desc">描述啊啊啊啊啊啊啊啊迷失哦啊胡描述啊啊啊啊啊啊啊啊迷失哦啊胡描述啊啊啊啊啊啊啊啊迷失哦啊胡描述啊啊啊啊啊啊啊啊迷失哦啊胡描述啊啊啊啊啊啊啊啊迷失哦啊胡</p>
+            <p class="bug_device">Android</p>
+            <p class="bug_solvedate">2015-06-22 17:15:22</p>
+            <p class="bug_state">待解决</p>
+        </a>
+        <a href="#" class="bug_item solving">
+            <div class="bug_pic"><img src="http://img.qiang.it/640" /></div>
+            <p class="bug_no">No.<span>20150619-1525</span></p>
+            <p class="bug_desc">描述啊啊啊啊啊啊啊啊迷失哦啊胡</p>
+            <p class="bug_device">iPhone</p>
+            <p class="bug_solvedate">2015-06-22 17:15:22</p>
+            <p class="bug_state solving">解决中</p>
+        </a>
+        <a href="#" class="bug_item solved">
+            <div class="bug_pic"><img src="http://img.qiang.it/640" /></div>
+            <p class="bug_no">No.<span>20150619-1525</span></p>
+            <p class="bug_desc">描述啊啊啊啊啊啊啊啊迷失哦啊胡</p>
+            <p class="bug_device">Android</p>
+            <p class="bug_solvedate">2015-06-22 17:15:22</p>
+            <p class="bug_state solving">已解决</p>
+        </a> -->
+    </div>
+
+    <script src="buger.js"></script>
+</body>
+</html>

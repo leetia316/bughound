@@ -1,0 +1,8 @@
+bug
+=====
+id submitdate width height dpr ua pics description ptit purl state solver solvedate
+fk_bug_solver
+
+user
+=====
+erp name createdate lastactivedate

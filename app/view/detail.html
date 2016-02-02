@@ -1,0 +1,95 @@
+<style>
+@charset 'UTF-8';
+.slideshow {position:relative;width:100%;padding-top:61.8%;}
+    .slideshow_w {position:absolute;top:0;left:0;width:100%;height:100%;overflow:hidden;}
+        .slideshow .shape {width:100% !important;/*border:1px solid #ccc;*/}
+            .slideshow img {width:100%;}
+        .slideshow_botw {position:absolute;bottom:0;width:100%;text-align:center;}
+            .slideshow_botw i {display:inline-block;margin-right:10px;width:10px;height:10px;border-radius:50%;background:green;}
+            .slideshow_botw i.active {background:red;}
+.info {}
+    .info dt {font-size:14px;font-weight:bold;color:#333;}
+.handle {padding:10px 10px 50px;text-align:center;}
+    .handle_from {float:left;width:20%;height:50px;line-height:50px;text-align:center;background:#ccc;}
+    .handle_pass {position:relative;display:inline-block;width:55%;height:50px;}
+        .handle_pass:after {content:'';position:absolute;top:50%;left:0;margin-top:-1px;width:100%;border-bottom:2px dashed #ccc;}
+        .handle_pass select {z-index:2;}
+    .handle_to {float:right;width:20%;height:50px;line-height:50px;text-align:center;background:#ccc;}
+        .handle_to select {border:none;background:#ccc;}
+    .ui.button.submit {margin-top:10px;}
+</style>
+<div class="slideshow">
+    <div class="slideshow_w" ng-click="slidepic()">
+        <div class="ui shape">
+            <div class="sides">
+                <div ng-repeat="x in data.pics" class="side {{$index==0 ? 'active' : ''}}">
+                    <div class="content">
+                        <img ng-src="upload/{{x}}">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="slideshow_botw">
+            <i ng-repeat="x in data.pics" class="{{$index==activePicIdx ? 'active' : ''}}"></i>
+        </div>
+    </div>
+</div>
+
+<div class="info">
+    <dl>
+        <dt>业务名称</dt>
+        <dd>{{data.business || '未填写'}}</dd>
+    </dl>
+    <dl>
+        <dt>页面信息</dt>
+        <dd>标题：{{data.ptit || 'NO title'}}</dd>
+        <dd>链接：<a href="{{data.purl || 'javascript:void(0)'}}">{{data.purl || 'NO url'}}</a></dd>
+    </dl>
+    <dl>
+        <dt>设备信息</dt>
+        <dd>设备：{{data.ua.device.model}} ({{data.width+'x'+data.height+' dpr='+data.dpr}})</dd>
+        <dd>系统：{{data.ua.os.name + data.ua.os.version}}</dd>
+        <dd>应用：{{data.ua.browser.name+data.ua.browser.version}} ({{data.ua.engine.name+data.ua.engine.version}})</dd>
+    </dl>
+    <dl>
+        <dt>bug描述</dt>
+        <dd ng-bind="data.description"></dd>
+    </dl>
+</div>
+
+<div class="handle">
+    <div class="handle_from" ng-bind="data.stateName"></div>
+    <div class="handle_pass">
+        <select ng-model="bugExecutor" ng-options="x.erp as (x.name+' ('+x.erp+')') for x in userList"><option value="">请选择</option></select>
+    </div>
+    <div class="handle_to">
+        <select ng-model="selectBugState" ng-options="x.id as x.name for x in {{[{id:0, name:'未解决'}, {id:1, name:'已解决'}, {id:2, name:'已关闭'}]}}"></select>
+    </div>
+    <button class="ui button fluid green submit" ng-click="submit()">确定</button>
+</div>
+
+
+<style>
+.mobile {position:relative;display:inline-block;padding:25px 0;width:50%;/*height:240px;*/border:1px solid #ccc;border-radius:10px;overflow:hidden;}
+    .mobile:before {position:absolute;top:0;width:100%;content:'';display:block;height:25px;border-bottom:1px solid #ccc;}
+    .mobile:after {position:absolute;bottom:0;width:100%;content:'';display:block;height:25px;border-top:1px solid #ccc;}
+    .mobile_tit {height:20px;font-size:12px;border-left:1px solid #ccc;border-right:1px solid #ccc;text-align:center;background:skyblue;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
+    .mobile_screen {padding:3px;width:100%;height:100%;border-left:1px solid #ccc;border-right:1px solid #ccc;}
+        .mobile_screen_url {display:block;padding:0 5px;height:20px;line-height:20px;font-size:12px;border:1px solid #ccc;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
+        .mobile_screen_page {position:relative;margin-top:5px;border:1px solid #ccc;}
+            .mobile_screen_page_w {margin-top:2px;padding:0 5px;text-align:center;color:skyblue;}
+                .mobile_screen_page_w:before {content:'';display:block;height:5px;border:1px solid skyblue;border-top:none;}
+            .mobile_screen_page_h {position:absolute;top:5%;left:2px;height:90%;color:skyblue;}
+                .mobile_screen_page_h:before {content:'';display:inline-block;width:5px;height:100%;border:1px solid skyblue;border-left:none;vertical-align:middle;}
+</style>
+{{data.ua.device.model}} ({{data.width+'x'+data.height+' dpr='+data.dpr}})
+<div class="mobile" style="margin-left:20px">
+    <div class="mobile_tit">{{data.ptit || 'NO title'}}</div>
+    <div class="mobile_screen">
+        <a class="mobile_screen_url" target="_blank" href="{{data.purl || '#'}}">{{data.purl || 'NO url'}}</a>
+        <div class="mobile_screen_page" style="height:200px;">
+            <div class="mobile_screen_page_w">320px</div>
+            <div class="mobile_screen_page_h">480px</div>
+        </div>
+    </div>
+</div>
