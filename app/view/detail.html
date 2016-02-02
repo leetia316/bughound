@@ -7,8 +7,20 @@
         .slideshow_botw {position:absolute;bottom:0;width:100%;text-align:center;}
             .slideshow_botw i {display:inline-block;margin-right:10px;width:10px;height:10px;border-radius:50%;background:green;}
             .slideshow_botw i.active {background:red;}
-.info {}
-    .info dt {font-size:14px;font-weight:bold;color:#333;}
+
+.mobile {margin:15px auto;width:50%;border:1px solid #ccc;border-radius:10px;font-size:12px;}
+    .mobile_hd {padding:0 5px;height:25px;line-height:25px;border-bottom:1px solid #ccc;text-align:center;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
+    .mobile_ft {height:30px;border-top:1px solid #ccc;}
+    .mobile_screen {padding:3px;width:100%;height:100%;}
+        .mobile_screen_url {display:block;padding:0 5px;height:20px;line-height:20px;border:1px solid #ccc;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
+        .mobile_screen_page {position:relative;margin-top:5px;border:1px solid #ccc;}
+            .mobile_screen_page_h {position:absolute;top:5%;left:100%;margin-left:8px;height:90%;white-space:nowrap;color:skyblue;}
+                .mobile_screen_page_h:before {content:'';display:inline-block;width:5px;height:100%;border:1px solid skyblue;border-left:none;vertical-align:middle;}
+            .mobile_screen_page_dpr {position: absolute;top:0;right:0;padding:0 3px;height:25px;line-height:25px;border-left:1px dashed #ccc;border-bottom:1px dashed #ccc;color:skyblue;background:#fafafa;}
+            .mobile_screen_page_c {padding:25px 10px 10px;width:100%;height:150px;}
+                .mobile_screen_page_c_w {width:100%;height:100%;overflow:auto;word-wrap:break-word;word-break:break-all;}
+        .mobile_screen_browser {margin-top:5px;border:1px solid #ccc;background:#f3f3f3;text-align:center;}
+
 .handle {padding:10px 10px 50px;text-align:center;}
     .handle_from {float:left;width:20%;height:50px;line-height:50px;text-align:center;background:#ccc;}
     .handle_pass {position:relative;display:inline-block;width:55%;height:50px;}
@@ -22,11 +34,19 @@
     <div class="slideshow_w" ng-click="slidepic()">
         <div class="ui shape">
             <div class="sides">
+
                 <div ng-repeat="x in data.pics" class="side {{$index==0 ? 'active' : ''}}">
                     <div class="content">
                         <img ng-src="upload/{{x}}">
                     </div>
                 </div>
+
+                <div class="side active" ng-if="data.pics.length<1">
+                    <div class="content">
+                        <img src="https://placeholdit.imgix.net/~text?txtsize=33&txt=无截图&w=320&h=200">
+                    </div>
+                </div>
+
             </div>
         </div>
         <div class="slideshow_botw">
@@ -35,26 +55,27 @@
     </div>
 </div>
 
-<div class="info">
-    <dl>
-        <dt>业务名称</dt>
-        <dd>{{data.business || '未填写'}}</dd>
-    </dl>
-    <dl>
-        <dt>页面信息</dt>
-        <dd>标题：{{data.ptit || 'NO title'}}</dd>
-        <dd>链接：<a href="{{data.purl || 'javascript:void(0)'}}">{{data.purl || 'NO url'}}</a></dd>
-    </dl>
-    <dl>
-        <dt>设备信息</dt>
-        <dd>设备：{{data.ua.device.model}} ({{data.width+'x'+data.height+' dpr='+data.dpr}})</dd>
-        <dd>系统：{{data.ua.os.name + data.ua.os.version}}</dd>
-        <dd>应用：{{data.ua.browser.name+data.ua.browser.version}} ({{data.ua.engine.name+data.ua.engine.version}})</dd>
-    </dl>
-    <dl>
-        <dt>bug描述</dt>
-        <dd ng-bind="data.description"></dd>
-    </dl>
+<div class="mobile">
+    <div class="mobile_hd">{{data.ua.device.model}} {{data.ua.os.name + data.ua.os.version}}</div>
+    <div class="mobile_screen">
+        <a class="mobile_screen_url" target="_blank" href="{{data.purl || '#'}}">{{data.purl || '# no url'}}</a>
+        <div class="mobile_screen_page">
+            <div class="mobile_screen_page_h"> 320x480</div>
+            <div class="mobile_screen_page_dpr">dpr={{data.dpr}}</div>
+            <div class="mobile_screen_page_c">
+                <div class="mobile_screen_page_c_w">
+                    <div>业务：{{data.business || '未填写'}}</div>
+                    <div>需求：{{data.ptit || '未填写'}}</div>
+                    <div>描述：{{data.description}}</div>
+                </div>
+            </div>
+        </div>
+        <div class="mobile_screen_browser">
+            <div>{{data.ua.browser.name+data.ua.browser.version}}</div>
+            <div>({{data.ua.engine.name+data.ua.engine.version}})</div>
+        </div>
+    </div>
+    <div class="mobile_ft"></div>
 </div>
 
 <div class="handle">
@@ -66,30 +87,4 @@
         <select ng-model="selectBugState" ng-options="x.id as x.name for x in {{[{id:0, name:'未解决'}, {id:1, name:'已解决'}, {id:2, name:'已关闭'}]}}"></select>
     </div>
     <button class="ui button fluid green submit" ng-click="submit()">确定</button>
-</div>
-
-
-<style>
-.mobile {position:relative;display:inline-block;padding:25px 0;width:50%;/*height:240px;*/border:1px solid #ccc;border-radius:10px;overflow:hidden;}
-    .mobile:before {position:absolute;top:0;width:100%;content:'';display:block;height:25px;border-bottom:1px solid #ccc;}
-    .mobile:after {position:absolute;bottom:0;width:100%;content:'';display:block;height:25px;border-top:1px solid #ccc;}
-    .mobile_tit {height:20px;font-size:12px;border-left:1px solid #ccc;border-right:1px solid #ccc;text-align:center;background:skyblue;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
-    .mobile_screen {padding:3px;width:100%;height:100%;border-left:1px solid #ccc;border-right:1px solid #ccc;}
-        .mobile_screen_url {display:block;padding:0 5px;height:20px;line-height:20px;font-size:12px;border:1px solid #ccc;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
-        .mobile_screen_page {position:relative;margin-top:5px;border:1px solid #ccc;}
-            .mobile_screen_page_w {margin-top:2px;padding:0 5px;text-align:center;color:skyblue;}
-                .mobile_screen_page_w:before {content:'';display:block;height:5px;border:1px solid skyblue;border-top:none;}
-            .mobile_screen_page_h {position:absolute;top:5%;left:2px;height:90%;color:skyblue;}
-                .mobile_screen_page_h:before {content:'';display:inline-block;width:5px;height:100%;border:1px solid skyblue;border-left:none;vertical-align:middle;}
-</style>
-{{data.ua.device.model}} ({{data.width+'x'+data.height+' dpr='+data.dpr}})
-<div class="mobile" style="margin-left:20px">
-    <div class="mobile_tit">{{data.ptit || 'NO title'}}</div>
-    <div class="mobile_screen">
-        <a class="mobile_screen_url" target="_blank" href="{{data.purl || '#'}}">{{data.purl || 'NO url'}}</a>
-        <div class="mobile_screen_page" style="height:200px;">
-            <div class="mobile_screen_page_w">320px</div>
-            <div class="mobile_screen_page_h">480px</div>
-        </div>
-    </div>
 </div>

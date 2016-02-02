@@ -2,6 +2,7 @@ var stateList = {
     url:'/list',
     templateUrl: 'view/list.html',
     controller: function($rootScope, $scope, $http) {
+    	var preSelectBugState;
     	$scope.currentPage = 1;
 		$scope.itemsPerPage = 15;
 
@@ -18,6 +19,17 @@ var stateList = {
 	        $scope.selectBugState = 0;
 	        $scope.isLoaded = true;
 	        $scope.bugList = data || [];
+	    });
+
+	    $scope.$watch('selectBugId', function(n, o, scope) {
+	    	if(n&&!o) {
+	    		console.log(123)
+	    		preSelectBugState = $scope.selectBugState;
+	    		$scope.selectBugState = '';
+	    	} else if(!n&&o) {
+	    		console.log(4556, preSelectBugState)
+	    		$scope.selectBugState = preSelectBugState;
+	    	}
 	    });
     }
 }

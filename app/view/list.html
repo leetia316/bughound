@@ -66,7 +66,7 @@
 </div>
 
 <div class="dlist_turnpage">
-    <pagination ng-show="(bugList | filter:{state: selectBugState||selectBugState==0 ? selectBugState : '', id:selectBugId}).length>itemsPerPage"
+    <pagination ng-show="(bugList | filter:{state: selectBugState||selectBugState==0&&!selectBugId ? selectBugState : '', id:selectBugId}).length>itemsPerPage"
         total-items="(bugList | filter:{state: selectBugState||selectBugState==0 ? selectBugState : '', id:selectBugId}).length" 
         ng-model="currentPage" 
         class="pagination-sm" 
@@ -82,7 +82,7 @@
 </div>
 
 <div class="buglist">
-    <div ng-repeat="x in bugList | filter:{state: selectBugState||selectBugState==0 ? selectBugState : '', id:selectBugId} | slice : (currentPage - 1) * itemsPerPage : currentPage * itemsPerPage" ui-sref="detail({id:x.id})" class="buglist_it state{{x.state}}">
+    <div ng-repeat="x in bugList | filter:{state: selectBugState||selectBugState==0&&!selectBugId ? selectBugState : '', id:selectBugId} | slice : (currentPage - 1) * itemsPerPage : currentPage * itemsPerPage" ui-sref="detail({id:x.id})" class="buglist_it state{{x.state}}">
         <div class="buglist_it_id">{{x.id}}</div>
         <div class="buglist_it_info">
             <div class="buglist_it_info_device">{{x.device || '未知设备'}}</div>
@@ -93,5 +93,5 @@
     </div>
 
     <div class="loading" ng-hide="isLoaded"></div>
-    <div class="buglist_none" ng-show="(bugList | filter:{state: selectBugState||selectBugState==0 ? selectBugState : '', id:selectBugId}).length==0"></div>
+    <div class="buglist_none" ng-show="(bugList | filter:{state: selectBugState||selectBugState==0&&!selectBugId ? selectBugState : '', id:selectBugId}).length==0"></div>
 </div>
