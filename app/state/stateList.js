@@ -23,11 +23,9 @@ var stateList = {
 
 	    $scope.$watch('selectBugId', function(n, o, scope) {
 	    	if(n&&!o) {
-	    		console.log(123)
 	    		preSelectBugState = $scope.selectBugState;
 	    		$scope.selectBugState = '';
 	    	} else if(!n&&o) {
-	    		console.log(4556, preSelectBugState)
 	    		$scope.selectBugState = preSelectBugState;
 	    	}
 	    });
