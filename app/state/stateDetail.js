@@ -27,13 +27,16 @@ var stateDetail = {
             },200);
     	});
         $scope.submit = function() {
-            console.log($scope.bugExecutor, $scope.selectBugState)
             $http.post('api/bug/update', {
                 id: $stateParams.id,
                 solver: $scope.bugExecutor || null,
                 state: $scope.selectBugState
             }).success(function() {
-                console.log('success')
+                $rootScope.modToastText = '更新成功！';
+                $rootScope.modToastClose = function() {
+                    $rootScope.isPopupModToast = false;
+                }
+                $rootScope.isPopupModToast = true;
             });
         }
     }

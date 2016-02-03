@@ -66,6 +66,13 @@
     </div> 
 </div>
 
+<div class="mod_toast" ng-show="isPopupModToast" ng-click="modToastClose()">
+    <div class="mod_toast_mask"></div>
+    <div class="mod_toast_main">
+        <p ng-bind="modToastText">成功！</p>
+    </div>
+</div>
+
 <script src="js/jquery-2.1.4.min.js"></script>
 
 <script src="js/angular.min.js"></script>
