@@ -114,12 +114,24 @@ app.use('/upload', express.static(__dirname+'/upload'));
  		if(!isNaN(id) && !isNaN(state)) {
  			pool.getConnection(function(err, conn) {
  				if(err) throw err;
- 				conn.query('UPDATE bug SET solver=?, state=? WHERE id=?', [solver, state, id], function(err, result) {
- 					if(err) throw err;
-					if(result.affectedRows>0) {
-						res.sendStatus(200);
-					}
- 				});
+ 				// 只有操作为解决时才记录solver
+ 				if(state==1) {
+					conn.query('UPDATE bug SET solver=?, state=? WHERE id=?', [solver, state, id], function(err, result) {
+ 						if(err) throw err;
+						if(result.affectedRows>0) {
+							res.sendStatus(200);
+						}
+						conn.release();
+ 					});
+ 				} else {
+ 					conn.query('UPDATE bug SET state=? WHERE id=?', [state, id], function(err, result) {
+ 						if(err) throw err;
+						if(result.affectedRows>0) {
+							res.sendStatus(200);
+						}
+						conn.release();
+ 					});
+ 				}
  			});
  		}
  	});

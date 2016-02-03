@@ -22,6 +22,9 @@ var stateDetail = {
     	});
     	$http.get('api/user/list').success(function(data) {
     		$scope.userList = data;
+            setTimeout(function() {
+                jQuery('.handle .ui.dropdown').dropdown();
+            },200);
     	});
         $scope.submit = function() {
             console.log($scope.bugExecutor, $scope.selectBugState)

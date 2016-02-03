@@ -1,6 +1,6 @@
 <style>
 @charset 'UTF-8';
-.slideshow {position:relative;width:100%;padding-top:61.8%;}
+.slideshow {position:relative;width:100%;padding-top:61.8%;border-bottom: 1px solid #ccc;}
     .slideshow_w {position:absolute;top:0;left:0;width:100%;height:100%;overflow:hidden;}
         .slideshow .shape {width:100% !important;/*border:1px solid #ccc;*/}
             .slideshow img {width:100%;}
@@ -21,14 +21,10 @@
                 .mobile_screen_page_c_w {width:100%;height:100%;overflow:auto;word-wrap:break-word;word-break:break-all;}
         .mobile_screen_browser {margin-top:5px;border:1px solid #ccc;background:#f3f3f3;text-align:center;}
 
-.handle {padding:10px 10px 50px;text-align:center;}
-    .handle_from {float:left;width:20%;height:50px;line-height:50px;text-align:center;background:#ccc;}
-    .handle_pass {position:relative;display:inline-block;width:55%;height:50px;}
-        .handle_pass:after {content:'';position:absolute;top:50%;left:0;margin-top:-1px;width:100%;border-bottom:2px dashed #ccc;}
-        .handle_pass select {z-index:2;}
-    .handle_to {float:right;width:20%;height:50px;line-height:50px;text-align:center;background:#ccc;}
-        .handle_to select {border:none;background:#ccc;}
-    .ui.button.submit {margin-top:10px;}
+.handle {padding:10px;text-align:center;}
+    .handle_from {font-weight:bold;text-decoration:underline;}
+    .handle .ui.dropdown, .handle .ui.button.submit {margin-top:10px;}
+    .handle .menu {}
 </style>
 <div class="slideshow">
     <div class="slideshow_w" ng-click="slidepic()">
@@ -60,7 +56,7 @@
     <div class="mobile_screen">
         <a class="mobile_screen_url" target="_blank" href="{{data.purl || '#'}}">{{data.purl || '# no url'}}</a>
         <div class="mobile_screen_page">
-            <div class="mobile_screen_page_h"> 320x480</div>
+            <div class="mobile_screen_page_h"> {{data.width}}x{{data.height}}</div>
             <div class="mobile_screen_page_dpr">dpr={{data.dpr}}</div>
             <div class="mobile_screen_page_c">
                 <div class="mobile_screen_page_c_w">
@@ -79,12 +75,8 @@
 </div>
 
 <div class="handle">
-    <div class="handle_from" ng-bind="data.stateName"></div>
-    <div class="handle_pass">
-        <select ng-model="bugExecutor" ng-options="x.erp as (x.name+' ('+x.erp+')') for x in userList"><option value="">请选择</option></select>
-    </div>
-    <div class="handle_to">
-        <select ng-model="selectBugState" ng-options="x.id as x.name for x in {{[{id:0, name:'未解决'}, {id:1, name:'已解决'}, {id:2, name:'已关闭'}]}}"></select>
-    </div>
+    <div class="handle_from">{{data.stateName}}<span ng-if="data.state!=0 && data.solver"> by {{data.solver}}</span></div>
+    <select class="ui dropdown fluid" ng-model="bugExecutor" ng-options="x.erp as (x.name+' ('+x.erp+')') for x in userList"><option value="">请选择</option></select>
+    <select class="ui dropdown fluid" ng-model="selectBugState" ng-options="x.id as x.name for x in {{[{id:0, name:'未解决'}, {id:1, name:'解决'}, {id:2, name:'关闭'}]}}"></select>
     <button class="ui button fluid green submit" ng-click="submit()">确定</button>
 </div>
