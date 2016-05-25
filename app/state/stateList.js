@@ -10,12 +10,12 @@ var stateList = {
 	        var result,
 	            stateName = ['未解决', '已解决', '已关闭'];
 	        for(var i=0;i<data.length;i++) {
-	            result = new UAParser().setUA(data[i].ua).getResult();
+	            result = new UAParser().setUA(data[i].env.ua).getResult();
 	            data[i].device = result.device.model || '';
-	            data[i].pics = data[i].pics ? JSON.parse(data[i].pics) : [];
+	            data[i].pics = data[i].pics || [];
 	            data[i].stateName = stateName[data[i].state];
 	        }
-	        console.log(data);
+	        // console.log(data);
 	        $scope.selectBugState = 0;
 	        $scope.isLoaded = true;
 	        $scope.bugList = data || [];

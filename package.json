@@ -4,14 +4,15 @@
   "description": "bug提交平台",
   "main": "server.js",
   "dependencies": {
-    "async": "^1.4.2",
-    "body-parser": "^1.13.3",
-    "cookie-parser": "^1.4.0",
-    "images": "^2.1.10",
-    "express": "^4.13.3",
-    "express-session": "^1.11.3",
-    "mysql": "^2.2.0",
-    "multer": "^1.0.3"
+    "async": "^1.5.2",
+    "body-parser": "^1.15.0",
+    "cookie-parser": "^1.4.1",
+    "express": "^4.13.4",
+    "express-session": "^1.13.0",
+    "mongoose": "^4.4.19",
+    "multer": "^1.1.0",
+    "mysql": "^2.10.2",
+    "nodemailer": "^1.11.0"
   },
   "devDependencies": {},
   "scripts": {

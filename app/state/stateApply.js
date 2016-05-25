@@ -2,22 +2,11 @@ var stateApply = {
     url:'/apply?title&url',
     templateUrl: 'view/apply.html',
     controller: function($rootScope, $scope, $http, $stateParams) {
-    	var url2b = [
-    		{path:/\/qwd\//, business:'京享街'},
-    		{path:/\/sh\//, business:'拍拍二手'}
-    	];
        	var gIdx = 0,
 			pics = [];
 	    $scope.filesList = [];
 	    $scope.bugPageTit = $stateParams.title;
 	    $scope.bugPageUrl = $stateParams.url;
-
-	    for(var i=0;i<url2b.length;i++) {
-	    	if(url2b[i].path.exec($scope.bugPageUrl)) {
-	    		$scope.bugBusiness = url2b[i].business;
-	    		break;
-	    	}
-	    }
 
 	    $scope.getFile = function () {
 	        var i, reader = new FileReader(),
@@ -73,7 +62,6 @@ var stateApply = {
 	                                    ptit: $scope.bugPageTit,
 	                                    purl: $scope.bugPageUrl,
 
-	                                    business: $scope.bugBusiness || '',
 	                                    description: $scope.bugDesc || ''
 	                                }).success(function(data) {
 	                                    $scope.showSubmiting = false;

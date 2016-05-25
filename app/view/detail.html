@@ -8,75 +8,88 @@
             .slideshow_botw i {display:inline-block;margin-right:10px;width:10px;height:10px;border-radius:50%;background:green;}
             .slideshow_botw i.active {background:red;}
 
-.mobile {margin:15px auto;width:50%;border:1px solid #ccc;border-radius:10px;font-size:12px;}
-    .mobile_hd {padding:0 5px;height:25px;line-height:25px;border-bottom:1px solid #ccc;text-align:center;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
-    .mobile_ft {height:30px;border-top:1px solid #ccc;}
-    .mobile_screen {padding:3px;width:100%;height:100%;}
-        .mobile_screen_url {display:block;padding:0 5px;height:20px;line-height:20px;border:1px solid #ccc;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
-        .mobile_screen_page {position:relative;margin-top:5px;border:1px solid #ccc;}
-            .mobile_screen_page_h {position:absolute;top:5%;left:100%;margin-left:8px;height:90%;white-space:nowrap;color:skyblue;}
-                .mobile_screen_page_h:before {content:'';display:inline-block;width:5px;height:100%;border:1px solid skyblue;border-left:none;vertical-align:middle;}
-            .mobile_screen_page_dpr {position: absolute;top:0;right:0;padding:0 3px;height:25px;line-height:25px;border-left:1px dashed #ccc;border-bottom:1px dashed #ccc;color:skyblue;background:#fafafa;}
-            .mobile_screen_page_c {padding:25px 10px 10px;width:100%;height:150px;}
-                .mobile_screen_page_c_w {width:100%;height:100%;overflow:auto;word-wrap:break-word;word-break:break-all;}
-        .mobile_screen_browser {margin-top:5px;border:1px solid #ccc;background:#f3f3f3;text-align:center;}
-
-.handle {padding:10px;text-align:center;}
-    .handle_from {font-weight:bold;text-decoration:underline;}
-    .handle .ui.dropdown, .handle .ui.button.submit {margin-top:10px;}
-    .handle .menu {}
+.detail_mod_info {position:relative;margin:10px 5px;padding:30px 10px 10px;overflow:hidden;}
+.detail_mod_info.state0 {border:1px solid #e12228;}
+.detail_mod_info.state1 {border:1px solid limegreen;}
+.detail_mod_info.state2 {border:1px solid gray;}
+    .detail_mod_info:before {content:'';position:absolute;top:0;left:-20px;display:block;border-left:20px solid transparent;border-right:20px solid transparent;}
+    .detail_mod_info.state0:before {border-top:20px solid #e12228;}
+    .detail_mod_info.state1:before {border-top:20px solid limegreen;}
+    .detail_mod_info.state2:before {border-top:20px solid gray;}
+    .detail_mod_info:after {font-size:12px;position:absolute;top:0;left:0;padding:0 5px 0 18px;height:20px;line-height:20px;border:1px solid #e12228;border-top:none;border-left:none;}
+    .detail_mod_info.state0:after {content:'未解决';border-color:#e12228;color:#e12228;}
+    .detail_mod_info.state1:after {content:'已解决';border-color:limegreen;color:limegreen;}
+    .detail_mod_info.state2:after {content:'已关闭';border-color:gray;color:gray;}
+    .detail_mod_info_it {}
+        .detail_mod_info_it_hd {font-weight:bold;border-bottom:1px solid #ccc;}
+            .detail_mod_info_it_tit {display:inline-block;padding:0 5px;border-bottom:2px solid #ccc;font-size:16px;}
+        .detail_mod_info_it_cont {padding:5px 5px 10px;}
+            .detail_mod_info_row {white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+            .detail_mod_pics {margin:0;padding:0;border-left:5px solid #888;border-right:5px solid #888;background:#f8f8f8;list-style-type:none;font-size:0;white-space:nowrap;overflow-x:auto;overflow-y:hidden;}
+                .detail_mod_pics_it {display:inline-block;margin:0 5px;width:50px;max-height:50px;overflow:hidden;border:1px solid #ddd;}
+                    .detail_mod_pics_it img {display:block;width:100%;}
+.detail_mod_handle {position:fixed;top:50%;right:-35px;padding:0 6px;width:70px;height:70px;border-radius:50%;background:#e12228;color:#fff;}
+    .detail_mod_handle_solve, .detail_mod_handle_assign, .detail_mod_handle_close {display:none;position:absolute;top:50%;left:25%;width:50px;height:50px;line-height:50px;text-align:center;border-radius:50%;font-size:12px;-webkit-transform:translate(-50%, -50%);transform:translate(-50%, -50%);}
+    .detail_mod_handle_solve {background:limegreen;}
+    .detail_mod_handle_assign {background:skyblue;}
+    .detail_mod_handle_close {background:gray;}
+    .detail_mod_handle.active .detail_mod_handle_solve {display:block;-webkit-transform:translate(-80%, -165%);transform:translate(-80%, -165%);}
+    .detail_mod_handle.active .detail_mod_handle_assign {display:block;-webkit-transform:translate(-150%, -50%);transform:translate(-150%, -50%);}
+    .detail_mod_handle.active .detail_mod_handle_close {display:block;-webkit-transform:translate(-80%, 65%);transform:translate(-80%, 65%);}
 </style>
-<div class="slideshow">
-    <div class="slideshow_w" ng-click="slidepic()">
-        <div class="ui shape">
-            <div class="sides">
 
-                <div ng-repeat="x in data.pics" class="side {{$index==0 ? 'active' : ''}}">
-                    <div class="content">
-                        <img ng-src="upload/{{x}}">
-                    </div>
-                </div>
-
-                <div class="side active" ng-if="data.pics.length<1">
-                    <div class="content">
-                        <img src="https://placeholdit.imgix.net/~text?txtsize=33&txt=无截图&w=320&h=200">
-                    </div>
-                </div>
-
-            </div>
+<div class="detail_mod_info" ng-class="'state'+data.state">
+    <div class="detail_mod_info_it">
+        <div class="detail_mod_info_it_hd">
+            <div class="detail_mod_info_it_tit">需求信息</div>
         </div>
-        <div class="slideshow_botw">
-            <i ng-repeat="x in data.pics" class="{{$index==activePicIdx ? 'active' : ''}}"></i>
+        <div class="detail_mod_info_it_cont">
+            <div class="detail_mod_info_row"><i class="icon ticket"></i>[{{data._id}}] {{data.page.title}}</div>
+            <div class="detail_mod_info_row"><i class="icon linkify"></i><a href="{{data.page.url || '#'}}" ng-if="data.page.url">{{data.page.url}}</a><span ng-if="!data.page.url" style="color:#bbb">（未提供预览地址）</span></div>
+        </div>
+    </div>
+    <div class="detail_mod_info_it">
+        <div class="detail_mod_info_it_hd">
+            <div class="detail_mod_info_it_tit">故障截图</div>
+        </div>
+        <div class="detail_mod_info_it_cont">
+            <ul class="detail_mod_pics">
+                <li ng-repeat="x in data.pics" class="detail_mod_pics_it">
+                    <img ng-src="upload/{{x}}">
+                </li>    
+            </ul>
+            <div ng-if="!data.pics.length>0" style="color:#bbb">（没有截图）</div>
+        </div>
+    </div>
+
+    <div class="detail_mod_info_it">
+        <div class="detail_mod_info_it_hd">
+            <div class="detail_mod_info_it_tit">设备信息</div>
+        </div>
+        <div class="detail_mod_info_it_cont">
+            <div class="detail_mod_info_row"><i class="icon tablet"></i>{{data.ua.device.model}} {{data.ua.os.name + data.ua.os.version}}</div>
+            <div class="detail_mod_info_row"><i class="icon square outline"></i>{{data.env.width}}x{{data.env.height}} [dpr{{data.env.dpr}}]</div>
+            <div class="detail_mod_info_row"><i class="icon laptop"></i>{{data.ua.browser.name+data.ua.browser.version}} [{{data.ua.engine.name+data.ua.engine.version}}]</div>
+        </div>
+    </div>
+    <div class="detail_mod_info_it">
+        <div class="detail_mod_info_it_hd">
+            <div class="detail_mod_info_it_tit">故障描述</div>
+        </div>
+        <div class="detail_mod_info_it_cont">
+            <div>{{data.desc}}</div>
         </div>
     </div>
 </div>
 
-<div class="mobile">
-    <div class="mobile_hd">{{data.ua.device.model}} {{data.ua.os.name + data.ua.os.version}}</div>
-    <div class="mobile_screen">
-        <a class="mobile_screen_url" target="_blank" href="{{data.purl || '#'}}">{{data.purl || '# no url'}}</a>
-        <div class="mobile_screen_page">
-            <div class="mobile_screen_page_h"> {{data.width}}x{{data.height}}</div>
-            <div class="mobile_screen_page_dpr">dpr={{data.dpr}}</div>
-            <div class="mobile_screen_page_c">
-                <div class="mobile_screen_page_c_w">
-                    <div>业务：{{data.business || '未填写'}}</div>
-                    <div>需求：{{data.ptit || '未填写'}}</div>
-                    <div>描述：{{data.description}}</div>
-                </div>
-            </div>
-        </div>
-        <div class="mobile_screen_browser">
-            <div>{{data.ua.browser.name+data.ua.browser.version}}</div>
-            <div>({{data.ua.engine.name+data.ua.engine.version}})</div>
-        </div>
-    </div>
-    <div class="mobile_ft"></div>
+<div class="detail_mod_handle" ng-click="submit()">
+    <i class="icon configure large" style="position:absolute;top:50%;left:30%;display:block;width:auto;height:auto;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%);"></i>
+    <div class="detail_mod_handle_solve">解决</div>
+    <!-- 指派的同时也相当于重启了 -->
+    <div class="detail_mod_handle_assign">指派</div>
+    <div class="detail_mod_handle_close">关闭</div>
 </div>
 
-<div class="handle">
-    <div class="handle_from">{{data.stateName}}<span ng-if="data.state!=0 && data.solver"> by {{data.solver}}</span></div>
-    <select class="ui dropdown fluid" ng-model="bugExecutor" ng-options="x.erp as (x.name+' ('+x.erp+')') for x in userList"><option value="">请选择</option></select>
-    <select class="ui dropdown fluid" ng-model="selectBugState" ng-options="x.id as x.name for x in {{[{id:0, name:'未解决'}, {id:1, name:'解决'}, {id:2, name:'关闭'}]}}"></select>
-    <button class="ui button fluid green submit" ng-click="submit()">确定</button>
-</div>
+<!-- <div class="handle">
+    <button class="ui button fluid green submit" ng-click="submit()">解决</button>
+</div> -->
