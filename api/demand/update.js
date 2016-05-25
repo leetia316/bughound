@@ -5,7 +5,7 @@ const
 
 module.exports = function(req, res) {
 	let _id = req.body.id;
-	let solver = req.session.erp;
+	let solver = req.session._id;
 	let state = Number.parseInt(req.body.state);
 	if(_id && !isNaN(state)) {
 		let upobj = {state:state};
@@ -15,7 +15,7 @@ module.exports = function(req, res) {
 		}
 		db.Demand.update({_id:_id}, {$set: upobj}, function (err, doc) {
 			if(err) {
-				console.log(err)
+				console.log(err);
 				res.sendStatus(500);
 			} else {
 				res.sendStatus(200);

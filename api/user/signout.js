@@ -4,6 +4,7 @@ const
 	db = require('../../database/index.js');
 
 module.exports =function(req, res) {
+	req.session._id = null;
 	req.session.erp = null;
 	req.session.name = null;
 	req.session.isadmin = null;

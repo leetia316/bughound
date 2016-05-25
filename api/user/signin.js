@@ -14,6 +14,7 @@ module.exports =function(req, res) {
 				// res.sendStatus(404);
 				res.json({state:'fail'});
 			} else {
+				req.session._id = doc._id;
 				req.session.erp = doc.erp;
 				req.session.name = doc.name;
 				req.session.isadmin = doc.isadmin;

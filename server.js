@@ -9,26 +9,6 @@ const
 	session = require('express-session'),
 	multer = require('multer'),
 
-	uploader = multer({
-		// dest: 'upload'
-		storage: multer.diskStorage({
-			destination: function(req, file, cb) {
-				cb(null, 'upload')
-			},
-			filename: function(req, file, cb) {
-				let now = new Date();
-				cb(null, now.getFullYear() + 
-					('0' + (now.getMonth()+1)).slice(-2) + 
-					('0' + now.getDate()).slice(-2) + 
-					('0' + now.getHours()).slice(-2) + 
-					('0' + now.getMinutes()).slice(-2) + 
-					('0' + now.getSeconds()).slice(-2) + 
-					('0' + Math.floor(Math.random()*100)).slice(-2)
-				)
-			}
-		})
-	}),
-
 	api2 = require('./api/'),
 	conf = require('./config.js');
 
@@ -85,7 +65,25 @@ app.post('/api/user/signout', api2.user.signout);
 app.get('/api/auth', function(req, res) {
 	res.send({erp:req.session.erp, name:req.session.name, isAdmin:!!req.session.isadmin})
 });
-app.post('/api/upload', uploader.single('pic'), function(req, res) {
+app.post('/api/upload', multer({
+	// dest: conf.updir
+	storage: multer.diskStorage({
+		destination: function(req, file, cb) {
+			cb(null, conf.updir)
+		},
+		filename: function(req, file, cb) {
+			let now = new Date();
+			cb(null, now.getFullYear() + 
+				('0' + (now.getMonth()+1)).slice(-2) + 
+				('0' + now.getDate()).slice(-2) + 
+				('0' + now.getHours()).slice(-2) + 
+				('0' + now.getMinutes()).slice(-2) + 
+				('0' + now.getSeconds()).slice(-2) + 
+				('0' + Math.floor(Math.random()*100)).slice(-2)
+			)
+		}
+	})
+}).single('pic'), function(req, res) {
 	res.send(req.file.filename);
 });
 

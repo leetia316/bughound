@@ -11,4 +11,7 @@ module.exports = {
 		// 详查http://mongoosejs.com/docs/connections.html
 		options: {}
 	},
+
+	// 文件存储路径
+	updir: 'upload'
 }
