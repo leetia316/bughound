@@ -5,7 +5,7 @@
     .header h2{font-size:16px;text-align:center;font-weight:normal;padding:10px 0;}
     .header p{font-size:12px;text-align:center;color:#C0C0C0;}
     #num{font-size:20px;display:block;text-align:center;color:#B53B3B;margin:0 20px;border-bottom:1px solid #B53B3B;padding:10px 0;font-family:Georgia, "Trebuchet MS";}
-.notice{text-align:center;font-size:20px;padding:100px 0 20px;background-image:url(../img/bow.png);background-repeat:no-repeat;background-position:center;}
+.notice{text-align:center;font-size:20px;padding:100px 0 20px;background-image:url(../public/img/bow.png);background-repeat:no-repeat;background-position:center;}
 
 #refresh, #checkthis{display:block;text-align:center;margin:20px;padding:10px 0;border:1px solid #666666;border-radius:4px;}
     #refresh:active, #checkthis:active{background:#FFFFFF;}
@@ -33,7 +33,7 @@
                 .form_pic_cpics_add{width:74px;height:74px;border-radius:37px;font:0/0 a;color:#FFFFFF;margin:10px auto;background:#D82C2C url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEEAAABBBAMAAAB82dR2AAAAFVBMVEUAAAD///////////////////////9Iz20EAAAABnRSTlMA7pEGiYjxEaxMAAAAW0lEQVRIx2MYBXiBkaAyARVqaakEVIilJRJQkZaWNqpiVMVAqGBWTEMCCK6QAUwFUxoyQOIGwFQwoqpAcAUIqyBoiwNhlw62MB1VMSJUEC7X1dJSiKhfRgE+AAB/A2SmfRd/9gAAAABJRU5ErkJggg==') no-repeat center center; background-size:63px auto;}
                 ::-ms-browse, [type='file'] {width:74px;height:74px;opacity:0;}
                 ::-webkit-file-upload-button {width:74px;height:74px;opacity:0;}
-                .form_pic_cpics_add input{width:74px;height:74px;opacity:0;}
+                .form_pic_cpics_add input.inp {width:74px;height:74px;opacity:0;}
             .form_pic_cnotice{line-height:16px;font-size:12px;color:#999999;}
     #cvs{position:absolute;z-index:-1;left:-1000%;opacity:0;}
 .form_pic_added{padding-bottom:0;}
@@ -79,7 +79,7 @@
                     </div>
                 </div>
                 <div class="form_pic_cpics_add">
-                    <input type="file" name="fileselect[]" id="fileImage" multiple file-model="myFile">
+                    <input class="inp" type="file" name="fileselect[]" id="fileImage" multiple file-model="myFile">
                 </div>
                 <div class="form_pic_cpics_json" id="fileImageLinks"></div>
             </div>
@@ -91,7 +91,7 @@
     <div class="wrap">
         <dl class="form">
             <dt><label for="">* 需求名称</label></dt>
-            <dd><input type="text" style="width:100%;" placeholder="业务-需求名称" ng-model="bugPageTit"></dd>
+            <dd><input class="inp" type="text" style="width:100%;" placeholder="业务-需求名称" ng-model="bugPageTit"></dd>
         </dl>
         <dl class="form">
             <dt><label for="">bug描述</label></dt>
@@ -99,7 +99,7 @@
         </dl>
         <dl class="form">
             <dt><label for="">* 预览地址</label></dt>
-            <dd><input type="text" style="width:100%;" placeholder="预览地址" ng-model="bugPageUrl"></dd>
+            <dd><input class="inp" type="text" style="width:100%;" placeholder="预览地址" ng-model="bugPageUrl"></dd>
         </dl>
         <p><button class="btn" type="button" ng-click="submit()">提交bug</button></p>
     </div>

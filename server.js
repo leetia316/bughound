@@ -10,9 +10,9 @@ const
 	multer = require('multer'),
 
 	api2 = require('./api/'),
-	conf = require('./config.js');
+	conf = require('./config.js'),
 
-let app = express();
+	app = express();
 
 /*-----------------------
    中间件
@@ -31,14 +31,13 @@ app.use(bodyParser.json());
 app.use(express.static(__dirname + '/app'));
 app.use('/upload', express.static(__dirname+'/upload'));
 
-
 /*-----------------------
    API
  ------------------------*/
 function requireAdmin(req, res, next) {
 	if(req.session.isadmin) {
 		next();
-	} else { 
+	} else {
 		res.sendStatus(401);
 	}
 }
@@ -66,28 +65,28 @@ app.get('/api/auth', function(req, res) {
 	res.send({erp:req.session.erp, name:req.session.name, isAdmin:!!req.session.isadmin})
 });
 app.post('/api/upload', multer({
-	// dest: conf.updir
-	storage: multer.diskStorage({
-		destination: function(req, file, cb) {
-			cb(null, conf.updir)
-		},
-		filename: function(req, file, cb) {
-			let now = new Date();
-			cb(null, now.getFullYear() + 
-				('0' + (now.getMonth()+1)).slice(-2) + 
-				('0' + now.getDate()).slice(-2) + 
-				('0' + now.getHours()).slice(-2) + 
-				('0' + now.getMinutes()).slice(-2) + 
-				('0' + now.getSeconds()).slice(-2) + 
-				('0' + Math.floor(Math.random()*100)).slice(-2)
-			)
-		}
-	})
-}).single('pic'), function(req, res) {
-	res.send(req.file.filename);
-});
+		// dest: conf.updir
+		storage: multer.diskStorage({
+			destination: function(req, file, cb) {
+				cb(null, conf.updir)
+			},
+			filename: function(req, file, cb) {
+				let now = new Date();
+				cb(null, now.getFullYear() + 
+					('0' + (now.getMonth()+1)).slice(-2) + 
+					('0' + now.getDate()).slice(-2) + 
+					('0' + now.getHours()).slice(-2) + 
+					('0' + now.getMinutes()).slice(-2) + 
+					('0' + now.getSeconds()).slice(-2) + 
+					('0' + Math.floor(Math.random()*100)).slice(-2)
+				)
+			}
+		})
+	}).single('pic'), function(req, res) {
+		res.send(req.file.filename);
+	});
 
 // ----------------------------------------------- //
-var server = app.listen(conf.port, function() {
+let server = app.listen(conf.port, function() {
 	console.log('UFT Server Listening on port %d', server.address().port);
 });

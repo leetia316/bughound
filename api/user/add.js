@@ -8,7 +8,7 @@ module.exports = function(req, res) {
 	let erp = req.body.erp,
 		name = req.body.name,
 		email = req.body.email;
-	if(erp && name) {
+	if(erp && name && email) {
 		let user = new db.User({
 			erp: erp,
 			name: name,
@@ -18,7 +18,7 @@ module.exports = function(req, res) {
 			if(err) {
 				res.sendStatus(500);
 			} else {
-				res.json({erp:erp, name:name});
+				res.json({erp:erp, name:name, email:email});
 			}
 		});
 	} else {

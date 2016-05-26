@@ -8,7 +8,7 @@
         .dblist tbody {}
             .dblist tr:nth-child(2n+1){background:#EAEAEA;}
                 .dblist td {padding:5px 0;border-bottom:1px solid #D7D7D7;}
-                    .dblist td input {padding:5px;width:80%;border:1px solid #D20000;border-radius:2px;background:#fff;text-align:center;}
+                    .dblist td input.inp {padding:5px;width:80%;border:1px solid #D20000;border-radius:2px;background:#fff;text-align:center;}
                     .dblist td:last-child button {display:inline-block;margin:0 3px;padding:0 8px;height:24px;font-size:12px;border-radius:2px;background:#D7D7D7;-webkit-appearance:none;border:none;}
                     .dblist td:last-child button.btndel {color:#fff;background:#DB2828;}
                     .dblist td:last-child button.btnsave, .dblist td:last-child button.btnconfirm {background:#16ab39;color:#fff;}
@@ -22,21 +22,23 @@
 <div class="loading" ng-hide="isLoaded"></div>
 <div class="dblist">
     <table class="dblist">
-        <thead><th>ERP帐号</th><th>用户名</th><th></th></thead>
+        <thead><th>ERP帐号</th><th>用户名</th><th>邮箱</th><th></th></thead>
         <tbody>
             <tr ng-repeat="x in userList">
                 <td ng-bind="x.erp"></td>
-                <td><span ng-bind="x.name" ng-hide="x.isEditing">EC</span><input type="text" ng-model="x.name" ng-show="x.isEditing"></td>
+                <td><span ng-bind="x.name" ng-hide="x.isEditing">EC</span><input class="inp" type="text" ng-model="x.name" ng-show="x.isEditing"></td>
+                <td><span ng-bind="x.email" ng-hide="x.isEditing">EC@jd.com</span><input class="inp" type="text" ng-model="x.email" ng-show="x.isEditing"></td>
                 <td>
                     <button class="btnsave" ng-click="update($index, x.erp, x.name)" ng-show="x.isEditing">保存</button>
-                    <button class="btnmodify" ng-click="(x.isEditing=true) && (x.originalName=x.name)" ng-hide="x.isEditing">修改</button>
-                    <button class="btncancel" ng-click="(x.isEditing=false) || (x.name=x.originalName)" ng-show="x.isEditing">取消</button>
+                    <button class="btnmodify" ng-click="(x.isEditing=true) && (x.originalName=x.name) && (x.originalEmail=x.email)" ng-hide="x.isEditing">修改</button>
+                    <button class="btncancel" ng-click="(x.isEditing=false) || ( (x.name=x.originalName) && (x.email=x.originalEmail) )" ng-show="x.isEditing">取消</button>
                     <button class="btndel" ng-click="del($index, x.erp)" ng-hide="x.isEditing">删除</button>
                 </td>
             </tr>
             <tr ng-show="isAdding">
-                <td><input type="text" ng-model="newErp"></td>
-                <td><input type="text" ng-model="newName"></td>
+                <td><input class="inp" type="text" ng-model="newErp"></td>
+                <td><input class="inp" type="text" ng-model="newName"></td>
+                <td><input class="inp" type="text" ng-model="newEmail"></td>
                 <td>
                     <button class="btnconfirm" ng-click="add()">确定</button>
                     <button class="btncancel" ng-click="isAdding=false">取消</button>

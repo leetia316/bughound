@@ -36,7 +36,8 @@ var stateIdlist = {
        	$scope.add = function() {
        		$http.post('api/user/add', {
        			erp: $scope.newErp,
-       			name: $scope.newName
+       			name: $scope.newName,
+                email: $scope.newEmail
        		}).success(function(data) {
        			$scope.isAdding = false;
        			$scope.newErp = null;

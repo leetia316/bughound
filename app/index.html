@@ -3,59 +3,49 @@
 <head>
 <meta charset="utf-8" />
 <title>BugHound | JDC 轻量级 bug 平台</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
-<meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-status-bar-style" content="black" />
-<meta name="format-detection" content="telephone=no" />
-<link rel="stylesheet" href="css/normalize.css">
-<link rel="stylesheet" href="css/semantic.min.css">
-<link rel="stylesheet" type="text/css" href="css/gb.css" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<!-- <link rel="stylesheet" href="public/css/semantic.min.css"> -->
+<link rel="stylesheet" type="text/css" href="public/css/gb.css">
 </head>
 <body ng-controller="mainctrl">
 
 <!-- S 头部 -->
 <header class="mod_hd">
-    <div ng-click="showMainBar()" class="mod_hd_back"><i class="icon options large"></i></div>
-    <div class="mod_hd_tit">
-        <div class="ui pointing dropdown link mainmenu">
-            <span class="text" style="color:#fff;" ng-bind-html="pageTit | scehtml">JDC-BUG 提交平台</span>
-            <i class="dropdown icon" style="color:#fff;"></i>
-            <div class="menu">
-                <div class="item" ui-sref="list"><i class="list icon"></i>bug 列表</div>
-                <!-- <div class="divider"></div> -->
-                <div class="item" ui-sref="apply"><i class="icon write square"></i>bug 提交</div>
-                <div class="item" ui-sref="idlist" ng-show="userIsAdmin"><i class="spy icon"></i>开发者</div>
+    <div class="mod_hd_cont ly_box">
+        <div class="mod_hd_logo ly_box">
+            <i class="ly_box_flexone"><!-- &#xe600; --></i><div>需求提报</div>
+        </div>
+        <nav class="mod_hd_nav ly_box_flexone">
+            <ul class="mod_hd_nav_ul ly_box">
+                <li class="{{navidx==='list' && 'active'}}">
+                    <a ui-sref="list">广场</a>
+                </li>
+                <li class="{{navidx==='apply' && 'active'}}">
+                    <a ui-sref="apply">申请</a>
+                </li>
+                <li class="{{navidx==='idlist' && 'active'}}" ng-show="userIsAdmin">
+                    <a ui-sref="idlist">开发者</a>
+                </li>
+            </ul>
+        </nav>
+        <div class="mod_hd_info">
+            <div class="mod_hd_info_user" on-outside-element-click="showLogin=false">
+                <div class="mod_hd_info_user_main" ng-click="showLogin=!showLogin">
+                    <i class="iconfont">&#xe601;</i><span class="mod_hd_info_user_text" href="#">{{userName ? userName : '登录'}}</span>
+                </div>
+                <div class="mod_hd_info_user_signin" ng-show="showLogin">
+                    <input class="mod_hd_info_user_signin_erp {{signinErpHaserror && 'haserror'}}" type="text" placeholder="输入 ERP" ng-model="signinErp">
+                    <input class="mod_hd_info_user_signin_submit" type="submit" value="{{ userName ? '切换':'登录'}}" ng-click="signin()">
+                </div>
             </div>
         </div>
     </div>
-    <div ui-sref="apply" class="mod_hd_write"><i class="icon write large"></i></div>
 </header>
 <!-- E 头部 -->
 
-<!-- S 侧边栏 -->
-<div class="mod_mainbar">
-    <div class="mod_mainbar_wrap">
-        <div class="mod_mainbar_info">
-            <div class="mod_mainbar_name">{{userName ? userName : '未登录'}}</div>
-            <div class="mod_mainbar_erp">{{userErp ? userErp : ''}}</div>
-        </div>
-        <div class="mod_mainbar_status">
-            <div class="mod_mainbar_solved"><i class="icon rocket"></i>解决</div>
-            <div class="mod_mainbar_apply"><i class="icon theme"></i>提交</div>
-        </div>
-        <form class="mod_mainbar_login" ng-show="!userErp">
-            <input type="text" ng-model="loginErp" placeholder="ERP帐号">
-            <input type="text" ng-model="loginPas" placeholder="密码">
-            <div class="mod_mainbar_login_submit">
-                <button ng-click="login()"><i class="icon sign in"></i>登录</button>
-                <button ng-click="getPass()"><i class="icon privacy"></i></button>
-            </div>
-            <div class="mod_mainbar_login_tip" ng-bind="loginTip"></div>
-        </form>
-        <div class="mod_mainbar_logout" ng-show="userErp" ng-click="logout()"><i class="icon sign out"></i>退出</div>
-    </div>
-</div>
-<!-- E 侧边栏 -->
 
 <div class="mod_wrap">
     <div class="mod_wrap_view">
@@ -84,25 +74,23 @@
     </div>
 </div>
 
-<script src="js/jquery-2.1.4.min.js"></script>
-
-<script src="js/angular.min.js"></script>
-<script src="js/angular-touch.min.js"></script>
-<script src="js/angular-ui-router.js"></script><!--NG 路由插件-->
-<script src="js/ui-bootstrap-tpls-0.13.4.min.js"></script><!--NG 翻页插件-->
-<script src="js/ua-parser.min.js"></script>
-
-<script src="js/semantic.min.js"></script>
+<script src="public/js/jquery-2.1.4.min.js"></script>
+<script src="public/js/angular.min.js"></script>
+<script src="public/js/angular-ui-router.js"></script><!--NG 路由插件-->
+<script src="public/js/ui-bootstrap-tpls-0.13.4.min.js"></script><!--NG 翻页插件-->
+<script src="public/js/ua-parser.min.js"></script>
+<!-- <script src="public/js/semantic.min.js"></script> -->
 
 <script src="state/stateApply.js"></script>
 <script src="state/stateList.js"></script>
 <script src="state/stateDetail.js"></script>
 <script src="state/stateIdlist.js"></script>
+
+<script src="util.js"></script>
 <script>
 var jQuery = $;
 
 angular.module('bughound', [
-    'ngTouch',
     'ui.router',
     'ui.bootstrap'
 ], angular.noop)
@@ -174,6 +162,54 @@ angular.module('bughound', [
     };
 }])
 
+.directive('onDocumentClick', ['$document',
+  function($document) {
+    return {
+      restrict: 'A',
+      link: function(scope, element, attrs) {
+
+        var onClick = function() {
+          scope.$apply(function() {
+            scope.$eval(attrs.onDocumentClick);
+          });
+        };
+
+        $document.on('click', onClick);
+
+        scope.$on('$destroy', function() {
+          $document.off('click', onClick);
+        });
+      }
+    };
+  }
+])
+
+.directive('onOutsideElementClick', ['$document',
+  function($document) {
+    return {
+      restrict: 'A',
+      link: function(scope, element, attrs) {
+
+        element.on('click', function(e) {
+          e.stopPropagation();
+        });
+
+        var onClick = function() {
+          scope.$apply(function() {
+            scope.$eval(attrs.onOutsideElementClick);
+          });
+        };
+
+        $document.on('click', onClick);
+
+        scope.$on('$destroy', function() {
+          $document.off('click', onClick);
+        });
+      }
+    };
+  }
+])
+
 .config(function($stateProvider, $urlRouterProvider, $httpProvider) {
     $urlRouterProvider.otherwise('list');  //无效路由
 
@@ -202,74 +238,47 @@ angular.module('bughound', [
     $http.get('api/auth').then(function(res) {
         console.log(res.data)
         Session.create(res.data.erp, res.data.name, res.data.isAdmin);
-    })
+    });
+
+    $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
+        $rootScope.navidx = toState.name;
+    });
 })
 
 .controller('mainctrl', function($scope, $http, $state, Session) {
-    $scope.isMainSideActive = '';
 
-    jQuery('.mod_hd_tit .mainmenu').dropdown();
-    $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
-        // $scope.pageState = toState.name;
-        switch(toState.name) {
-            case 'apply': $scope.pageTit = '<i class="icon write square"></i>bug 提交';break;
-            case 'list': $scope.pageTit = '<i class="list icon"></i>bug 列表';break;
-            case 'detail': $scope.pageTit = '<i class="pin icon"></i>bug 详情';break;
-            case 'idlist': $scope.pageTit = '<i class="spy icon"></i>开发者';break;
-        }
-    });
-
-    //--- S 侧导航 ---
-    var mainbar = document.querySelector('.mod_mainbar'),
-        mainbarlock = true;
-    $scope.showMainBar = function() {
-        mainbarlock = false;
-        mainbar.classList.add('active');
-    }
-    jQuery(document).mouseup(function(e){
-        if(mainbarlock) return;
-        mainbarlock = false;
-        var _con = jQuery('.mod_mainbar_wrap');   // 设置目标区域
-        if(!_con.is(e.target) && _con.has(e.target).length === 0){
-            mainbar.classList.remove('active');
-        }
-    });
-    $scope.getPass = function() {
-        if(!$scope.loginErp) {
-            $scope.loginTip = '* 请先填写ERP';
+    // ----- 登录 -----
+    $scope.signin = function() {
+        if(!$scope.signinErp) {
+            $scope.signinErpHaserror = true;
+            _POP_.toast('请输入ERP');
         } else {
-            $scope.loginTip = '';
-            // 接收带有密码的邮件
-            $http.post('api/user/getpas', {
-                erp:$scope.loginErp
-            }).then(function(res) {
-                if(res.data.state=='success') {
-                    $scope.loginTip = '密码已发至邮箱';
-                } else {
-                    $scope.loginTip = res.data.msg;
-                }
-            });
+            $scope.signinErpHaserror = false;
         }
-    }
-    $scope.login = function() {
         $http.post('api/user/signin', {
-            erp: $scope.loginErp,
-            pass: $scope.loginPas
+            erp: $scope.signinErp
         }).then(function(res) { 
             if(res.data.state=='success') {
                 var data = res.data.data;
+                if($scope.userErp) {
+                    _POP_.toast('切换成功');
+                } else {
+                    _POP_.toast('登录成功');
+                }
                 Session.create(data.erp, data.name, data.isadmin);
             } else {
                 $scope.loginTip = '登录失败';
             }
         });
     }
-    $scope.logout = function() {
+
+    // ----- 登出 -----
+    $scope.signout = function() {
         $http.post('api/user/signout').then(function(res) {
             Session.destory();
         });
     }
-    //--- E 侧导航 ---
+
 });
 </script>
 </body>
