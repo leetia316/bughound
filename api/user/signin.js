@@ -12,7 +12,7 @@ module.exports =function(req, res) {
 				res.sendStatus(500);
 			} else if(!doc) {
 				// res.sendStatus(404);
-				res.json({state:'fail'});
+				res.json({state:'fail', msg:'用户不存在'});
 			} else {
 				req.session._id = doc._id;
 				req.session.erp = doc.erp;

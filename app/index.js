@@ -179,7 +179,7 @@ angular.module('bughound', [
                 Session.create(data.erp, data.name, data.isadmin);
                 $scope.showLogin = false;
             } else {
-                $scope.loginTip = '登录失败';
+                _POP_.toast(res.data.msg || '登录失败');
             }
         });
     }
