@@ -2,7 +2,7 @@ var stateDetail = {
     url:'/detail/:id',
     templateUrl: 'view/detail.html',
     controller: function($rootScope, $scope, $http, $state, $stateParams) {
-    	$http.get('api/bug/get', {
+    	$http.get('api/demand/get', {
     		params: {
     			id: $stateParams.id
     		}
@@ -21,15 +21,11 @@ var stateDetail = {
         //     },200);
         // });
         $scope.submit = function() {
-            $http.post('api/bug/update', {
+            $http.post('api/demand/update', {
                 id: $stateParams.id,
                 state: 1
             }).success(function() {
-                $rootScope.modToastText = '更新成功！';
-                $rootScope.modToastClose = function() {
-                    $rootScope.isPopupModToast = false;
-                }
-                $rootScope.isPopupModToast = true;
+                _POP_.toast('更新成功');
             });
         }
 

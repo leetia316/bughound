@@ -1,17 +1,89 @@
+<!-- <form class="search">
+    <input class="inp" type="tel" placeholder="bug编号筛选" ng-model="selectBugId">
+</form> -->
+
+<div class="cohead ly_box">
+    <ul class="cohead_collection ly_box ly_box_flexone">
+        <li class="cohead_collection_item active"><i class="iconfont">&#xe602;</i>所有需求</li>
+        <li class="cohead_collection_item"><i class="iconfont">&#xe601;</i>我的需求</li>
+    </ul>
+    <div class="cohead_state">
+        <div class="cohead_state_main">
+            <div class="cohead_state_main_show"><span>{{stateName}}</span><i class="iconfont">&#xe603;</i></div>
+            <div class="cohead_state_main_dropdown">
+                <ul>
+                    <li ng-click="selectBugState=''">全部</li>
+                    <li ng-click="selectBugState=0">未解决</li>
+                    <li ng-click="selectBugState=1">已解决</li>
+                    <li ng-click="selectBugState=2">已关闭</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="dlist_turnpage">
+    <pagination ng-show="(bugList | filter:{state: selectBugState||selectBugState==0&&!selectBugId ? selectBugState : '', id:selectBugId}).length>itemsPerPage"
+        total-items="(bugList | filter:{state: selectBugState||selectBugState==0 ? selectBugState : '', id:selectBugId}).length" 
+        ng-model="currentPage" 
+        class="pagination-sm" 
+        boundary-links="true" 
+        rotate="false" 
+        num-pages="numPages"
+        items-per-page="itemsPerPage"
+        max-size="4"
+        previous-text="‹"
+        next-text="›"
+        first-text="«"
+        last-text="»"></pagination>
+</div>
+
+<div>
+    <div>ID：{{bugList[0]._id}}</div>
+    <div>设备：{{bugList[0].device}}</div>
+    <div>提交时间：{{bugList[0].createdAt | fmtDateNormal}}</div>
+    <div>页面标题：{{bugList[0].ptit}}</div>
+    <div>图片：{{bugList[0].pics}}</div>
+    <div>状态：{{bugList[0].state}}</div>
+</div>
+
+<div class="dlist">
+    
+
+    <div class="loading" ng-hide="isLoaded"></div>
+    <div class="buglist_none" ng-show="(bugList | filter:{state: selectBugState||selectBugState==0&&!selectBugId ? selectBugState : '', id:selectBugId}).length==0"></div>
+</div>
+
+<div class="buglist">
+    <div ng-repeat="x in bugList | filter:{state: selectBugState||selectBugState==0&&!selectBugId ? selectBugState : '', id:selectBugId} | slice : (currentPage - 1) * itemsPerPage : currentPage * itemsPerPage" ui-sref="detail({id:x._id})" class="buglist_it state{{x.state}}">
+        <div class="buglist_it_id">{{x._id}}</div>
+        <div class="buglist_it_info">
+            <div class="buglist_it_info_device">{{x.device || '未知设备'}}</div>
+            <div class="buglist_it_info_submitdate">{{x.createdAt | fmtDateNormal}}</div>
+        </div>
+        <div class="buglist_it_ptit">{{x.ptit}}</div>
+        <div class="buglist_it_pic"><img ng-if="x.pics.length>0" ng-src="upload/{{x.pics[0]}}"></div>
+    </div>
+
+    <div class="loading" ng-hide="isLoaded"></div>
+    <div class="buglist_none" ng-show="(bugList | filter:{state: selectBugState||selectBugState==0&&!selectBugId ? selectBugState : '', id:selectBugId}).length==0"></div>
+</div>
+
+
 <style>
 @charset 'UTF-8';
 
 .search {margin:15px;}
-    .search input.inp {width:100%;}
-.bugtips {position:relative;margin:15px;border-top:1px solid #ddd;border-bottom:1px solid #ddd;}
-    .bugtips_thumb {position:absolute;top:-3px;left:0;height:37px;width:22%;border-top:2px solid red;border-bottom:2px solid red;border-left:1px solid rgba(0,0,0,0.05);border-right:1px solid rgba(0,0,0,0.05);-webkit-transition:0.5s ease;transition:0.5s ease;background:rgba(0,0,0,0.01);}
+    .search input.inp {width:100%;max-width:200px;}
+.bugtips {position:relative;/*border-top:1px solid #ddd;*/border-bottom:1px solid #ddd;}
+    .bugtips_thumb {position:absolute;top:0;left:0;height:42px;width:25%;border-bottom:2px solid #ff4400;border-left:1px solid rgba(0,0,0,0.05);border-right:1px solid rgba(0,0,0,0.05);-webkit-transition:0.5s ease;transition:0.5s ease;background:rgba(0,0,0,0.02);}
     .active0 .bugtips_thumb {-webkit-transform:translate(0,0);transform:translate(0,0);}
     .active1 .bugtips_thumb {-webkit-transform:translate(100%,0);transform:translate(100%,0);}
     .active2 .bugtips_thumb {-webkit-transform:translate(200%,0);transform:translate(200%,0);}
     .active .bugtips_thumb {-webkit-transform:translate(300%,0);transform:translate(300%,0);}
-    .bugtips_it {display:inline-block;padding:5px 0;width:22%;height:31px;cursor:pointer;}
+    .bugtips_it {padding:0 5px;height:40px;line-height:40px;cursor:pointer;}
         .bugtips_it_icon {display:inline-block;width:10px;height:10px;background:#ccc;}
-.buglist {margin:0 15px 15px;border:1px solid #ddd;}
+.buglist {margin:50px 15px 15px;border:1px solid #ddd;}
     .buglist_it {position:relative;padding:10px;border-top:1px solid #ddd;overflow:hidden;}
     .buglist_it:before {position:absolute;top:-7px;left:-7px;content:'';display:block;width:14px;height:14px;-webkit-transform:rotate(-45deg);transform:rotate(-45deg);}
     .buglist_it.state0:before {background:#e12228;}
@@ -39,59 +111,17 @@
                 .pagination > .active > a {color:#fff;cursor:default;background:#E12228;}
                 .pagination > .active > a:hover {color:#fff;cursor:default;background:#E12228;}
                 .pagination > .disabled > a {pointer-events:none;cursor:default;}
+.cohead {margin:20px 0 0;border-bottom:2px solid #e5e5e5;}
+    .cohead_collection {}
+        .cohead_collection_item {margin-right:30px;margin-bottom:-2px;height:52px;line-height:50px;font-size:20px;border-bottom:2px solid transparent;cursor:pointer;}
+        .cohead_collection_item.active {color:#ff4400;border-color:#ff4400;}
+            .cohead_collection_item i.iconfont {margin-right:3px;}
+    .cohead_state {}
+        .cohead_state_main {position:relative;margin-top:20px;line-height:30px;cursor:pointer;}
+            .cohead_state_main_show {}
+                .cohead_state_main_show i.iconfont {margin-left:3px;}
+            .cohead_state_main_dropdown {z-index:1;display:none;position:absolute;top:100%;right:0;padding:10px 0;word-break:keep-all;background:#252535;}
+            .cohead_state_main:hover .cohead_state_main_dropdown {display:block;}
+                .cohead_state_main_dropdown li {padding:0 15px;height:30px;line-height:30px;font-size:12px;color:#757393;}
+                .cohead_state_main_dropdown li:hover {background:#323242;color:#fff;}
 </style>
-
-<form class="search">
-    <input class="inp" type="tel" placeholder="bug编号筛选" ng-model="selectBugId">
-</form>
-
-<div class="bugtips active{{selectBugState}}">
-    <div class="bugtips_thumb"></div>
-    <div class="bugtips_it" ng-click="selectBugState=0">
-        <div class="bugtips_it_icon" style="background:#e12228;"></div>
-        <span class="bugtips_it_text">未解决</span>
-    </div>
-    <div class="bugtips_it" ng-click="selectBugState=1">
-        <div class="bugtips_it_icon" style="background:limegreen;"></div>
-        <span class="bugtips_it_text">已解决</span>
-    </div>
-    <div class="bugtips_it" ng-click="selectBugState=2">
-        <div class="bugtips_it_icon" style="background:gray;"></div>
-        <span class="bugtips_it_text">已关闭</span>
-    </div>
-    <div class="bugtips_it" ng-click="selectBugState=''">
-        <div class="bugtips_it_icon" style="background:#fff;border:1px solid #ddd"></div>
-        <span class="bugtips_it_text">全部</span>
-    </div>
-</div>
-
-<div class="dlist_turnpage">
-    <pagination ng-show="(bugList | filter:{state: selectBugState||selectBugState==0&&!selectBugId ? selectBugState : '', id:selectBugId}).length>itemsPerPage"
-        total-items="(bugList | filter:{state: selectBugState||selectBugState==0 ? selectBugState : '', id:selectBugId}).length" 
-        ng-model="currentPage" 
-        class="pagination-sm" 
-        boundary-links="true" 
-        rotate="false" 
-        num-pages="numPages"
-        items-per-page="itemsPerPage"
-        max-size="4"
-        previous-text="‹"
-        next-text="›"
-        first-text="«"
-        last-text="»"></pagination>
-</div>
-
-<div class="buglist">
-    <div ng-repeat="x in bugList | filter:{state: selectBugState||selectBugState==0&&!selectBugId ? selectBugState : '', id:selectBugId} | slice : (currentPage - 1) * itemsPerPage : currentPage * itemsPerPage" ui-sref="detail({id:x._id})" class="buglist_it state{{x.state}}">
-        <div class="buglist_it_id">{{x.id}}</div>
-        <div class="buglist_it_info">
-            <div class="buglist_it_info_device">{{x.device || '未知设备'}}</div>
-            <div class="buglist_it_info_submitdate">{{x.submitdate | fmtDateNormal}}</div>
-        </div>
-        <div class="buglist_it_ptit">{{x.ptit}}</div>
-        <div class="buglist_it_pic"><img ng-if="x.pics.length>0" ng-src="upload/{{x.pics[0]}}"></div>
-    </div>
-
-    <div class="loading" ng-hide="isLoaded"></div>
-    <div class="buglist_none" ng-show="(bugList | filter:{state: selectBugState||selectBugState==0&&!selectBugId ? selectBugState : '', id:selectBugId}).length==0"></div>
-</div>

@@ -17,18 +17,17 @@ let userSchema = new Schema({
 }, { timestamps: true });
 
 let demandSchema = new Schema({
+	title: {type:String, required:true, trim:true},
+	desc: String,
+	files: [String], //截图+文件
+
 	env: {
 		width: Number,
 		height: Number,
 		dpr: Number,
 		ua: String
 	},
-	page: {
-		title: String,
-		url: String
-	},
-	pics: [String], //截图+文件
-	desc: String, //描述
+	
 	state: {type: Number, required:true, default:0}, //状态
 	solver: {type: Schema.Types.ObjectId, ref: 'User'},
 	solvedate: Date		//解决时间

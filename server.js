@@ -41,17 +41,17 @@ function requireAdmin(req, res, next) {
 		res.sendStatus(401);
 	}
 }
-function requireLogined(req, res, next) {
+function requireSignin(req, res, next) {
 	if(req.session.erp) {
 		next();
 	} else {
 		res.sendStatus(401);
 	}
 }
-app.post('/api/bug/add', api2.demand.add);
-app.get('/api/bug/list', api2.demand.list);
-app.get('/api/bug/get', api2.demand.get);
-app.post('/api/bug/update', requireLogined, api2.demand.update);
+app.post('/api/demand/add', api2.demand.add);
+app.get('/api/demand/list', api2.demand.list);
+app.get('/api/demand/get', api2.demand.get);
+app.post('/api/demand/update', requireSignin, api2.demand.update);
 
 app.post('/api/user/add', requireAdmin, api2.user.add);
 app.post('/api/user/del', requireAdmin, api2.user.del);
@@ -68,7 +68,8 @@ app.post('/api/upload', multer({
 		// dest: conf.updir
 		storage: multer.diskStorage({
 			destination: function(req, file, cb) {
-				cb(null, conf.updir)
+				// cb(null, conf.updir)
+				cb(null, conf.tmpdir);
 			},
 			filename: function(req, file, cb) {
 				let now = new Date();
@@ -82,7 +83,7 @@ app.post('/api/upload', multer({
 				)
 			}
 		})
-	}).single('pic'), function(req, res) {
+	}).single('file'), function(req, res) {
 		res.send(req.file.filename);
 	});
 
