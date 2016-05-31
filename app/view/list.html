@@ -63,7 +63,9 @@
                     <div class="dlist_item_date">{{ x.createdAt | fmtDateNormal }}</div>
                 </div>
                 <div class="dlist_item_pics">
-                    <div ng-repeat="img in x.files | regex:'type':'^image/'">34</div>
+                    <div class="dlist_item_pics_it" ng-repeat="img in x.files | regex:'type':'^image/'">
+                        <img ng-src="upload/{{img.name}}">
+                    </div>
                 </div>
                 <div class="dlist_item_desc ly_multiline">{{ x.desc }}</div>
             </div>
@@ -88,6 +90,9 @@
                 .dlist_item_meta {font-size:12px;color:rgba(0,0,0,.4);overflow:hidden;}
                     .dlist_item_state {float:left;}
                     .dlist_item_date {float:right;}
+                .dlist_item_pics {}
+                    .dlist_item_pics_it {width:100px;max-height:100px;overflow:hidden;}
+                        .dlist_item_pics_it img {width:100%;}
                 .dlist_item_desc {margin-top:5px;}
             .dlist_item_extra {padding:15px;border-top:1px solid rgba(0,0,0,.05);overflow:hidden;}
 
