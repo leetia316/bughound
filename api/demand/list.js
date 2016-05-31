@@ -11,13 +11,23 @@ module.exports = function(req, res) {
 	// 		res.send(docs);
 	// 	}
 	// });
+	// db.Demand.find({})
+	// 	.populate('files')
+	// 	.exec(function (err, docs) {
+	// 		if(err) {
+	// 			res.sendStatus(500);
+	// 		} else {
+	// 			res.send(docs);
+	// 		}
+	// 	});
 	db.Demand.find({})
-			.populate('files')
-			.exec(function (err, docs) {
-				if(err) {
-					res.sendStatus(500);
-				} else {
-					res.send(docs);
-				}
-			});
+		.populate('files')
+		.sort({'createdAt': -1})
+		.exec(function (err, docs) {
+			if(err) {
+				res.sendStatus(500);
+			} else {
+				res.send(docs);
+			}
+		});
 }
