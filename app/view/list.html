@@ -9,7 +9,7 @@
     </ul>
     <div class="cohead_state">
         <div class="cohead_state_main">
-            <div class="cohead_state_main_show"><span>{{stateName}}</span><i class="iconfont">&#xe603;</i></div>
+            <div class="cohead_state_main_show"><span>{{stateName || '全部'}}</span><i class="iconfont">&#xe603;</i></div>
             <div class="cohead_state_main_dropdown">
                 <ul>
                     <li ng-click="selectBugState=''">全部</li>
@@ -38,32 +38,40 @@
         last-text="»"></pagination>
 </div>
 
-<div>
+<!-- <div>
+    <h3 style="background:#ccc">可以展示的数据</h3>
     <div>ID：{{bugList[0]._id}}</div>
-    <div>设备：{{bugList[0].device}}</div>
-    <div>提交时间：{{bugList[0].createdAt | fmtDateNormal}}</div>
-    <div>页面标题：{{bugList[0].ptit}}</div>
-    <div>图片：{{bugList[0].pics}}</div>
+    <div>需求名称：{{bugList[0].title}}</div>
+    <div>需求描述：{{bugList[0].desc}}</div>
+    <div>文件：{{bugList[0].files}}</div>
     <div>状态：{{bugList[0].state}}</div>
-</div>
+    <div>状态名：{{bugList[0].stateName}}</div>
+    <div>提交时间：{{bugList[0].createdAt | fmtDateNormal}}</div>
+    <div>最后更新：{{bugList[0].updatedAt | fmtDateNormal}}</div>
+    <hr>
+    <div>设备：{{bugList[0].device}}</div>
+    <div>ENV：{{bugList[0].env}}</div>
+</div> -->
 
 <div class="dlist">
-    
-
-    <div class="loading" ng-hide="isLoaded"></div>
-    <div class="buglist_none" ng-show="(bugList | filter:{state: selectBugState||selectBugState==0&&!selectBugId ? selectBugState : '', id:selectBugId}).length==0"></div>
-</div>
-
-<div class="buglist">
-    <div ng-repeat="x in bugList | filter:{state: selectBugState||selectBugState==0&&!selectBugId ? selectBugState : '', id:selectBugId} | slice : (currentPage - 1) * itemsPerPage : currentPage * itemsPerPage" ui-sref="detail({id:x._id})" class="buglist_it state{{x.state}}">
-        <div class="buglist_it_id">{{x._id}}</div>
-        <div class="buglist_it_info">
-            <div class="buglist_it_info_device">{{x.device || '未知设备'}}</div>
-            <div class="buglist_it_info_submitdate">{{x.createdAt | fmtDateNormal}}</div>
-        </div>
-        <div class="buglist_it_ptit">{{x.ptit}}</div>
-        <div class="buglist_it_pic"><img ng-if="x.pics.length>0" ng-src="upload/{{x.pics[0]}}"></div>
-    </div>
+    <ul class="dlist_wrap">
+        <li class="dlist_item" ui-sref="detail({id:x._id})" ng-repeat="x in bugList | filter:{state: selectBugState||selectBugState==0&&!selectBugId ? selectBugState : '', id:selectBugId} | slice : (currentPage - 1) * itemsPerPage : currentPage * itemsPerPage">
+            <div class="dlist_item_cont">
+                <h4 class="dlist_item_tit">{{ x.title }}</h4>
+                <div class="dlist_item_meta">
+                    <div class="dlist_item_state">{{ x.stateName }}</div>
+                    <div class="dlist_item_date">{{ x.createdAt | fmtDateNormal }}</div>
+                </div>
+                <div class="dlist_item_pics">
+                    
+                </div>
+                <div class="dlist_item_desc ly_multiline">{{ x.desc }}</div>
+            </div>
+            <div class="dlist_item_extra">
+                
+            </div>
+        </li>
+    </ul>
 
     <div class="loading" ng-hide="isLoaded"></div>
     <div class="buglist_none" ng-show="(bugList | filter:{state: selectBugState||selectBugState==0&&!selectBugId ? selectBugState : '', id:selectBugId}).length==0"></div>
@@ -72,32 +80,22 @@
 
 <style>
 @charset 'UTF-8';
+.dlist {margin-top:30px;}
+    .dlist_wrap {}
+        .dlist_item {margin-bottom:15px;border-top:1px solid #ddd;border-bottom:1px solid #ddd;border-radius:.285em;box-shadow:0 1px 3px 0 #d4d4d5, 0 0 0 1px #d4d4d5;}
+            .dlist_item_cont {padding:10px 15px;}
+                .dlist_item_tit {font-size:16px;font-weight:bold;}
+                .dlist_item_meta {font-size:12px;color:rgba(0,0,0,.4);overflow:hidden;}
+                    .dlist_item_state {float:left;}
+                    .dlist_item_date {float:right;}
+                .dlist_item_desc {margin-top:5px;}
+            .dlist_item_extra {padding:15px;border-top:1px solid rgba(0,0,0,.05);overflow:hidden;}
+
+.buglist_none {width:100%;height:150px;background:url(../public/img/bow.png) no-repeat center;}
 
 .search {margin:15px;}
     .search input.inp {width:100%;max-width:200px;}
-.bugtips {position:relative;/*border-top:1px solid #ddd;*/border-bottom:1px solid #ddd;}
-    .bugtips_thumb {position:absolute;top:0;left:0;height:42px;width:25%;border-bottom:2px solid #ff4400;border-left:1px solid rgba(0,0,0,0.05);border-right:1px solid rgba(0,0,0,0.05);-webkit-transition:0.5s ease;transition:0.5s ease;background:rgba(0,0,0,0.02);}
-    .active0 .bugtips_thumb {-webkit-transform:translate(0,0);transform:translate(0,0);}
-    .active1 .bugtips_thumb {-webkit-transform:translate(100%,0);transform:translate(100%,0);}
-    .active2 .bugtips_thumb {-webkit-transform:translate(200%,0);transform:translate(200%,0);}
-    .active .bugtips_thumb {-webkit-transform:translate(300%,0);transform:translate(300%,0);}
-    .bugtips_it {padding:0 5px;height:40px;line-height:40px;cursor:pointer;}
-        .bugtips_it_icon {display:inline-block;width:10px;height:10px;background:#ccc;}
-.buglist {margin:50px 15px 15px;border:1px solid #ddd;}
-    .buglist_it {position:relative;padding:10px;border-top:1px solid #ddd;overflow:hidden;}
-    .buglist_it:before {position:absolute;top:-7px;left:-7px;content:'';display:block;width:14px;height:14px;-webkit-transform:rotate(-45deg);transform:rotate(-45deg);}
-    .buglist_it.state0:before {background:#e12228;}
-    .buglist_it.state1:before {background:limegreen;}
-    .buglist_it.state2:before {background:gray;}
-    .buglist_it:first-child {border-top:none;}
-        .buglist_it_id {float:left;width:50px;height:40px;line-height:40px;border:1px solid #ccc;font-size:18px;text-align:center;}
-        .buglist_it_info {float:left;width:25%;text-align:center;}
-            .buglist_it_info_device {height:21px;font-size:12px;}
-            .buglist_it_info_submitdate {font-size:12px;}
-        .buglist_it_ptit {float:left;width:30%;height:42px;line-height:21px; overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;}
-        .buglist_it_pic {float:right;width:40px;height:40px;border:1px solid #ccc;overflow:hidden;}
-            .buglist_it_pic img {width:100%;}
-    .buglist_none {width:100%;height:150px;background:url(../public/img/bow.png) no-repeat center;}
+    
 
     .dlist_turnpage {text-align:center;}
         .pagination {display:inline-block;margin:0;padding:0;border-radius:4px;}

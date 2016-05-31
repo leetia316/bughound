@@ -23,7 +23,7 @@ var stateApply = {
 	        $scope.showSubmiting = true;
 	        angular.forEach($scope.uploader.queue, function(v, k) {
 	        	if(v.isSuccess) {
-	        		uploadedList.push(v.remoteName);
+	        		uploadedList.push({name:v.remoteName, oname:v.file.name, size:v.file.size, type:v.file.type});
 	        	}
 	        });
 

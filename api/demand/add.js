@@ -22,8 +22,8 @@ module.exports = function(req, res) {
 	} else {
 		// 文件转移
 		files.forEach(function(item) {
-			let sf = path.join(conf.tmpdir, item);
-			let df = path.join(conf.updir, item);
+			let sf = path.join(conf.tmpdir, item.name);
+			let df = path.join(conf.updir, item.name);
 			let rs = fs.createReadStream(sf);
 			let ws = fs.createWriteStream(df);
 			rs.pipe(ws);
@@ -34,27 +34,30 @@ module.exports = function(req, res) {
 			});
 		});
 
-		// Document
-		let demand = new db.Demand({
-			title: title,
-			desc: desc,
-			files: files,
-
-			env: {
-				width: width,
-				height: height,
-				dpr: dpr,
-				ua: ua
-			}
-		});
-	
-		// Save
-		demand.save(function(err) {
-			if(err) {
-				res.sendStatus(500);
-			} else {
-				res.send(demand.get('id'));
-			}
+		db.File.create(files, function(err, file) {
+			if(err) throw err;
+			console.log(file)
+			// Document
+			let demand = new db.Demand({
+				title: title,
+				desc: desc,
+				files: file,
+				env: {
+					width: width,
+					height: height,
+					dpr: dpr,
+					ua: ua
+				}
+			});
+			// Save
+			demand.save(function(err) {
+				if(err) {
+					console.log(err)
+					res.sendStatus(500);
+				} else {
+					res.send(demand.get('id'));
+				}
+			});
 		});
 	}
 }

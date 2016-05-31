@@ -13,7 +13,7 @@ var stateList = {
 	        for(var i=0;i<data.length;i++) {
 	            result = new UAParser().setUA(data[i].env.ua).getResult();
 	            data[i].device = result.device.model || '';
-	            data[i].pics = data[i].pics || [];
+	            data[i].files = data[i].files || [];
 	            data[i].stateName = stateNames[data[i].state];
 	        }
 	        console.log(data);
