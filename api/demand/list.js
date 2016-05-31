@@ -22,6 +22,7 @@ module.exports = function(req, res) {
 	// 	});
 	db.Demand.find({})
 		.populate('files')
+		.populate('sbu')
 		.sort({'createdAt': -1})
 		.exec(function (err, docs) {
 			if(err) {

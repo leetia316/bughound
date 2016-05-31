@@ -44,6 +44,7 @@
     <div>需求名称：{{bugList[0].title}}</div>
     <div>需求描述：{{bugList[0].desc}}</div>
     <div>文件：{{bugList[0].files}}</div>
+    <div>业务：{{bugList[0].sbu}}</div>
     <div>状态：{{bugList[0].state}}</div>
     <div>状态名：{{bugList[0].stateName}}</div>
     <div>提交时间：{{bugList[0].createdAt | fmtDateNormal}}</div>
@@ -59,7 +60,7 @@
             <div class="dlist_item_cont">
                 <h4 class="dlist_item_tit">{{ x.title }}</h4>
                 <div class="dlist_item_meta">
-                    <div class="dlist_item_state">{{ x.stateName }}</div>
+                    <div class="dlist_item_state">{{ x.stateName }} - {{ x.sbu && x.sbu.name }}</div>
                     <div class="dlist_item_date">{{ x.createdAt | fmtDateNormal }}</div>
                 </div>
                 <div class="dlist_item_pics">
@@ -91,7 +92,7 @@
                     .dlist_item_state {float:left;}
                     .dlist_item_date {float:right;}
                 .dlist_item_pics {}
-                    .dlist_item_pics_it {width:100px;max-height:100px;overflow:hidden;}
+                    .dlist_item_pics_it {max-width:100px;min-width:16px;max-height:100px;overflow:hidden;}
                         .dlist_item_pics_it img {width:100%;}
                 .dlist_item_desc {margin-top:5px;}
             .dlist_item_extra {padding:15px;border-top:1px solid rgba(0,0,0,.05);overflow:hidden;}

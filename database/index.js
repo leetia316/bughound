@@ -23,6 +23,7 @@ let demandSchema = new Schema({
 	title: {type:String, required:true, trim:true},
 	desc: String,
 	files: [{ type:Schema.Types.ObjectId, ref:'File' }],
+	sbu: {type: Schema.Types.ObjectId, ref: 'Sbu'},	//业务
 
 	env: {
 		width: Number,
@@ -37,10 +38,17 @@ let demandSchema = new Schema({
 						//提交时间=创建时间
 }, { timestamps: true });
 
+// strategic business unit (SBU)
+let sbuSchema = new Schema({
+	name: {type:String, required:true, trim:true, minlength:1, maxlength:100, unique: true}
+});
+
 let User = mongoose.model('User', userSchema);
 let File = mongoose.model('File', fileSchema);
 let Demand = mongoose.model('Demand', demandSchema);
+let Sbu = mongoose.model('Sbu', sbuSchema);
 
 exports.User = User;
 exports.File = File;
 exports.Demand = Demand;
+exports.Sbu = Sbu;

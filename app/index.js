@@ -3,6 +3,7 @@ var jQuery = $;
 angular.module('bughound', [
     'ui.router',
     'angularFileUpload',
+    'angucomplete-alt',
     'ui.bootstrap'
 ], angular.noop)
 

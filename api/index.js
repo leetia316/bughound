@@ -14,4 +14,9 @@ module.exports = {
 		get: require('./demand/get'),
 		update: require('./demand/update')
 	},
+	sbu: {
+		add: require('./sbu/add'),
+		list: require('./sbu/list'),
+		search: require('./sbu/search')
+	}
 }

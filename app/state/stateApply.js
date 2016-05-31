@@ -5,6 +5,11 @@ var stateApply = {
        	var gIdx = 0,
 			files = [];
 
+		// 业务列表
+		$http.get('api/sbu/list').success(function(data) {
+			$scope.sbus = data;
+		});
+
 		// 文件上传器
 	    $scope.uploader = new FileUploader({
 	    	url: 'api/upload'
@@ -18,6 +23,7 @@ var stateApply = {
 	    $scope.submit = function() {
 	    	
 	    	if(!$scope.d_title) { _POP_.toast('需求名称不能为空'); return; }
+	    	if(!$scope.d_sbu && !jQuery('#sbu_value').val()) { _POP_.toast('所属业务不能为空'); return; }
 
 	    	var uploadedList = [];
 	        $scope.showSubmiting = true;
@@ -31,6 +37,8 @@ var stateApply = {
 				title: $scope.d_title,
 				desc: $scope.d_desc || '',
 				files: uploadedList,
+				sbu: $scope.d_sbu ? $scope.d_sbu.originalObject._id : null,
+				sbustr: jQuery('#sbu_value').val(),
 
 				// ENV
 			    width: document.documentElement.clientWidth,

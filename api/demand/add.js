@@ -10,6 +10,8 @@ module.exports = function(req, res) {
 	let title = req.body.title;
 	let desc = req.body.desc || null;
 	let files = req.body.files && req.body.files.length && req.body.files.length>0 ? req.body.files : [];
+	let sbu = req.body.sbu;
+	let sbustr= req.body.sbustr;
 
 	// ENV
 	let width = req.body.width || 0;
@@ -17,7 +19,7 @@ module.exports = function(req, res) {
 	let dpr = req.body.dpr || 0;
 	let ua = req.body.ua || '';
 
-	if(!title) {
+	if(!title || (!sbu && !sbustr)) {
 		res.sendStatus(404);
 	} else {
 		// 文件转移
@@ -36,26 +38,36 @@ module.exports = function(req, res) {
 
 		db.File.create(files, function(err, files) {
 			if(err) throw err;
-			// Document
-			let demand = new db.Demand({
-				title: title,
-				desc: desc,
-				files: files,
-				env: {
-					width: width,
-					height: height,
-					dpr: dpr,
-					ua: ua
-				}
-			});
-			// Save
-			demand.save(function(err) {
-				if(err) {
-					console.log(err)
-					res.sendStatus(500);
-				} else {
-					res.send(demand.get('id'));
-				}
+			db.Sbu.findOneAndUpdate({name:sbustr}, {$setOnInsert:{name:sbustr}}, {new: true, upsert: true}, function(err, doc){
+				if(err) throw err;
+				// update:
+				// result: {ok:1, nModified:0, n:1, upserted:[{index:0, _id:xxx}]}
+				// result: {ok:1, nModified:0, n:1}
+				// findOneAndUpdate:
+				// {name: '每日精选', _id: 574d8290c6d8008cc0522036}
+				sbu = doc._id;
+				// Document
+				let demand = new db.Demand({
+					title: title,
+					desc: desc,
+					files: files,
+					sbu: sbu,
+					env: {
+						width: width,
+						height: height,
+						dpr: dpr,
+						ua: ua
+					}
+				});
+				// Save
+				demand.save(function(err) {
+					if(err) {
+						console.log(err)
+						res.sendStatus(500);
+					} else {
+						res.send(demand.get('id'));
+					}
+				});
 			});
 		});
 	}

@@ -48,11 +48,6 @@ function requireSignin(req, res, next) {
 		res.sendStatus(401);
 	}
 }
-app.post('/api/demand/add', api2.demand.add);
-app.get('/api/demand/list', api2.demand.list);
-app.get('/api/demand/get', api2.demand.get);
-app.post('/api/demand/update', requireSignin, api2.demand.update);
-
 app.post('/api/user/add', requireAdmin, api2.user.add);
 app.post('/api/user/del', requireAdmin, api2.user.del);
 // app.post('/api/user/update', requireAdmin, api.user.update);
@@ -60,6 +55,15 @@ app.get('/api/user/list', api2.user.list);
 app.post('/api/user/signin', api2.user.signin);
 app.post('/api/user/signout', api2.user.signout);
 // app.post('/api/user/getpas', api.user.getpas);
+
+app.post('/api/demand/add', api2.demand.add);
+app.get('/api/demand/list', api2.demand.list);
+app.get('/api/demand/get', api2.demand.get);
+app.post('/api/demand/update', requireSignin, api2.demand.update);
+
+app.post('/api/sbu/add', api2.sbu.add);
+app.get('/api/sbu/list', api2.sbu.list);
+app.get('/api/sbu/search', api2.sbu.search);
 
 app.get('/api/auth', function(req, res) {
 	res.send({erp:req.session.erp, name:req.session.name, isAdmin:!!req.session.isadmin})
