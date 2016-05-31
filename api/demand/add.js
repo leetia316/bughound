@@ -34,14 +34,13 @@ module.exports = function(req, res) {
 			});
 		});
 
-		db.File.create(files, function(err, file) {
+		db.File.create(files, function(err, files) {
 			if(err) throw err;
-			console.log(file)
 			// Document
 			let demand = new db.Demand({
 				title: title,
 				desc: desc,
-				files: file,
+				files: files,
 				env: {
 					width: width,
 					height: height,

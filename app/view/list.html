@@ -63,7 +63,7 @@
                     <div class="dlist_item_date">{{ x.createdAt | fmtDateNormal }}</div>
                 </div>
                 <div class="dlist_item_pics">
-                    
+                    <div ng-repeat="img in x.files | filter:{}"></div>
                 </div>
                 <div class="dlist_item_desc ly_multiline">{{ x.desc }}</div>
             </div>
