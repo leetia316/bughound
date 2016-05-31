@@ -16,6 +16,9 @@ var stateApply = {
     	}
 
 	    $scope.submit = function() {
+	    	
+	    	if(!$scope.d_title) { _POP_.toast('需求名称不能为空'); return; }
+
 	    	var uploadedList = [];
 	        $scope.showSubmiting = true;
 	        angular.forEach($scope.uploader.queue, function(v, k) {
@@ -23,7 +26,6 @@ var stateApply = {
 	        		uploadedList.push(v.remoteName);
 	        	}
 	        });
-	        console.log(uploadedList)
 
 			$http.post('api/demand/add', {
 				title: $scope.d_title,
@@ -40,6 +42,11 @@ var stateApply = {
 			    $scope.showSubmiting = false;
 			    $scope.bugid = data;
 			    $scope.isSubmitSucc = true;
+			}).catch(function(res, a) {
+				if(res.status===404) {
+					$scope.showSubmiting = false;
+					_POP_.toast('申请失败');
+				}
 			});
 	    }
     }
