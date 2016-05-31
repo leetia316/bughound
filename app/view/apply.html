@@ -10,7 +10,6 @@
                 <dt><label>需求描述</label></dt>
                 <dd><textarea class="formfield_desc" placeholder="需求描述" ng-model="d_desc"></textarea></dd>
             </dl>
-            <div class="apply_form_submit"><button type="button" class="btn" ng-click="submit()">提交需求</button></div>
         </div>
         <div class="apply_form_right">
             <dl class="form">
@@ -66,6 +65,7 @@
             </dl>
         </div>
     </form>
+    <div class="apply_form_submit" ng-hide="isSubmitSucc"><button type="button" class="btn" ng-click="submit()">提交需求</button></div>
     
     <div class="apply_header" ng-show="isSubmitSucc">
         <div id="num" ng-bind="bugid"></div>
@@ -84,9 +84,9 @@
 .apply {}
     .apply_form {margin-top:30px;}
         .apply_form_left {width:0;-webkit-box-flex:1;-webkit-flex:1;-ms-flex:1;flex:1}
-            .apply_form_submit {text-align:center;}
-                .apply_form_submit button {padding:0px 20px;height:40px;line-height:40px;cursor:pointer;background:#ff4400;}
         .apply_form_right {margin-left:30px;width:0;-webkit-box-flex:1;-webkit-flex:1;-ms-flex:1;flex:1}
+    .apply_form_submit {margin-top:10px;text-align:center;}
+        .apply_form_submit button {padding:0px 20px;height:40px;line-height:40px;cursor:pointer;background:#ff4400;}
 
             .uploader {}
                 .uploader_left {-webkit-box-flex:3;-webkit-flex:3;-ms-flex:3;flex:3}
@@ -125,7 +125,7 @@
 .form {margin:15px 0;}
     dl.form>dt {margin:0 0 6px;font-weight:bold;font-size:16px;}
     dl.form>dd {margin-left:0;}
-    .formfield_desc {width:100%;font-size:13px;line-height:21px;min-height:58px;resize:vertical;}
+    .formfield_desc {width:100%;font-size:13px;line-height:21px;min-height:100px;resize:vertical;}
 
 
 
