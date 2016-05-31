@@ -1,71 +1,70 @@
 <div class="apply">
-    <form class="apply_form" ng-hide="isSubmitSucc">
-    
-        <dl class="form">
-            <dt><label for="">需求名称</label></dt>
-            <dd><input class="inp" type="text" style="width:100%;" placeholder="需求名称" ng-model="d_title"></dd>
-        </dl>
-        
-        <dl class="form">
-            <dt><label for="">需求描述</label></dt>
-            <dd><textarea class="formfield_desc" placeholder="需求描述" ng-model="d_desc"></textarea></dd>
-        </dl>
-        
-        <h3>文件上传</h3>
-        <div class="uploader ly_box">
-            <div class="uploader_left">
-                <div class="uploader_drop" nv-file-drop uploader="uploader">把文件拖到这里上传</div>
-            </div>
-            <div class="uploader_right">
-                <h3>上传队列</h3>
-                <table class="uploader_table">
-                    <thead>
-                        <tr>
-                            <th width="50%">文件名</th>
-                            <th>大小</th>
-                            <th>进度</th>
-                            <th>状态</th>
-                            <th>操作</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="item in uploader.queue">
-                            <td><strong>{{ item.file.name }}</strong></td>
-                            <td nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
-                            <td class="pg">
-                                <div class="progress">
-                                    <div class="progress_bar" role="progressbar" ng-style="{ 'width':item.progress + '%' }"></div>
-                                </div>
-                            </td>
-                            <td class="status">
-                                <span ng-show="item.isSuccess"><i class="iconfont">&#xe605;</i></span>
-                                <span ng-show="item.isCancel"><i class="iconfont">&#xe604;</i></span>
-                                <span ng-show="item.isError"><i class="iconfont">&#xe606;</i></span>
-                            </td>
-                            <td class="action" nowrap>
-                                <button class="action_upload" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">上传</button>
-                                <button class="action_cancel" ng-click="item.cancel()" ng-disabled="!item.isUploading">取消</button>
-                                <button class="action_remove" ng-click="item.remove()">移除</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                
-                <!-- 上传进度
-                <div class="uploader_progress" style="">
-                    <div class="uploader_progress_bar" role="progressbar" ng-style="{ 'width': uploader.progress + '%' }"></div>
-                </div>
-                
-                <div class="uploader_action">
-                    <button class="uploader_action_uploadall" ng-click="uploader.uploadAll()" ng-disabled="!uploader.getNotUploadedItems().length">上传全部</button>
-                    <button class="uploader_action_cancelall" ng-click="uploader.cancelAll()" ng-disabled="!uploader.isUploading">取消全部</button>
-                    <button class="uploader_action_removeall" ng-click="uploader.clearQueue()" ng-disabled="!uploader.queue.length">移除全部</button>
-                </div> -->
-            </div>
+    <form class="apply_form ly_box" ng-hide="isSubmitSucc">
+        <div class="apply_form_left">
+            <dl class="form">
+                <dt><label>需求名称</label></dt>
+                <dd><input class="inp" type="text" style="width:100%;" placeholder="需求名称" ng-model="d_title"></dd>
+            </dl>
+            
+            <dl class="form">
+                <dt><label>需求描述</label></dt>
+                <dd><textarea class="formfield_desc" placeholder="需求描述" ng-model="d_desc"></textarea></dd>
+            </dl>
+            <div class="apply_form_submit"><button type="button" class="btn" ng-click="submit()">提交需求</button></div>
         </div>
-
-        <div class="apply_form_submit"><button type="button" class="btn" ng-click="submit()">提交需求</button></div>
-    
+        <div class="apply_form_right">
+            <dl class="form">
+                <dt><label>文件上传</label></dt>
+                <dd class="uploader">
+                    <table class="uploader_table">
+                        <thead>
+                            <tr>
+                                <th width="40%">文件名</th>
+                                <th>大小</th>
+                                <th>进度</th>
+                                <th>状态</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in uploader.queue">
+                                <td><strong style="word-break:break-all;">{{ item.file.name }}</strong></td>
+                                <td nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+                                <td class="pg">
+                                    <div class="progress">
+                                        <div class="progress_bar" role="progressbar" ng-style="{ 'width':item.progress + '%' }"></div>
+                                    </div>
+                                </td>
+                                <td class="status">
+                                    <span ng-show="item.isSuccess"><i class="iconfont">&#xe605;</i></span>
+                                    <span ng-show="item.isCancel"><i class="iconfont">&#xe604;</i></span>
+                                    <span ng-show="item.isError"><i class="iconfont">&#xe606;</i></span>
+                                </td>
+                                <td class="action" nowrap>
+                                    <button class="action_upload" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">上传</button>
+                                    <button class="action_cancel" ng-click="item.cancel()" ng-disabled="!item.isUploading">取消</button>
+                                    <button class="action_remove" ng-click="item.remove()">移除</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <!-- 上传进度
+                    <div class="uploader_progress" style="">
+                        <div class="uploader_progress_bar" role="progressbar" ng-style="{ 'width': uploader.progress + '%' }"></div>
+                    </div>
+                    
+                    <div class="uploader_action">
+                        <button class="uploader_action_uploadall" ng-click="uploader.uploadAll()" ng-disabled="!uploader.getNotUploadedItems().length">上传全部</button>
+                        <button class="uploader_action_cancelall" ng-click="uploader.cancelAll()" ng-disabled="!uploader.isUploading">取消全部</button>
+                        <button class="uploader_action_removeall" ng-click="uploader.clearQueue()" ng-disabled="!uploader.queue.length">移除全部</button>
+                    </div> -->
+                    <div class="uploader_left">
+                        <div class="uploader_drop" nv-file-drop uploader="uploader">把文件拖到这里上传</div>
+                    </div>
+                </dd>
+            </dl>
+        </div>
     </form>
     
     <div class="apply_header" ng-show="isSubmitSucc">
@@ -83,32 +82,34 @@
 <style>
 @charset 'UTF-8';
 .apply {}
-    .apply_form {}
-        .apply_form_submit {text-align:center;}
-            .apply_form_submit button {padding:0px 20px;width:auto;height:30px;line-height:30px;cursor:pointer;background:#ff4400;}
+    .apply_form {margin-top:30px;}
+        .apply_form_left {width:0;-webkit-box-flex:1;-webkit-flex:1;-ms-flex:1;flex:1}
+            .apply_form_submit {text-align:center;}
+                .apply_form_submit button {padding:0px 20px;height:40px;line-height:40px;cursor:pointer;background:#ff4400;}
+        .apply_form_right {margin-left:30px;width:0;-webkit-box-flex:1;-webkit-flex:1;-ms-flex:1;flex:1}
 
-        .uploader {margin-top:20px;}
-            .uploader_left {-webkit-box-flex:3;-webkit-flex:3;-ms-flex:3;flex:3}
-                .uploader_drop {height:100px;line-height:94px;background:#f5f5f5;border:3px dotted lightgray;text-align:center;}
-            .uploader_right {padding-left:30px;-webkit-box-flex:9;-webkit-flex:9;-ms-flex:9;flex:9}
-                .uploader_table {margin-bottom:20px;width:100%;border-collapse:collapse;border-spacing:0;}
-                    .uploader_table th {padding:8px;text-align:left;border-bottom:2px solid #ddd;vertical-align:bottom;}
-                    .uploader_table td {padding:8px;vertical-align:top;border-top:1px solid #ddd;overflow:hidden;text-overflow:ellipsis}
-                        .uploader_table td.pg {vertical-align:middle;}
-                        .uploader_table td .progress, .uploader_progress {height:10px;background:#f5f5f5;border-radius:4px;overflow:hidden;box-shadow:inset 0 1px 2px rgba(0,0,0,0.1)}
-                        .uploader_table td .progress_bar, .uploader_progress_bar {/*float:left;*/width:0%;height:100%;background:#428bca;box-shadow:inset 0 -1px 0 rgba(0,0,0,0.15);transition:width .6s ease;}
-                        .uploader_table td.action button, .uploader_action button {padding:1px 5px;font-size:12px;line-height:1.5;border:1px solid transparent;border-radius:3px;color:#fff;cursor:pointer;}
-                        .uploader_table td.action button[disabled], .uploader_action button[disabled] {pointer-events:none;cursor:not-allowed;opacity:.65;}
-                        .uploader_table td.action button.action_upload, .uploader_action_uploadall {background:#5cb85c;border-color:#4cae4c;}
-                        .uploader_table td.action button.action_cancel, .uploader_action_cancelall {background:#f0ad4e;border-color:#eea236;}
-                        .uploader_table td.action button.action_remove, .uploader_action_removeall {background:#d9534f;border-color:#d43f3a;}
-                        .uploader_table td.action button.action_upload:hover, .uploader_action_uploadall:hover {background:#47a447;border-color:#398439;}
-                        .uploader_table td.action button.action_cancel:hover, .uploader_action_cancelall:hover {background:#ed9c28;border-color:#d58512;}
-                        .uploader_table td.action button.action_remove:hover, .uploader_action_removeall:hover {background:#d2322d;border-color:#ac2925;}
-                        .uploader_table td.status {text-align:center;}
-                .uploader_progress {margin-bottom:20px;}
-                .uploader_action {}
-                    .uploader_action button {padding:6px 12px;}
+            .uploader {}
+                .uploader_left {-webkit-box-flex:3;-webkit-flex:3;-ms-flex:3;flex:3}
+                    .uploader_drop {height:70px;line-height:64px;background:#f5f5f5;border:3px dotted lightgray;color:#bbb;text-align:center;}
+                .uploader_right {padding-left:30px;}
+                    .uploader_table {margin-bottom:20px;width:100%;border-collapse:collapse;border-spacing:0;}
+                        .uploader_table th {padding:8px;text-align:left;background:#fbfbfb;border-top:1px solid #ddd;border-bottom:2px solid #ddd;vertical-align:bottom;}
+                        .uploader_table td {padding:8px;vertical-align:middle;border-top:1px solid #ddd;overflow:hidden;text-overflow:ellipsis}
+                            .uploader_table td.pg {vertical-align:middle;}
+                            .uploader_table td .progress, .uploader_progress {height:10px;background:#f5f5f5;border-radius:4px;overflow:hidden;box-shadow:inset 0 1px 2px rgba(0,0,0,0.1)}
+                            .uploader_table td .progress_bar, .uploader_progress_bar {/*float:left;*/width:0%;height:100%;background:#428bca;box-shadow:inset 0 -1px 0 rgba(0,0,0,0.15);transition:width .6s ease;}
+                            .uploader_table td.action button, .uploader_action button {padding:1px 5px;font-size:12px;line-height:1.5;border:1px solid transparent;border-radius:3px;color:#fff;cursor:pointer;}
+                            .uploader_table td.action button[disabled], .uploader_action button[disabled] {pointer-events:none;cursor:not-allowed;opacity:.65;}
+                            .uploader_table td.action button.action_upload, .uploader_action_uploadall {background:#5cb85c;border-color:#4cae4c;}
+                            .uploader_table td.action button.action_cancel, .uploader_action_cancelall {background:#f0ad4e;border-color:#eea236;}
+                            .uploader_table td.action button.action_remove, .uploader_action_removeall {background:#d9534f;border-color:#d43f3a;}
+                            .uploader_table td.action button.action_upload:hover, .uploader_action_uploadall:hover {background:#47a447;border-color:#398439;}
+                            .uploader_table td.action button.action_cancel:hover, .uploader_action_cancelall:hover {background:#ed9c28;border-color:#d58512;}
+                            .uploader_table td.action button.action_remove:hover, .uploader_action_removeall:hover {background:#d2322d;border-color:#ac2925;}
+                            .uploader_table td.status {text-align:center;}
+                    .uploader_progress {margin-bottom:20px;}
+                    .uploader_action {}
+                        .uploader_action button {padding:6px 12px;}
 
 .apply_header{padding:20px;background:#FFFFFF;color:#B53B3B;border-bottom-left-radius:5px;border-bottom-right-radius:5px;}
     .apply_header h2{font-size:16px;text-align:center;font-weight:normal;padding:10px 0;}
@@ -122,7 +123,7 @@
         
 /* 整理区 */
 .form {margin:15px 0;}
-    dl.form>dt {margin:0 0 6px;}
+    dl.form>dt {margin:0 0 6px;font-weight:bold;font-size:16px;}
     dl.form>dd {margin-left:0;}
     .formfield_desc {width:100%;font-size:13px;line-height:21px;min-height:58px;resize:vertical;}
 
