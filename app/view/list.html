@@ -5,7 +5,7 @@
 <div class="cohead ly_box">
     <ul class="cohead_collection ly_box ly_box_flexone">
         <li class="cohead_collection_item active"><i class="iconfont">&#xe602;</i>所有需求</li>
-        <li class="cohead_collection_item"><i class="iconfont">&#xe601;</i>我的需求</li>
+        <li class="cohead_collection_item" ng-show="Session.userErp"><i class="iconfont">&#xe601;</i>我的需求</li>
     </ul>
     <div class="cohead_state">
         <div class="cohead_state_main">
@@ -58,9 +58,15 @@
     <ul class="dlist_wrap">
         <li class="dlist_item" ui-sref="detail({id:x._id})" ng-repeat="x in bugList | filter:{state: selectBugState||selectBugState==0&&!selectBugId ? selectBugState : '', id:selectBugId} | slice : (currentPage - 1) * itemsPerPage : currentPage * itemsPerPage">
             <div class="dlist_item_cont">
-                <h4 class="dlist_item_tit">{{ x.title }}</h4>
+                <div class="dlist_item_label">
+                    <div class="dlist_item_label_box ly_box">
+                        <div>{{ x.sbu && x.sbu.name }}</div>
+                        <div>{{ x.title }}</div>
+                        <div></div>
+                    </div>
+                </div>
                 <div class="dlist_item_meta">
-                    <div class="dlist_item_state">{{ x.stateName }} - {{ x.sbu && x.sbu.name }}</div>
+                    <div class="dlist_item_state">{{ x.stateName }}</div>
                     <div class="dlist_item_date">{{ x.createdAt | fmtDateNormal }}</div>
                 </div>
                 <div class="dlist_item_pics">
@@ -85,13 +91,19 @@
 @charset 'UTF-8';
 .dlist {margin-top:30px;}
     .dlist_wrap {}
-        .dlist_item {margin-bottom:15px;border-top:1px solid #ddd;border-bottom:1px solid #ddd;border-radius:.285em;box-shadow:0 1px 3px 0 #d4d4d5, 0 0 0 1px #d4d4d5;}
+        .dlist_item {margin-bottom:15px;border-top:1px solid #ddd;border-bottom:1px solid #ddd;border-radius:.285em;box-shadow:0 1px 3px 0 #d4d4d5, 0 0 0 1px #d4d4d5;cursor:pointer;}
+        .dlist_item:hover {background:#f8f8f8;}
             .dlist_item_cont {padding:10px 15px;}
-                .dlist_item_tit {font-size:16px;font-weight:bold;}
-                .dlist_item_meta {font-size:12px;color:rgba(0,0,0,.4);overflow:hidden;}
+                .dlist_item_label {display:inline-block;}
+                    .dlist_item_label_box {border-radius:2px;border:1px solid #ff4400;opacity:.9}
+                        .dlist_item_label_box div {height:20px;line-height:20px;}
+                        .dlist_item_label_box > div:nth-child(1) {padding:0 15px 0 5px;color:#fff;background:#ff4400;}
+                        .dlist_item_label_box > div:nth-child(2) {position:relative;padding:0 5px;color:#ff4400;border-left:1px solid #ff4400;}
+                            .dlist_item_label_box > div:nth-child(2):before {content:'';position:absolute;left:-1px;top:50%;display:block;width:6px;height:6px;border-bottom:1px solid #ff4400;border-left:1px solid #ff4400;background:#fff;-webkit-transform:rotate(45deg) translate(-50%, -50%);transform:rotate(45deg) translate(-50%, -50%);-webkit-transform-origin:top left;transform-origin:top left;}
+                .dlist_item_meta {margin-top:5px;font-size:12px;color:rgba(0,0,0,.4);overflow:hidden;}
                     .dlist_item_state {float:left;}
                     .dlist_item_date {float:right;}
-                .dlist_item_pics {}
+                .dlist_item_pics {margin-top:5px;}
                     .dlist_item_pics_it {max-width:100px;min-width:16px;max-height:100px;overflow:hidden;}
                         .dlist_item_pics_it img {width:100%;}
                 .dlist_item_desc {margin-top:5px;}

@@ -1,10 +1,11 @@
 var stateList = {
     url:'/list',
     templateUrl: 'view/list.html',
-    controller: function($rootScope, $scope, $http) {
+    controller: function($rootScope, $scope, $http, Session) {
     	var preSelectBugState,
     		stateNames = ['未解决', '已解决', '已关闭'];
-
+    	
+    	$scope.Session = Session;
     	$scope.currentPage = 1;
 		$scope.itemsPerPage = 15;
 
