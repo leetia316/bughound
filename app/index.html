@@ -43,10 +43,10 @@
                 <div class="mod_hd_info_user_main" ng-click="showLogin=!showLogin">
                     <i class="iconfont">&#xe601;</i><span class="mod_hd_info_user_text" href="#">{{userName ? userName : '开发者登录'}}</span>
                 </div>
-                <div class="mod_hd_info_user_signin" ng-show="showLogin">
+                <form class="mod_hd_info_user_signin" ng-show="showLogin">
                     <input class="mod_hd_info_user_signin_erp {{signinErpHaserror && 'haserror'}}" type="text" placeholder="输入 ERP" ng-model="signinErp">
                     <input class="mod_hd_info_user_signin_submit" type="submit" value="{{ userName ? '切换':'登录'}}" ng-click="signin()">
-                </div>
+                </form>
             </div>
         </div>
     </div>
