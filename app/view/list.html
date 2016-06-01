@@ -4,8 +4,8 @@
 
 <div class="cohead ly_box">
     <ul class="cohead_collection ly_box ly_box_flexone">
-        <li class="cohead_collection_item active"><i class="iconfont">&#xe602;</i>所有需求</li>
-        <li class="cohead_collection_item" ng-show="Session.userErp"><i class="iconfont">&#xe601;</i>我的需求</li>
+        <li class="cohead_collection_item {{ !isMine?'active':'' }}" ng-click="isMine=false"><i class="iconfont">&#xe602;</i>所有需求</li>
+        <li class="cohead_collection_item {{ isMine?'active':'' }}" ng-show="Session.userErp" ng-click="isMine=true"><i class="iconfont">&#xe601;</i>我的需求</li>
     </ul>
     <div class="cohead_state">
         <div class="cohead_state_main">
@@ -23,7 +23,7 @@
 </div>
 
 <div class="dlist_turnpage">
-    <pagination ng-show="(bugList | filter:{state: selectBugState||selectBugState==0&&!selectBugId ? selectBugState : '', id:selectBugId}).length>itemsPerPage"
+    <pagination ng-show="(bugList | filter:{state: selectBugState||selectBugState==0&&!selectBugId ? selectBugState : '', id:selectBugId, solver:(isMine?Session.userId:undefined)}).length>itemsPerPage"
         total-items="(bugList | filter:{state: selectBugState||selectBugState==0 ? selectBugState : '', id:selectBugId}).length" 
         ng-model="currentPage" 
         class="pagination-sm" 
@@ -56,7 +56,7 @@
 
 <div class="dlist">
     <ul class="dlist_wrap">
-        <li class="dlist_item" ui-sref="detail({id:x._id})" ng-repeat="x in bugList | filter:{state: selectBugState||selectBugState==0&&!selectBugId ? selectBugState : '', id:selectBugId} | slice : (currentPage - 1) * itemsPerPage : currentPage * itemsPerPage">
+        <li class="dlist_item" ui-sref="detail({id:x._id})" ng-repeat="x in bugList | filter:{state: selectBugState||selectBugState==0&&!selectBugId ? selectBugState : '', id:selectBugId, solver:(isMine?Session.userId:undefined)} | slice : (currentPage - 1) * itemsPerPage : currentPage * itemsPerPage">
             <div class="dlist_item_cont">
                 <div class="dlist_item_label">
                     <div class="dlist_item_label_box ly_box">
@@ -83,7 +83,7 @@
     </ul>
 
     <div class="loading" ng-hide="isLoaded"></div>
-    <div class="buglist_none" ng-show="(bugList | filter:{state: selectBugState||selectBugState==0&&!selectBugId ? selectBugState : '', id:selectBugId}).length==0"></div>
+    <div class="buglist_none" ng-show="(bugList | filter:{state: selectBugState||selectBugState==0&&!selectBugId ? selectBugState : '', id:selectBugId, solver:(isMine?Session.userId:undefined)}).length==0"></div>
 </div>
 
 

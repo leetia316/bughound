@@ -18,7 +18,7 @@ module.exports =function(req, res) {
 				req.session.erp = doc.erp;
 				req.session.name = doc.name;
 				req.session.isadmin = doc.isadmin;
-				res.json({state:'success', data: {erp:doc.erp, name:doc.name, email:doc.email, isadmin:doc.isadmin}});
+				res.json({state:'success', user: doc});
 			}
 		});
 	}

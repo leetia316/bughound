@@ -4,10 +4,13 @@ var stateList = {
     controller: function($rootScope, $scope, $http, Session) {
     	var preSelectBugState,
     		stateNames = ['未解决', '已解决', '已关闭'];
-    	
+
     	$scope.Session = Session;
+    	$scope.selectBugState = '';
+    	$scope.stateName = stateNames[$scope.selectBugState];
     	$scope.currentPage = 1;
 		$scope.itemsPerPage = 15;
+		$scope.isMine = false;
 
        	$http.get('api/demand/list').success(function(data) {
 	        var result;
@@ -18,7 +21,7 @@ var stateList = {
 	            data[i].stateName = stateNames[data[i].state];
 	        }
 	        console.log(data);
-	        $scope.selectBugState = 0;
+	        $scope.selectBugState = '';
 	        $scope.isLoaded = true;
 	        $scope.bugList = data || [];
 	    });

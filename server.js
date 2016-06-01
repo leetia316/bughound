@@ -66,7 +66,7 @@ app.get('/api/sbu/list', api2.sbu.list);
 app.get('/api/sbu/search', api2.sbu.search);
 
 app.get('/api/auth', function(req, res) {
-	res.send({erp:req.session.erp, name:req.session.name, isAdmin:!!req.session.isadmin})
+	res.send({_id:req.session._id, erp:req.session.erp, name:req.session.name, isAdmin:!!req.session.isadmin})
 });
 app.post('/api/upload', multer({
 		// dest: conf.updir

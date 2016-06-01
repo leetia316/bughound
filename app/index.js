@@ -146,12 +146,14 @@ angular.module('bughound', [
 })
 
 .service('Session', function($rootScope) {
-    this.create = function(userErp, userName, userIsAdmin) {
+    this.create = function(userId, userErp, userName, userIsAdmin) {
+        $rootScope.userId = this.userId = userId;
         $rootScope.userErp = this.userErp = userErp;
         $rootScope.userName = this.userName = userName;
         $rootScope.userIsAdmin = this.userIsAdmin = !!userIsAdmin;
     }
     this.destory = function() {
+        $rootScope.userId = this.userId = undefined;
         $rootScope.userErp = this.userErp = undefined;
         $rootScope.userName = this.userName = undefined;
         $rootScope.userIsAdmin = this.userIsAdmin = false;
@@ -162,7 +164,7 @@ angular.module('bughound', [
 .run(function($rootScope, $http, $state, FileUploader, Session) {
     $http.get('api/auth').then(function(res) {
         console.log(res.data)
-        Session.create(res.data.erp, res.data.name, res.data.isAdmin);
+        Session.create(res.data._id, res.data.erp, res.data.name, res.data.isAdmin);
     });
 
     $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
@@ -184,13 +186,14 @@ angular.module('bughound', [
             erp: $scope.signinErp
         }).then(function(res) { 
             if(res.data.state=='success') {
-                var data = res.data.data;
+                var user = res.data.user;
+                console.log(user)
                 if($scope.userErp) {
                     _POP_.toast('切换成功');
                 } else {
                     _POP_.toast('登录成功');
                 }
-                Session.create(data.erp, data.name, data.isadmin);
+                Session.create(user._id, user.erp, user.name, user.isadmin);
                 $scope.showLogin = false;
             } else {
                 _POP_.toast(res.data.msg || '登录失败');
