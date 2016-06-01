@@ -20,6 +20,21 @@
             </div>
         </div>
     </div>
+    <div class="dsbuwrap" style="margin-top:19px;margin-left:20px;">
+        <angucomplete-alt 
+        id="sbu"
+        placeholder="业务筛选"
+        pause="100"
+        selected-object="d_sbu"
+        local-data="sbus"
+        search-fields="name"
+        title-field="name"
+        minlength="1"
+        text-searching="正在搜索..."
+        text-no-results="没有找到匹配的"
+        match-class="highlight"
+        input-class="inp dsbu form-control form-control-small" />
+    </div>
 </div>
 
 <div class="dlist_turnpage">
@@ -56,7 +71,7 @@
 
 <div class="dlist">
     <ul class="dlist_wrap">
-        <li class="dlist_item" ui-sref="detail({id:x._id})" ng-repeat="x in bugList | filter:{state: selectBugState||selectBugState==0&&!selectBugId ? selectBugState : '', id:selectBugId, solver:(isMine?Session.userId:undefined)} | slice : (currentPage - 1) * itemsPerPage : currentPage * itemsPerPage">
+        <li class="dlist_item" ui-sref="detail({id:x._id})" ng-repeat="x in bugList | filter:{state: selectBugState||selectBugState==0&&!selectBugId ? selectBugState : '', id:selectBugId, solver:(isMine?Session.userId:undefined)} | regex:'sbu.name':subsbustr | slice : (currentPage - 1) * itemsPerPage : currentPage * itemsPerPage">
             <div class="dlist_item_cont">
                 <div class="dlist_item_label">
                     <div class="dlist_item_label_box ly_box">
@@ -69,11 +84,11 @@
                     <div class="dlist_item_state">{{ x.stateName }}</div>
                     <div class="dlist_item_date">{{ x.createdAt | fmtDateNormal }}</div>
                 </div>
-                <div class="dlist_item_pics">
+                <!-- <div class="dlist_item_pics">
                     <div class="dlist_item_pics_it" ng-repeat="img in x.files | regex:'type':'^image/'">
                         <img ng-src="upload/{{img.name}}">
                     </div>
-                </div>
+                </div> -->
                 <div class="dlist_item_desc ly_multiline">{{ x.desc }}</div>
             </div>
             <div class="dlist_item_extra">
@@ -91,8 +106,8 @@
 @charset 'UTF-8';
 .dlist {margin-top:30px;}
     .dlist_wrap {}
-        .dlist_item {margin-bottom:15px;border-top:1px solid #ddd;border-bottom:1px solid #ddd;border-radius:.285em;box-shadow:0 1px 3px 0 #d4d4d5, 0 0 0 1px #d4d4d5;cursor:pointer;}
-        .dlist_item:hover {background:#f8f8f8;}
+        .dlist_item {margin-bottom:15px;border-top:1px solid #ddd;border-bottom:1px solid #ddd;border-radius:.285em;box-shadow:0 1px 3px 0 #d4d4d5, 0 0 0 1px #d4d4d5;cursor:pointer;transition:.3s ease;}
+        .dlist_item:hover {background:#f8f8f8;transform:translate(-5px, 0);}
             .dlist_item_cont {padding:10px 15px;}
                 .dlist_item_label {display:inline-block;}
                     .dlist_item_label_box {border-radius:2px;border:1px solid #ff4400;opacity:.9}
@@ -140,4 +155,19 @@
             .cohead_state_main:hover .cohead_state_main_dropdown {display:block;}
                 .cohead_state_main_dropdown li {padding:0 15px;height:30px;line-height:30px;font-size:12px;color:#757393;}
                 .cohead_state_main_dropdown li:hover {background:#323242;color:#fff;}
+
+.inp.dsbu {width:100%;}
+.highlight {color:#ff4400;}
+.angucomplete-holder {position:relative;}
+    .angucomplete-dropdown {z-index:9999;position:absolute;padding:6px 0;width:100%;border-color:#ececec;border-width:1px;border-style:solid;border-radius:2px;cursor:pointer;background:#ffffff;}
+        .angucomplete-searching {padding:0 6px;color:#acacac;font-size:14px;}
+.angucomplete-description {font-size:14px;}
+.angucomplete-row {padding:5px;color:#000000;margin-bottom:4px;clear:both;}
+.angucomplete-selected-row {background-color:lightblue;color:#ffffff;}
+.angucomplete-image-holder {padding-top:2px;float:left;margin-right:10px;margin-left:5px;}
+.angucomplete-image {height:34px;width:34px;border-radius:50%;border-color:#ececec;border-style:solid;border-width:1px;}
+.angucomplete-image-default {
+    /* Add your own default image here
+     background-image:url('/assets/default.png'); */
+    background-position:center;background-size:contain;height:34px;width:34px;}
 </style>

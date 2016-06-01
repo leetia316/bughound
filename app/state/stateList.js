@@ -8,9 +8,15 @@ var stateList = {
     	$scope.Session = Session;
     	$scope.selectBugState = '';
     	$scope.stateName = stateNames[$scope.selectBugState];
+    	$scope.subsbustr = '';
     	$scope.currentPage = 1;
 		$scope.itemsPerPage = 15;
 		$scope.isMine = false;
+
+		// 业务列表
+		$http.get('api/sbu/list').success(function(data) {
+			$scope.sbus = data;
+		});
 
        	$http.get('api/demand/list').success(function(data) {
 	        var result;
@@ -23,12 +29,13 @@ var stateList = {
 	        console.log(data);
 	        $scope.selectBugState = '';
 	        $scope.isLoaded = true;
-	        $scope.bugList = data || [];
+	        $scope.bugList = $scope.predlist = data || [];
 	    });
 
-	    // $http.get('api/demand/list').success(function(data) {
-	        
-	    // });
+	    jQuery('.dsbuwrap').on('keyup', '#sbu_value', function(e) {
+	    	$scope.subsbustr = jQuery('#sbu_value').val() || '';
+	    	jQuery('#sbu_value').trigger('focus');
+	    });
 
 	    $scope.$watch('selectBugId', function(n, o, scope) {
 	    	if(n&&!o) {
@@ -38,7 +45,6 @@ var stateList = {
 	    		scope.selectBugState = preSelectBugState;
 	    	}
 	    });
-
 	    $scope.$watch('selectBugState', function(n, o, scope) {
 	    	scope.stateName = stateNames[n];    
 	    });
