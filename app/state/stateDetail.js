@@ -14,12 +14,7 @@ var stateDetail = {
     		$scope.data = data;
             console.log(data)
     	});
-        // $http.get('api/user/list').success(function(data) {
-        // 	$scope.userList = data;
-        //     setTimeout(function() {
-        //         jQuery('.handle .ui.dropdown').dropdown();
-        //     },200);
-        // });
+        
         $scope.submit = function() {
             $http.post('api/demand/update', {
                 id: $stateParams.id,

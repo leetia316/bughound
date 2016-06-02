@@ -12,66 +12,28 @@
                 <div class="detail_cont_item_hd_tit">附件</div>
             </div>
             <div class="detail_cont_item_main">
-                <div class="detail_cont_item_pics">
-                    <!-- <div class="dlist_item_pics_it" ng-repeat="img in data.files | regex:'type':'^image/'">
-                        <img ng-src="upload/{{img.name}}">
-                    </div> -->
-                    <div class="shape">
-                        <div class="sides">
-                            <div class="side {{ $index===0 ? 'active' : ''}}" ng-repeat="img in data.files | regex:'type':'^image/'">
-                                <div><img ng-src="upload/{{img.name}}"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <ul class="detail_cont_item_files">
+                    <span style="color:#ddd" ng-show="data.files.length==0">没有附件</span>
+                    <li ng-repeat="x in data.files"><a href="#">{{ x.oname }}</a></li>
+                    <li class="detail_cont_item_files_preview" ng-show="(data.files | regex:'type':'^image/').length>0">
+                        <button ng-click="isShowPicpreview=true">图片预览</button>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
 </div>
 
-<!-- <div class="detail_mod_info" ng-class="'state'+data.state">
-    <div class="detail_mod_info_it">
-        <div class="detail_mod_info_it_hd">
-            <div class="detail_mod_info_it_tit">需求信息</div>
-        </div>
-        <div class="detail_mod_info_it_cont">
-            <div class="detail_mod_info_row"><i class="icon ticket"></i>[{{data._id}}] {{data.page.title}}</div>
-            <div class="detail_mod_info_row"><i class="icon linkify"></i><a href="{{data.page.url || '#'}}" ng-if="data.page.url">{{data.page.url}}</a><span ng-if="!data.page.url" style="color:#bbb">（未提供预览地址）</span></div>
+<div class="picpreview" ng-show="isShowPicpreview">
+    <div class="shape">
+        <div class="sides">
+            <div class="side {{ $index===0 ? 'active' : ''}}" ng-repeat="img in data.files | regex:'type':'^image/'">
+                <div><img ng-src="upload/{{img.name}}"></div>
+            </div>
         </div>
     </div>
-    <div class="detail_mod_info_it">
-        <div class="detail_mod_info_it_hd">
-            <div class="detail_mod_info_it_tit">故障截图</div>
-        </div>
-        <div class="detail_mod_info_it_cont">
-            <ul class="detail_mod_pics">
-                <li class="detail_mod_pics_it" ng-repeat="x in data.pics">
-                    <img ng-src="upload/{{x}}">
-                </li>    
-            </ul>
-            <div ng-if="!data.pics.length>0" style="color:#bbb">（没有截图）</div>
-        </div>
-    </div>
-
-    <div class="detail_mod_info_it">
-        <div class="detail_mod_info_it_hd">
-            <div class="detail_mod_info_it_tit">设备信息</div>
-        </div>
-        <div class="detail_mod_info_it_cont">
-            <div class="detail_mod_info_row"><i class="icon tablet"></i>{{data.ua.device.model}} {{data.ua.os.name + data.ua.os.version}}</div>
-            <div class="detail_mod_info_row"><i class="icon square outline"></i>{{data.env.width}}x{{data.env.height}} [dpr{{data.env.dpr}}]</div>
-            <div class="detail_mod_info_row"><i class="icon laptop"></i>{{data.ua.browser.name+data.ua.browser.version}} [{{data.ua.engine.name+data.ua.engine.version}}]</div>
-        </div>
-    </div>
-    <div class="detail_mod_info_it">
-        <div class="detail_mod_info_it_hd">
-            <div class="detail_mod_info_it_tit">故障描述</div>
-        </div>
-        <div class="detail_mod_info_it_cont">
-            <div>{{data.desc}}</div>
-        </div>
-    </div>
-</div> -->
+    <div class="preview_close" ng-click="isShowPicpreview=false"><i class="iconfont">&#xe606;</i></div>
+</div>
 
 <div class="detail_mod_handle" ng-click="submit()">
     <i class="icon configure large" style="position:absolute;top:50%;left:30%;display:block;width:auto;height:auto;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%);"></i>
@@ -95,9 +57,10 @@
                 .detail_cont_item_hd_tit {display:inline-block;padding:0 5px;border-bottom:2px solid #ccc;font-size:16px;}
             .detail_cont_item_main {padding:5px 10px;}
                 /*sp*/
-                .detail_cont_item_pics {}
-                    .detail_mod_pics_it {}
-                        .detail_mod_pics_it img {}
+                .detail_cont_item_files {overflow:hidden;}
+                    .detail_cont_item_files li {float:left;margin-right:20px;line-height:30px;}
+                    .detail_cont_item_files_preview {}
+                        .detail_cont_item_files_preview button {padding:0 8px;height:30px;border:0;background:#ff4400;color:#fff;border-radius:3px;cursor:pointer;}
 
 
 
@@ -115,7 +78,6 @@
     width:100%;
     position:relative;
     vertical-align:top;
-    display:inline-block;
     -webkit-perspective:2000px;perspective:2000px;
     -webkit-transition:-webkit-transform .6s ease-in-out, left .6s ease-in-out, width .6s ease-in-out, height .6s ease-in-out;
     transition:transform .6s ease-in-out, left .6s ease-in-out, width .6s ease-in-out, height .6s ease-in-out;
@@ -144,11 +106,18 @@
     .shape.animating .side{
         -webkit-transition:opacity .6s ease-in-out;transition:opacity .6s ease-in-out
     }
+
+/* 图片预览 */
+.picpreview {position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.3);}
+    .preview_close {position:absolute;top:20px;right:20px;}
+        .preview_close i.iconfont {font-size:24px;border:3px solid #bbb;color:#bbb;border-radius:50%;cursor:pointer;}
+        .preview_close i.iconfont:hover {border-color:#fff;color:#fff;}
+    .picpreview .shape {margin:20px auto 0;max-width:80%;}
 </style>
 
 <script>
 var idx = 0;
-jQuery('.detail_cont_item_pics').on('click', function() {
+jQuery('.picpreview').on('click', function() {
 
 var shape = document.querySelector('.shape');
 var sides = document.querySelector('.sides');
