@@ -35,7 +35,7 @@ var stateApply = {
 
 			$http.post('api/demand/add', {
 				title: $scope.d_title,
-				desc: $scope.d_desc || '',
+				desc: jQuery('#editor').froalaEditor('html.get'),
 				files: uploadedList,
 				sbu: $scope.d_sbu ? $scope.d_sbu.originalObject._id : null,
 				sbustr: jQuery('#sbu_value').val(),
@@ -62,8 +62,8 @@ var stateApply = {
       		jQuery('#editor').froalaEditor({
 				toolbarButtons: ['bold', 'italic', 'underline', 'strikeThrough', 'paragraphFormat', 'color', 'emoticons', 'insertLink', '|', 'formatOL', 'formatUL', 'align', 'undo', 'redo'],				// Colors list.
 				colorsBackground: [
-				  '#15E67F', '#E3DE8C', '#D8A076', '#D83762', '#76B6D8', 'REMOVE',
-				  '#1C7A90', '#249CB8', '#4ABED9', '#FBD75B', '#FBE571', '#FFFFFF'
+				  '#15E67F', '#E3DE8C', '#D8A076', '#D83762', '#76B6D8', '#FFFFFF',
+				  '#1C7A90', '#249CB8', '#4ABED9', '#FBD75B', '#FBE571', 'REMOVE'
 				],  
 				heightMin: 200,
 				heightMax: 500,
@@ -71,12 +71,12 @@ var stateApply = {
 				linkAlwaysBlank: true,
 				colorsStep: 6,
 				colorsText: [
-				  '#15E67F', '#E3DE8C', '#D8A076', '#D83762', '#76B6D8', 'REMOVE',
-				  '#1C7A90', '#249CB8', '#4ABED9', '#FBD75B', '#FBE571', '#FFFFFF'
+				  '#666666', '#15E67F', '#E3DE8C', '#D8A076', '#D83762', '#76B6D8',
+				  '#FFFFFF', '#1C7A90', '#249CB8', '#4ABED9', '#FBD75B', 'REMOVE'
 				]
 			});
 			jQuery(document).on('click', function() {
-				console.log(jQuery('div#froala-editor').froalaEditor('html.get'))
+				console.log()
 			});
     	});
     }
