@@ -2,6 +2,7 @@
 
 const 
 	fs = require('fs'),
+	path = require('path'),
 
 	express = require('express'),
 	bodyParser = require('body-parser'),
@@ -67,6 +68,11 @@ app.get('/api/sbu/search', api2.sbu.search);
 
 app.get('/api/auth', function(req, res) {
 	res.send({_id:req.session._id, erp:req.session.erp, name:req.session.name, isAdmin:!!req.session.isadmin})
+});
+app.get('/api/attachment/:fname/:oname', function(req, res) {
+	let fname = req.params.fname;
+	let oname = req.params.oname;
+	res.download( path.join(conf.updir, fname), oname );
 });
 app.post('/api/upload', multer({
 		// dest: conf.updir
