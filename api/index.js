@@ -18,5 +18,9 @@ module.exports = {
 		add: require('./sbu/add'),
 		list: require('./sbu/list'),
 		search: require('./sbu/search')
+	},
+	news: {
+		add: require('./news/add'),
+		get: require('./news/get')
 	}
 }

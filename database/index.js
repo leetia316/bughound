@@ -19,6 +19,7 @@ let userSchema = new Schema({
 let fileSchema = new Schema({
 	name:String, oname:String, size:Number, type:String
 });
+
 let demandSchema = new Schema({
 	title: {type:String, required:true, trim:true},
 	desc: String,
@@ -43,12 +44,24 @@ let sbuSchema = new Schema({
 	name: {type:String, required:true, trim:true, minlength:1, maxlength:100, unique: true}
 });
 
+// 动态
+let newsSchema = new Schema({
+	demand: { type:Schema.Types.ObjectId, ref:'Demand', required:true },
+	type: { type:Number, required:true, min:1, max:3 },	//操作类型：1=普通评论，2=文件上传，3=需求处理
+	comment: String,	//评论内容
+	file: { type:Schema.Types.ObjectId, ref:'File' },
+	handle: { type:Number },	//需求处理类型，1=解决
+	user: { type:Schema.Types.ObjectId, ref:'User' }
+}, { timestamps: true });
+
 let User = mongoose.model('User', userSchema);
 let File = mongoose.model('File', fileSchema);
 let Demand = mongoose.model('Demand', demandSchema);
 let Sbu = mongoose.model('Sbu', sbuSchema);
+let News = mongoose.model('News', newsSchema);
 
 exports.User = User;
 exports.File = File;
 exports.Demand = Demand;
 exports.Sbu = Sbu;
+exports.News = News;

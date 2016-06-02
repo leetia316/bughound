@@ -16,6 +16,7 @@ body {margin:0 auto;min-width:320px;height:100%;font:14px/1.5 Helvetica,'STHeiti
 /* GIT modify */
 input[type="text"].inp, input[type="password"].inp, input[type="tel"].inp, select, textarea {padding:7px 8px;font-size:13px;color:#333;vertical-align:middle;background-color:#fff;background-repeat:no-repeat;background-position:right 8px center;border:1px solid #ccc;border-radius:3px;outline:none;box-shadow:inset 0 1px 2px rgba(0,0,0,0.075);}
 input[type="text"].inp:focus, input[type="password"].inp:focus, input[type="tel"].inp:focus, select:focus, textarea:focus {border-color:#51a7e8;box-shadow:inset 0 1px 2px rgba(0,0,0,0.075),0 0 5px rgba(81,167,232,0.5);}
+button.btn {background:#ff4400;color:#fff;border-radius:3px;border:0;cursor:pointer;}
 
 /*===================
 	公共样式
@@ -38,9 +39,6 @@ input[type="text"].inp:focus, input[type="password"].inp:focus, input[type="tel"
     url('../img/iconfont/iconfont.svg#iconfont') format('svg'); /* iOS 4.1- */
 }
 i.iconfont {font-family:iconfont;line-height:1;}
-
-/* 公共组件 */
-.btn {display:inline-block;height:42px;line-height:42px;color:#fff;background:transparent;border:none;border-radius:3px;text-align:center;-webkit-appearance:none;}
 
 /*----- 头部 -----*/
 .mod_hd {height:50px;background:#252535;color:#fff;box-shadow:0 3px 8px 0 #ccc;}

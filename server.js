@@ -66,6 +66,9 @@ app.post('/api/sbu/add', api2.sbu.add);
 app.get('/api/sbu/list', api2.sbu.list);
 app.get('/api/sbu/search', api2.sbu.search);
 
+app.post('/api/news/add', api2.news.add);
+app.get('/api/news/get', api2.news.get);
+
 app.get('/api/auth', function(req, res) {
 	res.send({_id:req.session._id, erp:req.session.erp, name:req.session.name, isAdmin:!!req.session.isadmin})
 });

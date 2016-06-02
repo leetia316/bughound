@@ -21,6 +21,54 @@
                 </ul>
             </div>
         </div>
+        <div class="detail_cont_item">
+            <div class="detail_cont_item_hd">
+                <div class="detail_cont_item_hd_tit">动态</div>
+            </div>
+            <div class="detail_cont_item_main">
+                <ul class="detail_cont_item_actions">
+                    <li class="detail_cont_item_actions_item ly_box">
+                        <div class="detail_cont_item_actions_item_date">
+                            <div>{{ data.createdAt | fmtDateNormal }}</div>
+                        </div>
+                        <div class="detail_cont_item_actions_item_cont ly_box_flexone">
+                            佚名提交了该需求
+                        </div>
+                    </li>
+                    <li class="detail_cont_item_actions_item ly_box" ng-repeat="x in news">
+                        <div class="detail_cont_item_actions_item_date">
+                            <div>{{ x.createdAt | fmtDateNormal }}</div>
+                        </div>
+                        <div class="detail_cont_item_actions_item_cont ly_box_flexone">
+                            <div ng-show="x.type==1">{{ x.user.name || '佚名' }} 说「{{ x.comment }}」</div>
+                        </div>
+                    </li>
+                    <li class="detail_cont_item_actions_item ly_box">
+                        <div class="detail_cont_item_actions_item_date">
+                            <div>现在</div>
+                        </div>
+                        <div class="detail_cont_item_actions_item_cont ly_box_flexone">
+                            <div class="fornow" on-outside-element-click="(isShowFornowmenu=false) || (whatNowhandling=null)">
+                                <div class="fornow_btn" ng-click="isShowFornowmenu=!isShowFornowmenu">做点什么</div>
+
+                                <div class="fornow_menu" ng-show="isShowFornowmenu">
+                                    <div class="fornow_menu_btns" ng-show="!whatNowhandling">
+                                        <button ng-click="whatNowhandling='comment'"><i class="iconfont">&#xe607;</i></button>
+                                        <button><i class="iconfont">&#xe609;</i></button>
+                                        <button><i class="iconfont">&#xe608;</i></button>
+                                    </div>
+                                    <div class="fornow_menu_comment" ng-show="whatNowhandling=='comment'">
+                                        <input class="inp" type="text" ng-model="nowcomment">
+                                        <button class="fornow_menu_comment_confirm btn" ng-click="nowcommentfn()">确定</button>
+                                        <button class="fornow_menu_comment_cancel btn" ng-click="whatNowhandling=null">取消</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -34,18 +82,6 @@
     </div>
     <div class="preview_close" ng-click="isShowPicpreview=false"><i class="iconfont">&#xe606;</i></div>
 </div>
-
-<div class="detail_mod_handle" ng-click="submit()">
-    <i class="icon configure large" style="position:absolute;top:50%;left:30%;display:block;width:auto;height:auto;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%);"></i>
-    <div class="detail_mod_handle_solve">解决</div>
-    <!-- 指派的同时也相当于重启了 -->
-    <div class="detail_mod_handle_assign">指派</div>
-    <div class="detail_mod_handle_close">关闭</div>
-</div>
-
-<!-- <div class="handle">
-    <button class="ui button fluid green submit" ng-click="submit()">解决</button>
-</div> -->
 
 <style>
 @charset 'UTF-8';
@@ -61,17 +97,23 @@
                     .detail_cont_item_files li {float:left;margin-right:20px;line-height:30px;}
                     .detail_cont_item_files_preview {}
                         .detail_cont_item_files_preview button {padding:0 8px;height:30px;border:0;background:#ff4400;color:#fff;border-radius:3px;cursor:pointer;}
-
-
-
-.detail_mod_handle {position:fixed;top:50%;right:-35px;padding:0 6px;width:70px;height:70px;border-radius:50%;background:#e12228;color:#fff;}
-    .detail_mod_handle_solve, .detail_mod_handle_assign, .detail_mod_handle_close {display:none;position:absolute;top:50%;left:25%;width:50px;height:50px;line-height:50px;text-align:center;border-radius:50%;font-size:12px;-webkit-transform:translate(-50%, -50%);transform:translate(-50%, -50%);}
-    .detail_mod_handle_solve {background:limegreen;}
-    .detail_mod_handle_assign {background:skyblue;}
-    .detail_mod_handle_close {background:gray;}
-    .detail_mod_handle.active .detail_mod_handle_solve {display:block;-webkit-transform:translate(-80%, -165%);transform:translate(-80%, -165%);}
-    .detail_mod_handle.active .detail_mod_handle_assign {display:block;-webkit-transform:translate(-150%, -50%);transform:translate(-150%, -50%);}
-    .detail_mod_handle.active .detail_mod_handle_close {display:block;-webkit-transform:translate(-80%, 65%);transform:translate(-80%, 65%);}
+                .detail_cont_item_actions {}
+                    .detail_cont_item_actions_item {}
+                        .detail_cont_item_actions_item_date {width:80px;border-right:1px solid #252535;text-align:right;}
+                            .detail_cont_item_actions_item_date div {position:relative;display:inline-block;padding-right:5px;}
+                            .detail_cont_item_actions_item_date div:after {content:'';position:absolute;top:50%;right:-3px;display:block;width:3px;height:3px;border:1px solid #252535;border-radius:50%;background:#fff;-webkit-transform:translate(0, -2px);transform:translate(0, -2px);}
+                        .detail_cont_item_actions_item_cont {padding:0 10px;}
+                            /*sp*/
+                            .detail_cont_item_actions_item_cont .fornow {position:relative;}
+                                .fornow_btn {display:inline-block;padding:0 8px;font-size:12px;background:#ff4400;color:#fff;border-radius:3px;cursor:pointer;}
+                                .fornow_menu {position:absolute;top:100%;margin-top:7px;padding:5px;border:1px solid #ddd;border-radius:3px;background:#fff;}
+                                    .fornow_menu:before {content:'';position:absolute;top:-4px;width:6px;height:6px;border-left:1px solid #ddd;border-top:1px solid #ddd;background:#fff;-webkit-transform:rotate(45deg);transform:rotate(45deg);}
+                                        .fornow_menu_btns {}
+                                            .fornow_menu_btns button {cursor:pointer;}
+                                        .fornow_menu_comment {}
+                                            .fornow_menu_comment_confirm, .fornow_menu_comment_cancel {padding:0 5px;height:30px;font-size:12px;}
+                                            .fornow_menu_comment_confirm {margin-left:10px;}
+                                            .fornow_menu_comment_cancel {margin-left:5px;}
 
 
 .shape {
