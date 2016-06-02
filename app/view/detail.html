@@ -1,44 +1,37 @@
-<style>
-@charset 'UTF-8';
-.slideshow {position:relative;width:100%;padding-top:61.8%;border-bottom: 1px solid #ccc;}
-    .slideshow_w {position:absolute;top:0;left:0;width:100%;height:100%;overflow:hidden;}
-        .slideshow .shape {width:100% !important;/*border:1px solid #ccc;*/}
-            .slideshow img {width:100%;}
-        .slideshow_botw {position:absolute;bottom:0;width:100%;text-align:center;}
-            .slideshow_botw i {display:inline-block;margin-right:10px;width:10px;height:10px;border-radius:50%;background:green;}
-            .slideshow_botw i.active {background:red;}
+<div class="detail" data-id="{{ data._id }}">
+    <h3 class="detail_tit">{{ data.title }}</h3>
+    <div class="detail_cont">
+        <div class="detail_cont_item">
+            <div class="detail_cont_item_hd">
+                <div class="detail_cont_item_hd_tit">需求描述</div>
+            </div>
+            <div class="detail_cont_item_main">
+                {{ data.desc || '某人这么懒，什么都没说' }}
+            </div>
+        </div>
+        <div class="detail_cont_item">
+            <div class="detail_cont_item_hd">
+                <div class="detail_cont_item_hd_tit">附件</div>
+            </div>
+            <div class="detail_cont_item_main">
+                <div class="detail_cont_item_pics">
+                    <!-- <div class="dlist_item_pics_it" ng-repeat="img in data.files | regex:'type':'^image/'">
+                        <img ng-src="upload/{{img.name}}">
+                    </div> -->
+                    <div class="shape">
+                        <div class="sides">
+                            <div class="side {{ $index===0 ? 'active' : ''}}" ng-repeat="img in data.files | regex:'type':'^image/'">
+                                <div><img ng-src="upload/{{img.name}}"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-.detail_mod_info {position:relative;margin:10px 5px;padding:30px 10px 10px;overflow:hidden;}
-.detail_mod_info.state0 {border:1px solid #e12228;}
-.detail_mod_info.state1 {border:1px solid limegreen;}
-.detail_mod_info.state2 {border:1px solid gray;}
-    .detail_mod_info:before {content:'';position:absolute;top:0;left:-20px;display:block;border-left:20px solid transparent;border-right:20px solid transparent;}
-    .detail_mod_info.state0:before {border-top:20px solid #e12228;}
-    .detail_mod_info.state1:before {border-top:20px solid limegreen;}
-    .detail_mod_info.state2:before {border-top:20px solid gray;}
-    .detail_mod_info:after {font-size:12px;position:absolute;top:0;left:0;padding:0 5px 0 18px;height:20px;line-height:20px;border:1px solid #e12228;border-top:none;border-left:none;}
-    .detail_mod_info.state0:after {content:'未解决';border-color:#e12228;color:#e12228;}
-    .detail_mod_info.state1:after {content:'已解决';border-color:limegreen;color:limegreen;}
-    .detail_mod_info.state2:after {content:'已关闭';border-color:gray;color:gray;}
-    .detail_mod_info_it {}
-        .detail_mod_info_it_hd {font-weight:bold;border-bottom:1px solid #ccc;}
-            .detail_mod_info_it_tit {display:inline-block;padding:0 5px;border-bottom:2px solid #ccc;font-size:16px;}
-        .detail_mod_info_it_cont {padding:5px 5px 10px;}
-            .detail_mod_info_row {white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-            .detail_mod_pics {margin:0;padding:0;border-left:5px solid #888;border-right:5px solid #888;background:#f8f8f8;list-style-type:none;font-size:0;white-space:nowrap;overflow-x:auto;overflow-y:hidden;}
-                .detail_mod_pics_it {display:inline-block;margin:0 5px;width:50px;max-height:50px;overflow:hidden;border:1px solid #ddd;}
-                    .detail_mod_pics_it img {display:block;width:100%;}
-.detail_mod_handle {position:fixed;top:50%;right:-35px;padding:0 6px;width:70px;height:70px;border-radius:50%;background:#e12228;color:#fff;}
-    .detail_mod_handle_solve, .detail_mod_handle_assign, .detail_mod_handle_close {display:none;position:absolute;top:50%;left:25%;width:50px;height:50px;line-height:50px;text-align:center;border-radius:50%;font-size:12px;-webkit-transform:translate(-50%, -50%);transform:translate(-50%, -50%);}
-    .detail_mod_handle_solve {background:limegreen;}
-    .detail_mod_handle_assign {background:skyblue;}
-    .detail_mod_handle_close {background:gray;}
-    .detail_mod_handle.active .detail_mod_handle_solve {display:block;-webkit-transform:translate(-80%, -165%);transform:translate(-80%, -165%);}
-    .detail_mod_handle.active .detail_mod_handle_assign {display:block;-webkit-transform:translate(-150%, -50%);transform:translate(-150%, -50%);}
-    .detail_mod_handle.active .detail_mod_handle_close {display:block;-webkit-transform:translate(-80%, 65%);transform:translate(-80%, 65%);}
-</style>
-
-<div class="detail_mod_info" ng-class="'state'+data.state">
+<!-- <div class="detail_mod_info" ng-class="'state'+data.state">
     <div class="detail_mod_info_it">
         <div class="detail_mod_info_it_hd">
             <div class="detail_mod_info_it_tit">需求信息</div>
@@ -54,7 +47,7 @@
         </div>
         <div class="detail_mod_info_it_cont">
             <ul class="detail_mod_pics">
-                <li ng-repeat="x in data.pics" class="detail_mod_pics_it">
+                <li class="detail_mod_pics_it" ng-repeat="x in data.pics">
                     <img ng-src="upload/{{x}}">
                 </li>    
             </ul>
@@ -80,7 +73,7 @@
             <div>{{data.desc}}</div>
         </div>
     </div>
-</div>
+</div> -->
 
 <div class="detail_mod_handle" ng-click="submit()">
     <i class="icon configure large" style="position:absolute;top:50%;left:30%;display:block;width:auto;height:auto;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%);"></i>
@@ -93,3 +86,101 @@
 <!-- <div class="handle">
     <button class="ui button fluid green submit" ng-click="submit()">解决</button>
 </div> -->
+
+<style>
+@charset 'UTF-8';
+.detail {}
+    .detail_tit {margin:30px 0 20px;text-align:center;font-size:18px;font-weight:bold;}
+    .detail_cont {}
+        .detail_cont_item {margin-bottom:10px;}
+            .detail_cont_item_hd {font-weight:bold;border-bottom:1px solid #ccc;}
+                .detail_cont_item_hd_tit {display:inline-block;padding:0 5px;border-bottom:2px solid #ccc;font-size:16px;}
+            .detail_cont_item_main {padding:5px 10px;}
+                /*sp*/
+                .detail_cont_item_pics {}
+                    .detail_mod_pics_it {}
+                        .detail_mod_pics_it img {}
+
+
+
+.detail_mod_handle {position:fixed;top:50%;right:-35px;padding:0 6px;width:70px;height:70px;border-radius:50%;background:#e12228;color:#fff;}
+    .detail_mod_handle_solve, .detail_mod_handle_assign, .detail_mod_handle_close {display:none;position:absolute;top:50%;left:25%;width:50px;height:50px;line-height:50px;text-align:center;border-radius:50%;font-size:12px;-webkit-transform:translate(-50%, -50%);transform:translate(-50%, -50%);}
+    .detail_mod_handle_solve {background:limegreen;}
+    .detail_mod_handle_assign {background:skyblue;}
+    .detail_mod_handle_close {background:gray;}
+    .detail_mod_handle.active .detail_mod_handle_solve {display:block;-webkit-transform:translate(-80%, -165%);transform:translate(-80%, -165%);}
+    .detail_mod_handle.active .detail_mod_handle_assign {display:block;-webkit-transform:translate(-150%, -50%);transform:translate(-150%, -50%);}
+    .detail_mod_handle.active .detail_mod_handle_close {display:block;-webkit-transform:translate(-80%, 65%);transform:translate(-80%, 65%);}
+
+
+.shape {
+    width:100%;
+    position:relative;
+    vertical-align:top;
+    display:inline-block;
+    -webkit-perspective:2000px;perspective:2000px;
+    -webkit-transition:-webkit-transform .6s ease-in-out, left .6s ease-in-out, width .6s ease-in-out, height .6s ease-in-out;
+    transition:transform .6s ease-in-out, left .6s ease-in-out, width .6s ease-in-out, height .6s ease-in-out;
+}
+    .sides {
+        width:100%;
+        -webkit-transform-style:preserve-3d;transform-style:preserve-3d;
+    }
+        .side {
+            min-width:15em;height:15em;line-height:15em;text-align:center;background:#e6e6e6;color:#000;box-shadow:0 0 2px rgba(0,0,0,.3);
+            opacity:1;width:100%;margin:0 !important;
+            -webkit-backface-visibility:hidden;backface-visibility:hidden;
+            display:none;
+        }
+        .shape .side.active {display:block;}
+        .shape .side.hidden {opacity:.6}
+        .shape .side.animating {position:absolute;top:0;left:0;display:block;z-index:100}
+            .shape .side * {-webkit-backface-visibility:visible!important;backface-visibility:visible!important}
+            .shape .side img {width:100%;}
+
+.shape.animating .sides{
+    position:absolute;
+    -webkit-transition:-webkit-transform .6s ease-in-out,left .6s ease-in-out,width .6s ease-in-out,height .6s ease-in-out;
+    transition:transform .6s ease-in-out,left .6s ease-in-out,width .6s ease-in-out,height .6s ease-in-out;
+}
+    .shape.animating .side{
+        -webkit-transition:opacity .6s ease-in-out;transition:opacity .6s ease-in-out
+    }
+</style>
+
+<script>
+var idx = 0;
+jQuery('.detail_cont_item_pics').on('click', function() {
+
+var shape = document.querySelector('.shape');
+var sides = document.querySelector('.sides');
+var side = document.querySelectorAll('.side');
+var len = side.length;
+    if(len<=1) {
+        return;
+    }
+    var preidx = idx;
+    idx = (idx+1)%len;
+    shape.style.cssText = 'width:'+sides.clientWidth+'px;height:'+sides.clientHeight+'px';
+    shape.classList.add('animating');
+    sides.style.cssText = 'transform:translateX(0px) rotateY(-180deg)';
+    side[preidx].style.cssText = 'transform:rotateY(0deg)';
+    side[preidx].classList.add('hidden');
+    side[idx].style.cssText = 'left:0;transform:rotateY(180deg)';
+    side[idx].classList.add('animating');
+    setTimeout(function() {
+        shape.removeAttribute('style');
+        shape.classList.remove('animating');
+        sides.removeAttribute('style');
+        side[preidx].removeAttribute('style');
+        side[preidx].classList.remove('hidden');
+        side[preidx].classList.remove('active');
+        side[idx].removeAttribute('style');
+        side[idx].classList.remove('animating');
+        side[idx].classList.add('active');
+    }, 600);
+});
+// shape.addEventListener('click', function() {
+    
+// });
+</script>

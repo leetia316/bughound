@@ -39,7 +39,7 @@
 
 <div class="dlist_turnpage">
     <pagination ng-show="(bugList | filter:{state: selectBugState||selectBugState==0&&!selectBugId ? selectBugState : '', id:selectBugId, solver:(isMine?Session.userId:undefined)}).length>itemsPerPage"
-        total-items="(bugList | filter:{state: selectBugState||selectBugState==0 ? selectBugState : '', id:selectBugId}).length" 
+        total-items="(bugList | filter:{state: selectBugState||selectBugState==0 ? selectBugState : '', id:selectBugId} | regex:'sbu.name':subsbustr).length" 
         ng-model="currentPage" 
         class="pagination-sm" 
         boundary-links="true" 
@@ -84,11 +84,11 @@
                     <div class="dlist_item_state">{{ x.stateName }}</div>
                     <div class="dlist_item_date">{{ x.createdAt | fmtDateNormal }}</div>
                 </div>
-                <!-- <div class="dlist_item_pics">
+                <div class="dlist_item_pics">
                     <div class="dlist_item_pics_it" ng-repeat="img in x.files | regex:'type':'^image/'">
                         <img ng-src="upload/{{img.name}}">
                     </div>
-                </div> -->
+                </div>
                 <div class="dlist_item_desc ly_multiline">{{ x.desc }}</div>
             </div>
             <div class="dlist_item_extra">
@@ -98,7 +98,7 @@
     </ul>
 
     <div class="loading" ng-hide="isLoaded"></div>
-    <div class="buglist_none" ng-show="(bugList | filter:{state: selectBugState||selectBugState==0&&!selectBugId ? selectBugState : '', id:selectBugId, solver:(isMine?Session.userId:undefined)}).length==0"></div>
+    <div class="buglist_none" ng-show="(bugList | filter:{state: selectBugState||selectBugState==0&&!selectBugId ? selectBugState : '', id:selectBugId, solver:(isMine?Session.userId:undefined)} | regex:'sbu.name':subsbustr).length==0"></div>
 </div>
 
 
@@ -119,7 +119,7 @@
                     .dlist_item_state {float:left;}
                     .dlist_item_date {float:right;}
                 .dlist_item_pics {margin-top:5px;}
-                    .dlist_item_pics_it {max-width:100px;min-width:16px;max-height:100px;overflow:hidden;}
+                    .dlist_item_pics_it {display:inline-block;max-width:100px;min-width:16px;max-height:100px;overflow:hidden;}
                         .dlist_item_pics_it img {width:100%;}
                 .dlist_item_desc {margin-top:5px;}
             .dlist_item_extra {padding:15px;border-top:1px solid rgba(0,0,0,.05);overflow:hidden;}

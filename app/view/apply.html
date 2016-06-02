@@ -27,7 +27,10 @@
             
             <dl class="form">
                 <dt><label>需求描述</label></dt>
-                <dd><textarea class="formfield_desc" placeholder="需求描述" ng-model="d_desc"></textarea></dd>
+                <!-- <dd><textarea class="formfield_desc" placeholder="需求描述" ng-model="d_desc"></textarea></dd> -->
+                <dd>
+                    <div id="editor"></div>
+                </dd>
             </dl>
         </div>
         <div class="apply_form_right">
@@ -174,4 +177,9 @@
     /* Add your own default image here
      background-image:url('/assets/default.png'); */
     background-position:center;background-size:contain;height:34px;width:34px;}
+
+#editor ul, #editor ol {padding-left:40px;}
+#editor ul {list-style:disc;}
+#editor ol {list-style:decimal;}
+#editor > div:last-child {display:none!important;}
 </style>
