@@ -88,6 +88,7 @@ app.post('/api/upload', multer({
 			}
 		})
 	}).single('file'), function(req, res) {
+		console.log(req.file)
 		res.send(req.file.filename);
 	});
 

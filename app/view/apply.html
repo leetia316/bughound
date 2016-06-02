@@ -81,7 +81,7 @@
                         <button class="uploader_action_removeall" ng-click="uploader.clearQueue()" ng-disabled="!uploader.queue.length">移除全部</button>
                     </div> -->
                     <div class="uploader_left">
-                        <div class="uploader_drop" nv-file-drop uploader="uploader">把文件拖到这里上传</div>
+                        <div class="uploader_drop" nv-file-drop uploader="uploader" contenteditable>把文件拖到这里上传，或者直接粘贴截图文件</div>
                     </div>
                 </dd>
             </dl>
@@ -103,7 +103,7 @@
 
 <style>
 @charset 'UTF-8';
-.apply {}
+.apply {padding-bottom:30px;}
     .apply_form {margin-top:20px;}
         .apply_form_left {width:0;-webkit-box-flex:1;-webkit-flex:1;-ms-flex:1;flex:1}
         .apply_form_right {margin-left:30px;width:0;-webkit-box-flex:1;-webkit-flex:1;-ms-flex:1;flex:1}
@@ -113,6 +113,7 @@
             .uploader {}
                 .uploader_left {-webkit-box-flex:3;-webkit-flex:3;-ms-flex:3;flex:3}
                     .uploader_drop {height:70px;line-height:64px;background:#f5f5f5;border:3px dotted lightgray;color:#bbb;text-align:center;}
+                        .uploader_drop img {display:none;}
                 .uploader_right {padding-left:30px;}
                     .uploader_table {margin-bottom:20px;width:100%;border-collapse:collapse;border-spacing:0;}
                         .uploader_table th {padding:8px;text-align:left;background:#fbfbfb;border-top:1px solid #ddd;border-bottom:2px solid #ddd;vertical-align:bottom;}
@@ -151,7 +152,7 @@
 
 
 
-.apply_submiting{width:130px;height:66px;line-height:66px;position:fixed;top:50%;left:50%;background:rgba(0,0,0,0.5);border-radius:5px;font:0/0 a;text-align:center;-webkit-transform:translate(-50%, -50%);transform:translate(-50%, -50%);}
+.apply_submiting{z-index:4;width:130px;height:66px;line-height:66px;position:fixed;top:50%;left:50%;background:rgba(0,0,0,0.5);border-radius:5px;font:0/0 a;text-align:center;-webkit-transform:translate(-50%, -50%);transform:translate(-50%, -50%);}
     .apply_submiting:after{width:26px;height:26px;border-radius:26px;border:2px solid #FFFFFF;border-top:none;border-right:none;position:absolute;content:"";top:50%;left:50%;-webkit-transform:translate(-50%, -50%);transform:translate(-50%, -50%);-webkit-animation:rotate linear 1s infinite;animation:rotate linear 1s infinite;}
     @-webkit-keyframes rotate{
         0%{-webkit-transform:translate(-50%, -50%) rotate(0deg);}
