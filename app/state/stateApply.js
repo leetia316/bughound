@@ -10,6 +10,21 @@ var stateApply = {
 			$scope.sbus = data;
 		});
 
+		// 选择业务
+		$scope.selectItem = function(id, name) {
+			console.log(id)
+			$scope.d_sbuname = name;
+			$scope.d_sbu = id;
+			$scope.isdropdownactive = false;
+		}
+
+		// 添加业务
+		$scope.addSbu = function(name) {
+			$scope.d_sbuname = name;
+			$scope.d_sbu = null;
+			$scope.isdropdownactive=false;
+		}
+
 		// 文件上传器
 	    $scope.uploader = new FileUploader({
 	    	url: 'api/upload'
@@ -23,7 +38,8 @@ var stateApply = {
 	    $scope.submit = function() {
 	    	
 	    	if(!$scope.d_title) { _POP_.toast('需求名称不能为空'); return; }
-	    	if(!$scope.d_sbu && !jQuery('#sbu_value').val()) { _POP_.toast('所属业务不能为空'); return; }
+	    	// if(!$scope.d_sbu && !jQuery('#sbu_value').val()) { _POP_.toast('所属业务不能为空'); return; }
+	    	if(!$scope.d_sbu && !$scope.d_sbuname) { _POP_.toast('所属业务不能为空'); return; }
 
 	    	var uploadedList = [];
 	        $scope.showSubmiting = true;
@@ -37,8 +53,8 @@ var stateApply = {
 				title: $scope.d_title,
 				desc: jQuery('#editor').froalaEditor('html.get'),
 				files: uploadedList,
-				sbu: $scope.d_sbu ? $scope.d_sbu.originalObject._id : null,
-				sbustr: jQuery('#sbu_value').val(),
+				sbu: $scope.d_sbu || null,
+				sbustr: $scope.d_sbuname,
 
 				// ENV
 			    width: document.documentElement.clientWidth,

@@ -3,7 +3,7 @@ var _POP_ = {
         if(!text) return;
         var rid = 'toast_' + new Date().getTime();
         var div = document.createElement('div');
-        div.innerHTML = '<div id="'+rid+'" style="z-index:2;position:fixed;top:0;left:0;display:block;width:100%;height:100%; text-align:center;font-size:0;">'+
+        div.innerHTML = '<div id="'+rid+'" style="z-index:4;position:fixed;top:0;left:0;display:block;width:100%;height:100%; text-align:center;font-size:0;">'+
                             '<div style="display:inline-block;*display:inline;*zoom:1;vertical-align:middle;font-size:16px;">'+
                                 '<div style="padding:30px 40px;min-width: 200px;_width: 200px;background:rgba(0,0,0,0.8);border-radius:5px;">'+
                                     '<div style="font-size:18px;color:#fff;">'+text+'</div>'+

@@ -9,7 +9,7 @@
             <dl class="form">
                 <dt><label>所属业务{{searchStr}}</label></dt>
                 <dd>
-                    <angucomplete-alt 
+                    <!-- <angucomplete-alt 
                     id="sbu"
                     placeholder="输入业务"
                     pause="100"
@@ -21,7 +21,25 @@
                     text-searching="正在搜索..."
                     text-no-results="没有找到匹配的"
                     match-class="highlight"
-                    input-class="inp dsbu form-control form-control-small" />
+                    input-class="inp dsbu form-control form-control-small" /> -->
+                    <style>
+                    
+                    </style>
+                    <div class="dropdown {{isdropdownactive ? 'active' : ''}}" on-outside-element-click="isdropdownactive=false">
+                        <!-- <input type="hidden"> -->
+                        <i class="dropdown_triangle iconfont" ng-click="isdropdownactive=!isdropdownactive">&#xe603;</i>
+                        <div class="dropdown_text" ng-click="isdropdownactive=!isdropdownactive">{{ d_sbuname || '选择一项业务' }}</div>
+                        <div class="dropdown_menu"> 
+                            <div class="dropdown_menu_item" ng-repeat="x in sbus" ng-click="selectItem(x._id, x.name)">{{ x.name }}
+                            </div>
+                            <div class="dropdown_menu_item">
+                                <div class="addsbu ly_box">
+                                    <input class="inp ly_box_flexone" type="text" ng-model="newsbu">
+                                    <button class="btn" ng-click="addSbu(newsbu)">添加</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </dd>
             </dl>
             
@@ -188,5 +206,19 @@
 #editor .fr-wrapper h1 {font-size:2em;}
 #editor .fr-wrapper h2 {font-size:1.5em;}
 #editor .fr-wrapper h3 {font-size:1.17em;}
-/*#editor > div:last-child {display:none!important;}*/
+#editor > div:nth-child(4) {display:none!important;}
+
+/*业务选择*/
+.dropdown {position:relative;font-size:13px;color:#333;vertical-align:middle;background:#fff;background-repeat:no-repeat;background-position:right 8px center;border:1px solid #ccc;border-radius:3px;outline:none;box-shadow:inset 0 1px 2px rgba(0,0,0,0.075);cursor:pointer;}
+    .dropdown.active {border-bottom-color:transparent;}
+        .dropdown_triangle {position:absolute;right:10px;top:10px;-webkit-transition:0.3s ease;transition:0.3s ease;}
+        .dropdown.active .dropdown_triangle {-webkit-transform:rotateX(180deg);transform:rotateX(180deg);}
+        .dropdown_text {padding:7px 8px;}
+        .dropdown_menu {display:none;z-index:5;position:absolute;top:100%;left:0;margin:0 -1px;width:calc(100% + 2px);max-height:15em;border-radius:0 0 3px 3px;background:#fff;border:1px solid #ccc;border-top:none;overflow:auto;}
+        .dropdown.active .dropdown_menu {display:block;}
+            .dropdown_menu_item {padding:7px 8px;border-top:1px solid #fafafa;}
+            .dropdown_menu_item.selected, .dropdown_menu_item:hover {background:rgba(0,0,0,.03)}
+                .dropdown_menu_item .addsbu {line-height:1;}
+                    .dropdown_menu_item .addsbu input {padding:0 8px;}
+                    .dropdown_menu_item .addsbu button {margin-left:10px;padding:0 10px;height:30px;line-height:30px;background:#ff4400;}
 </style>

@@ -40,7 +40,7 @@ input[type="text"].inp:focus, input[type="password"].inp:focus, input[type="tel"
 i.iconfont {font-family:iconfont;line-height:1;}
 
 /* 公共组件 */
-.btn {display:inline-block;width:100%;height:42px;line-height:42px;color:#fff;background:transparent;border:none;border-radius:3px;text-align:center;-webkit-appearance:none;}
+.btn {display:inline-block;height:42px;line-height:42px;color:#fff;background:transparent;border:none;border-radius:3px;text-align:center;-webkit-appearance:none;}
 
 /*----- 头部 -----*/
 .mod_hd {height:50px;background:#252535;color:#fff;box-shadow:0 3px 8px 0 #ccc;}
