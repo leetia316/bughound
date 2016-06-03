@@ -23,7 +23,7 @@ module.exports = function(req, res) {
 				console.log(err);
 				res.sendStatus(500);
 			} else {
-				res.sendStatus(200);
+				res.json(news);
 			}
 		});
 	} else {

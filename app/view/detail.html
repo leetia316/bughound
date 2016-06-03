@@ -23,7 +23,7 @@
         </div>
         <div class="detail_cont_item">
             <div class="detail_cont_item_hd">
-                <div class="detail_cont_item_hd_tit">动态</div>
+                <div class="detail_cont_item_hd_tit">动态<div class="detail_cont_item_hd_tit_statename">{{ data.stateName }}</div></div>
             </div>
             <div class="detail_cont_item_main">
                 <ul class="detail_cont_item_actions">
@@ -41,6 +41,7 @@
                         </div>
                         <div class="detail_cont_item_actions_item_cont ly_box_flexone">
                             <div ng-show="x.type==1">{{ x.user.name || '佚名' }} 说「{{ x.comment }}」</div>
+                            <div ng-show="x.type==3">{{ x.solver.name }} 完成了需求</div>
                         </div>
                     </li>
                     <li class="detail_cont_item_actions_item ly_box">
@@ -54,13 +55,17 @@
                                 <div class="fornow_menu" ng-show="isShowFornowmenu">
                                     <div class="fornow_menu_btns" ng-show="!whatNowhandling">
                                         <button ng-click="whatNowhandling='comment'"><i class="iconfont">&#xe607;</i></button>
-                                        <button><i class="iconfont">&#xe609;</i></button>
-                                        <button><i class="iconfont">&#xe608;</i></button>
+                                        <button ng-click="whatNowhandling='upload'"><i class="iconfont">&#xe609;</i></button>
+                                        <button ng-click="whatNowhandling='handle'" ng-show="Session.userId"><i class="iconfont">&#xe608;</i></button>
                                     </div>
                                     <div class="fornow_menu_comment" ng-show="whatNowhandling=='comment'">
                                         <input class="inp" type="text" ng-model="nowcomment">
                                         <button class="fornow_menu_comment_confirm btn" ng-click="nowcommentfn()">确定</button>
                                         <button class="fornow_menu_comment_cancel btn" ng-click="whatNowhandling=null">取消</button>
+                                    </div>
+                                    <div class="fornow_menu_upload" ng-show="whatNowhandling=='upload'"></div>
+                                    <div class="fornow_menu_handle" ng-show="whatNowhandling=='handle'">
+                                        <button class="fornow_menu_handle_solve btn" ng-click="nowcompletefn()">完成需求</button>
                                     </div>
                                 </div>
                             </div>
@@ -90,7 +95,10 @@
     .detail_cont {}
         .detail_cont_item {margin-bottom:10px;}
             .detail_cont_item_hd {font-weight:bold;border-bottom:1px solid #ccc;}
-                .detail_cont_item_hd_tit {display:inline-block;padding:0 5px;border-bottom:2px solid #ccc;font-size:16px;}
+                .detail_cont_item_hd_tit {position:relative;display:inline-block;padding:0 5px;border-bottom:2px solid #ccc;font-size:16px;}
+                    /*sp*/
+                    .detail_cont_item_hd_tit_statename {position:absolute;top:3px;left:100%;margin-left:10px;padding:0 5px;height:20px;line-height:20px;background:#ff4400;color:#fff;font-size:12px;border-radius:3px;white-space:nowrap;}
+                        .detail_cont_item_hd_tit_statename:before {content:'';position:absolute;left:-3px;top:7px;width:6px;height:6px;background:#ff4400;-webkit-transform:rotate(45deg);transform:rotate(45deg);}
             .detail_cont_item_main {padding:5px 10px;}
                 /*sp*/
                 .detail_cont_item_files {overflow:hidden;}
@@ -114,6 +122,8 @@
                                             .fornow_menu_comment_confirm, .fornow_menu_comment_cancel {padding:0 5px;height:30px;font-size:12px;}
                                             .fornow_menu_comment_confirm {margin-left:10px;}
                                             .fornow_menu_comment_cancel {margin-left:5px;}
+                                        .fornow_menu_handle {}
+                                            .fornow_menu_handle_solve {padding:0 5px;height:30px;font-size:12px;}
 
 
 .shape {

@@ -48,9 +48,13 @@ let sbuSchema = new Schema({
 let newsSchema = new Schema({
 	demand: { type:Schema.Types.ObjectId, ref:'Demand', required:true },
 	type: { type:Number, required:true, min:1, max:3 },	//操作类型：1=普通评论，2=文件上传，3=需求处理
+
 	comment: String,	//评论内容
+	
 	file: { type:Schema.Types.ObjectId, ref:'File' },
+	
 	handle: { type:Number },	//需求处理类型，1=解决
+	
 	user: { type:Schema.Types.ObjectId, ref:'User' }
 }, { timestamps: true });
 
