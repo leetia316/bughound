@@ -45,8 +45,13 @@ var stateDetail = {
             }).success(function(data) {
                 _POP_.toast('评论成功');
                 console.log($scope.news, data)
+                
+                // 还是要处理一下下的
+                data.user = {};
+                data.user.name = Session.userName;
+
                 $scope.news.push(data);
-                $scope.whatNowhandling = null;
+                $scope.isShowFornowmenu = $scope.whatNowhandling = null;
             });
         }
         $scope.nowcompletefn = function() {

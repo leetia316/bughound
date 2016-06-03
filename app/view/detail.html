@@ -1,5 +1,5 @@
 <div class="detail" data-id="{{ data._id }}">
-    <h3 class="detail_tit">{{ data.title }}</h3>
+    <h3 class="detail_tit">{{ data.sbu.name }}<span ng-show="data.sbu.name"> · </span>{{ data.title }}</h3>
     <div class="detail_cont">
         <div class="detail_cont_item">
             <div class="detail_cont_item_hd">
@@ -16,7 +16,7 @@
                     <span style="color:#ddd" ng-show="data.files.length==0">没有附件</span>
                     <li ng-repeat="x in data.files"><a href="api/attachment/{{ x.name }}/{{ x.oname }}">{{ x.oname }}</a></li>
                     <li class="detail_cont_item_files_preview" ng-show="(data.files | regex:'type':'^image/').length>0">
-                        <button ng-click="isShowPicpreview=true">图片预览</button>
+                        <button class="btn" ng-click="isShowPicpreview=true">图片预览</button>
                     </li>
                 </ul>
             </div>
@@ -32,7 +32,7 @@
                             <div>{{ data.createdAt | fmtDateNormal }}</div>
                         </div>
                         <div class="detail_cont_item_actions_item_cont ly_box_flexone">
-                            佚名提交了该需求
+                            <span class="detail_cont_item_actions_item_user">佚名</span> 提交了需求
                         </div>
                     </li>
                     <li class="detail_cont_item_actions_item ly_box" ng-repeat="x in news">
@@ -40,8 +40,8 @@
                             <div>{{ x.createdAt | fmtDateNormal }}</div>
                         </div>
                         <div class="detail_cont_item_actions_item_cont ly_box_flexone">
-                            <div ng-show="x.type==1">{{ x.user.name || '佚名' }} 说「{{ x.comment }}」</div>
-                            <div ng-show="x.type==3">{{ x.solver.name }} 完成了需求</div>
+                            <div ng-show="x.type==1"><span class="detail_cont_item_actions_item_user">{{ x.user.name || '佚名' }}</span> 说「{{ x.comment }}」</div>
+                            <div class="detail_cont_item_actions_item_complete" ng-show="x.type==3"><span class="detail_cont_item_actions_item_user">{{ x.user.name }}</span> 完成了需求</div>
                         </div>
                     </li>
                     <li class="detail_cont_item_actions_item ly_box">
@@ -49,19 +49,20 @@
                             <div>现在</div>
                         </div>
                         <div class="detail_cont_item_actions_item_cont ly_box_flexone">
-                            <div class="fornow" on-outside-element-click="(isShowFornowmenu=false) || (whatNowhandling=null)">
-                                <div class="fornow_btn" ng-click="isShowFornowmenu=!isShowFornowmenu">做点什么</div>
+                            <div class="fornow" on-outside-element-click="isShowFornowmenu=whatNowhandling=false">
+                                <button class="fornow_btn btn" ng-click="(whatNowhandling=false) || (isShowFornowmenu=!isShowFornowmenu)">做点什么</button>
 
                                 <div class="fornow_menu" ng-show="isShowFornowmenu">
                                     <div class="fornow_menu_btns" ng-show="!whatNowhandling">
-                                        <button ng-click="whatNowhandling='comment'"><i class="iconfont">&#xe607;</i></button>
-                                        <button ng-click="whatNowhandling='upload'"><i class="iconfont">&#xe609;</i></button>
-                                        <button ng-click="whatNowhandling='handle'" ng-show="Session.userId"><i class="iconfont">&#xe608;</i></button>
+                                        <button class="btn" ng-click="whatNowhandling='comment'"><i class="iconfont">&#xe607;</i></button>
+                                        <button class="btn" ng-click="whatNowhandling='upload'"><i class="iconfont">&#xe609;</i></button>
+                                        <button class="btn" ng-click="whatNowhandling='handle'" ng-show="Session.userId"><i class="iconfont">&#xe608;</i></button>
                                     </div>
                                     <div class="fornow_menu_comment" ng-show="whatNowhandling=='comment'">
-                                        <input class="inp" type="text" ng-model="nowcomment">
+                                        <!-- <input class="inp" type="text" ng-model="nowcomment"> -->
+                                        <textarea class="inp" ng-model="nowcomment"></textarea>
                                         <button class="fornow_menu_comment_confirm btn" ng-click="nowcommentfn()">确定</button>
-                                        <button class="fornow_menu_comment_cancel btn" ng-click="whatNowhandling=null">取消</button>
+                                        <button class="fornow_menu_comment_cancel btn" ng-click="whatNowhandling=isShowFornowmenu=null">取消</button>
                                     </div>
                                     <div class="fornow_menu_upload" ng-show="whatNowhandling=='upload'"></div>
                                     <div class="fornow_menu_handle" ng-show="whatNowhandling=='handle'">
@@ -90,41 +91,44 @@
 
 <style>
 @charset 'UTF-8';
-.detail {}
+.detail {padding-bottom:50px;}
     .detail_tit {margin:30px 0 20px;text-align:center;font-size:18px;font-weight:bold;}
     .detail_cont {}
         .detail_cont_item {margin-bottom:10px;}
-            .detail_cont_item_hd {font-weight:bold;border-bottom:1px solid #ccc;}
-                .detail_cont_item_hd_tit {position:relative;display:inline-block;padding:0 5px;border-bottom:2px solid #ccc;font-size:16px;}
+            .detail_cont_item_hd {font-weight:bold;border-bottom:1px solid #e1e1e2;}
+                .detail_cont_item_hd_tit {position:relative;display:inline-block;padding:0 5px;border-bottom:2px solid #e1e1e2;font-size:16px;}
                     /*sp*/
                     .detail_cont_item_hd_tit_statename {position:absolute;top:3px;left:100%;margin-left:10px;padding:0 5px;height:20px;line-height:20px;background:#ff4400;color:#fff;font-size:12px;border-radius:3px;white-space:nowrap;}
                         .detail_cont_item_hd_tit_statename:before {content:'';position:absolute;left:-3px;top:7px;width:6px;height:6px;background:#ff4400;-webkit-transform:rotate(45deg);transform:rotate(45deg);}
-            .detail_cont_item_main {padding:5px 10px;}
+            .detail_cont_item_main {padding:15px 10px;}
                 /*sp*/
                 .detail_cont_item_files {overflow:hidden;}
                     .detail_cont_item_files li {float:left;margin-right:20px;line-height:30px;}
                     .detail_cont_item_files_preview {}
-                        .detail_cont_item_files_preview button {padding:0 8px;height:30px;border:0;background:#ff4400;color:#fff;border-radius:3px;cursor:pointer;}
+                        .detail_cont_item_files_preview button {padding:0 8px;height:30px;}
                 .detail_cont_item_actions {}
-                    .detail_cont_item_actions_item {}
-                        .detail_cont_item_actions_item_date {width:80px;border-right:1px solid #252535;text-align:right;}
-                            .detail_cont_item_actions_item_date div {position:relative;display:inline-block;padding-right:5px;}
-                            .detail_cont_item_actions_item_date div:after {content:'';position:absolute;top:50%;right:-3px;display:block;width:3px;height:3px;border:1px solid #252535;border-radius:50%;background:#fff;-webkit-transform:translate(0, -2px);transform:translate(0, -2px);}
+                    .detail_cont_item_actions_item {position:relative;padding:0 0 5px;}
+                        .detail_cont_item_actions_item:before {content:'';position:absolute;top:0;left:80px;height:100%;border-right:1px solid #252535;}
+                        .detail_cont_item_actions_item_date {width:80px;text-align:right;border-bottom:1px solid #e6e7ea;}
+                            .detail_cont_item_actions_item_date div {position:relative;display:inline-block;padding-right:5px;font-size:12px;color:#888;}
+                            .detail_cont_item_actions_item_date div:after {content:'';position:absolute;top:50%;right:-3px;display:block;width:3px;height:3px;border:1px solid #252535;border-radius:50%;background:#fff;-webkit-transform:translate(0, -3px);transform:translate(0, -3px);}
                         .detail_cont_item_actions_item_cont {padding:0 10px;}
+                            .detail_cont_item_actions_item_complete {color:#ff4400;}
+                            .detail_cont_item_actions_item_user {font-size:12px;color:#CC3333;}
                             /*sp*/
-                            .detail_cont_item_actions_item_cont .fornow {position:relative;}
-                                .fornow_btn {display:inline-block;padding:0 8px;font-size:12px;background:#ff4400;color:#fff;border-radius:3px;cursor:pointer;}
-                                .fornow_menu {position:absolute;top:100%;margin-top:7px;padding:5px;border:1px solid #ddd;border-radius:3px;background:#fff;}
-                                    .fornow_menu:before {content:'';position:absolute;top:-4px;width:6px;height:6px;border-left:1px solid #ddd;border-top:1px solid #ddd;background:#fff;-webkit-transform:rotate(45deg);transform:rotate(45deg);}
+                            .fornow {position:relative;}
+                                .fornow_btn {display:inline-block;padding:5px 10px;font-size:12px;}
+                                .fornow_menu {position:absolute;bottom:100%;margin-bottom:7px;padding:10px 15px;border:1px solid #ff4400;border-radius:3px;background:#f0f0f0;}
+                                    .fornow_menu:before {content:'';position:absolute;bottom:-4px;width:6px;height:6px;border-right:1px solid #ff4400;border-bottom:1px solid #ff4400;background:#f0f0f0;-webkit-transform:rotate(45deg);transform:rotate(45deg);}
                                         .fornow_menu_btns {}
-                                            .fornow_menu_btns button {cursor:pointer;}
+                                            .fornow_menu_btns button {width:30px;height:30px;line-height:30px;border-radius:50%;}
                                         .fornow_menu_comment {}
-                                            .fornow_menu_comment_confirm, .fornow_menu_comment_cancel {padding:0 5px;height:30px;font-size:12px;}
+                                            .fornow_menu_comment textarea {display:block;resize:none;width:300px;height:100px;}
+                                            .fornow_menu_comment_confirm, .fornow_menu_comment_cancel {float:right;margin-top:10px;padding:0 10px;height:30px;font-size:12px;}
                                             .fornow_menu_comment_confirm {margin-left:10px;}
                                             .fornow_menu_comment_cancel {margin-left:5px;}
                                         .fornow_menu_handle {}
                                             .fornow_menu_handle_solve {padding:0 5px;height:30px;font-size:12px;}
-
 
 .shape {
     width:100%;
@@ -170,11 +174,10 @@
 <script>
 var idx = 0;
 jQuery('.picpreview').on('click', function() {
-
-var shape = document.querySelector('.shape');
-var sides = document.querySelector('.sides');
-var side = document.querySelectorAll('.side');
-var len = side.length;
+    var shape = document.querySelector('.shape');
+    var sides = document.querySelector('.sides');
+    var side = document.querySelectorAll('.side');
+    var len = side.length;
     if(len<=1) {
         return;
     }

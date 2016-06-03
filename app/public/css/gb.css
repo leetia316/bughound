@@ -17,6 +17,7 @@ body {margin:0 auto;min-width:320px;height:100%;font:14px/1.5 Helvetica,'STHeiti
 input[type="text"].inp, input[type="password"].inp, input[type="tel"].inp, select, textarea {padding:7px 8px;font-size:13px;color:#333;vertical-align:middle;background-color:#fff;background-repeat:no-repeat;background-position:right 8px center;border:1px solid #ccc;border-radius:3px;outline:none;box-shadow:inset 0 1px 2px rgba(0,0,0,0.075);}
 input[type="text"].inp:focus, input[type="password"].inp:focus, input[type="tel"].inp:focus, select:focus, textarea:focus {border-color:#51a7e8;box-shadow:inset 0 1px 2px rgba(0,0,0,0.075),0 0 5px rgba(81,167,232,0.5);}
 button.btn {background:#ff4400;color:#fff;border-radius:3px;border:0;cursor:pointer;}
+button.btn:hover {background:#dd4400;}
 
 /*===================
 	公共样式
