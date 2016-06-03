@@ -15,6 +15,28 @@ const
 
 	app = express();
 
+// Multer 上传器
+let uploader = multer({
+	// dest: conf.updir
+	storage: multer.diskStorage({
+		destination: function(req, file, cb) {
+			// cb(null, conf.updir)
+			cb(null, conf.tmpdir);
+		},
+		filename: function(req, file, cb) {
+			let now = new Date();
+			cb(null, now.getFullYear() + 
+				('0' + (now.getMonth()+1)).slice(-2) + 
+				('0' + now.getDate()).slice(-2) + 
+				('0' + now.getHours()).slice(-2) + 
+				('0' + now.getMinutes()).slice(-2) + 
+				('0' + now.getSeconds()).slice(-2) + 
+				('0' + Math.floor(Math.random()*100)).slice(-2)
+			)
+		}
+	})
+});
+
 /*-----------------------
    中间件
  ------------------------*/
@@ -66,7 +88,8 @@ app.post('/api/sbu/add', api2.sbu.add);
 app.get('/api/sbu/list', api2.sbu.list);
 app.get('/api/sbu/search', api2.sbu.search);
 
-app.post('/api/news/add', api2.news.add);
+app.post('/api/news/add', api2.news.add);	//仅对 评论和需求操作动态 用
+app.post('/api/news/upload', api2.news.upload);	//仅对 上传动态 用
 app.get('/api/news/get', api2.news.get);
 
 app.get('/api/auth', function(req, res) {
@@ -77,29 +100,9 @@ app.get('/api/attachment/:fname/:oname', function(req, res) {
 	let oname = req.params.oname;
 	res.download( path.join(conf.updir, fname), oname );
 });
-app.post('/api/upload', multer({
-		// dest: conf.updir
-		storage: multer.diskStorage({
-			destination: function(req, file, cb) {
-				// cb(null, conf.updir)
-				cb(null, conf.tmpdir);
-			},
-			filename: function(req, file, cb) {
-				let now = new Date();
-				cb(null, now.getFullYear() + 
-					('0' + (now.getMonth()+1)).slice(-2) + 
-					('0' + now.getDate()).slice(-2) + 
-					('0' + now.getHours()).slice(-2) + 
-					('0' + now.getMinutes()).slice(-2) + 
-					('0' + now.getSeconds()).slice(-2) + 
-					('0' + Math.floor(Math.random()*100)).slice(-2)
-				)
-			}
-		})
-	}).single('file'), function(req, res) {
-		console.log(req.file)
-		res.send(req.file.filename);
-	});
+app.post('/api/upload', uploader.single('file'), function(req, res) {
+	res.send(req.file.filename);
+});
 
 // ----------------------------------------------- //
 let server = app.listen(conf.port, function() {

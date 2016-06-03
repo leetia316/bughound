@@ -51,7 +51,7 @@ let newsSchema = new Schema({
 
 	comment: String,	//评论内容
 	
-	file: { type:Schema.Types.ObjectId, ref:'File' },
+	files: [{ type:Schema.Types.ObjectId, ref:'File' }],
 	
 	handle: { type:Number },	//需求处理类型，1=解决
 	

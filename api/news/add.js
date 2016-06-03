@@ -7,14 +7,12 @@ module.exports = function(req, res) {
 	let demand = req.body.demand;
 	let type = req.body.type;
 	let comment = req.body.comment;
-	let file = req.body.file;
 	let handle = req.body.handle;
-	if(demand && type) {
+	if(demand && type && (type==1 || type==3)) {
 		let news = new db.News({
 			demand: demand,
 			type: type,
 			comment: comment,
-			file: file,
 			handle: handle,
 			user: req.session._id || null
 		});

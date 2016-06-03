@@ -21,6 +21,7 @@ module.exports = {
 	},
 	news: {
 		add: require('./news/add'),
+		upload: require('./news/upload'),
 		get: require('./news/get')
 	}
 }
