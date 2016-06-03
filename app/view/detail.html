@@ -40,14 +40,18 @@
                             <div>{{ x.createdAt | fmtDateNormal }}</div>
                         </div>
                         <div class="detail_cont_item_actions_item_cont ly_box_flexone">
-                            <div ng-show="x.type==1"><span class="detail_cont_item_actions_item_user">{{ x.user.name || '佚名' }}</span> 说「{{ x.comment }}」</div>
+                            
+                            <div class="fr-view" ng-show="x.type==1"><span class="detail_cont_item_actions_item_user">{{ x.user.name || '佚名' }}</span> 说：<br><div ng-bind-html="x.comment | scehtml"></div></div>
+                            
                             <div class="detail_cont_item_actions_item_complete" ng-show="x.type==3"><span class="detail_cont_item_actions_item_user">{{ x.user.name }}</span> 完成了需求</div>
+                            
                             <div class="detail_cont_item_actions_item_upload" ng-show="x.type==2">
                                 <span class="detail_cont_item_actions_item_user">{{ x.user.name || '佚名' }}</span> 上传了文件 
                                 <div class="flist">
                                     <div class="fitem" ng-repeat="f in x.files"><a href="api/attachment/{{ f.name }}/{{ f.oname }}">{{ f.oname }}</a></div>
                                 </div>
                             </div>
+
                         </div>
                     </li>
                     <li class="detail_cont_item_actions_item ly_box">
@@ -67,7 +71,7 @@
 
                                     <div class="fornow_menu_comment" ng-show="whatNowhandling=='comment'">
                                         <!-- <input class="inp" type="text" ng-model="nowcomment"> -->
-                                        <textarea class="inp" ng-model="nowcomment"></textarea>
+                                        <div><textarea id="editor" class="inp" ng-model="nowcomment"></textarea></div>
                                         <button class="fornow_menu_comment_confirm btn" ng-click="nowcommentfn()">确定</button>
                                         <button class="fornow_menu_comment_cancel btn" ng-click="whatNowhandling=isShowFornowmenu=null">取消</button>
                                     </div>
@@ -185,7 +189,7 @@
                                         .fornow_menu_btns {}
                                             .fornow_menu_btns button {width:30px;height:30px;line-height:30px;border-radius:50%;}
                                         /* 评论 */
-                                        .fornow_menu_comment {}
+                                        .fornow_menu_comment {width:500px;}
                                             .fornow_menu_comment textarea {display:block;resize:none;width:300px;height:100px;}
                                             .fornow_menu_comment_confirm, .fornow_menu_comment_cancel {float:right;margin-top:10px;padding:0 10px;height:30px;font-size:12px;}
                                             .fornow_menu_comment_confirm {margin-left:10px;}

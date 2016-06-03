@@ -69,13 +69,15 @@ var stateDetail = {
             });
         }
 
-        $scope.nowcommentfn = function() {
-            if(!$scope.nowcomment) { _POP_.toast('你好像没有写什么');return; }
+        $scope.nowcommentfn = function() {console.log(1234312)
+            var html = jQuery('#editor').froalaEditor('html.get');
+            if(!html) { _POP_.toast('你好像没有写什么');return; }
+            console.log('fddsd')
 
             $http.post('api/news/add', {
                 demand: $scope.data._id,
                 type: 1,
-                comment: $scope.nowcomment
+                comment: html
             }).success(function(data) {
                 _POP_.toast('评论成功');
                 console.log($scope.news, data)
@@ -105,6 +107,14 @@ var stateDetail = {
             if(scope.data) {
                 scope.data.stateName = stateNames[n] || '未知状态';
             }
+        });
+
+        jQuery(function(){
+            jQuery('#editor').froalaEditor({
+                toolbarButtons: ['emoticons'],
+                placeholderText: '',
+                toolbarBottom: true
+            });
         });
 
         // v复用申请页的粘贴事件，略作修改：当文件上传处为隐藏时不做任何事
