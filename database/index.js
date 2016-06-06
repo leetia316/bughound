@@ -26,6 +26,8 @@ let demandSchema = new Schema({
 	files: [{ type:Schema.Types.ObjectId, ref:'File' }],
 	sbu: {type: Schema.Types.ObjectId, ref: 'Sbu'},	//业务
 
+	news: [{ type:Schema.Types.ObjectId, ref:'News' }],
+
 	env: {
 		width: Number,
 		height: Number,
@@ -46,7 +48,7 @@ let sbuSchema = new Schema({
 
 // 动态
 let newsSchema = new Schema({
-	demand: { type:Schema.Types.ObjectId, ref:'Demand', required:true },
+	// demand: { type:Schema.Types.ObjectId, ref:'Demand', required:true },
 	type: { type:Number, required:true, min:1, max:3 },	//操作类型：1=普通评论，2=文件上传，3=需求处理
 
 	comment: String,	//评论内容

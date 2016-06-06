@@ -90,7 +90,6 @@ app.get('/api/sbu/search', api2.sbu.search);
 
 app.post('/api/news/add', api2.news.add);	//仅对 评论和需求操作动态 用
 app.post('/api/news/upload', api2.news.upload);	//仅对 上传动态 用
-app.get('/api/news/get', api2.news.get);
 
 app.get('/api/auth', function(req, res) {
 	res.send({_id:req.session._id, erp:req.session.erp, name:req.session.name, isAdmin:!!req.session.isadmin})

@@ -32,7 +32,7 @@ var stateDetail = {
                 data.user = {};
                 data.user.name = Session.userName;
 
-                $scope.news.push(data);
+                $scope.data.news.push(data);
                 _POP_.toast('文件已上传');
                 $scope.isShowFornowmenu = $scope.whatNowhandling = null;
                 $scope.uploader.clearQueue();
@@ -51,14 +51,6 @@ var stateDetail = {
             console.log(data)
     	});
 
-        $http.get('api/news/get', {
-            params: {
-                demand: $stateParams.id
-            }
-        }).success(function(data) {
-            console.log(data)
-            $scope.news = data;
-        });
 
         $scope.submit = function() {
             $http.post('api/demand/update', {
@@ -80,13 +72,12 @@ var stateDetail = {
                 comment: html
             }).success(function(data) {
                 _POP_.toast('评论成功');
-                console.log($scope.news, data)
                 
                 // 还是要处理一下下的
                 data.user = {};
                 data.user.name = Session.userName;
 
-                $scope.news.push(data);
+                $scope.data.news.push(data);
                 $scope.isShowFornowmenu = $scope.whatNowhandling = null;
             });
         }

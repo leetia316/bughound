@@ -35,7 +35,7 @@
                             <span class="detail_cont_item_actions_item_user">佚名</span> 提交了需求
                         </div>
                     </li>
-                    <li class="detail_cont_item_actions_item ly_box" ng-repeat="x in news">
+                    <li class="detail_cont_item_actions_item ly_box" ng-repeat="x in data.news">
                         <div class="detail_cont_item_actions_item_date">
                             <div>{{ x.createdAt | fmtDateNormal }}</div>
                         </div>
@@ -71,7 +71,7 @@
 
                                     <div class="fornow_menu_comment" ng-show="whatNowhandling=='comment'">
                                         <!-- <input class="inp" type="text" ng-model="nowcomment"> -->
-                                        <div><textarea id="editor" class="inp" ng-model="nowcomment"></textarea></div>
+                                        <div><div id="editor" class="inp" ng-model="nowcomment"></div></div>
                                         <button class="fornow_menu_comment_confirm btn" ng-click="nowcommentfn()">确定</button>
                                         <button class="fornow_menu_comment_cancel btn" ng-click="whatNowhandling=isShowFornowmenu=null">取消</button>
                                     </div>
@@ -177,7 +177,7 @@
                             .detail_cont_item_actions_item_user {font-size:12px;color:#CC3333;}
                             .detail_cont_item_actions_item_upload {}
                                 .detail_cont_item_actions_item_upload .flist {}
-                                    .detail_cont_item_actions_item_upload .fitem {position:relative;display:inline-block;margin-right:10px;padding:0 8px 0 15px;height:20px;line-height:20px;font-size:12px;background:#99CCFF;color:#fff;border-radius:0 5px 5px 0;cursor:pointer;}
+                                    .detail_cont_item_actions_item_upload .fitem {position:relative;display:inline-block;margin-right:10px;padding:0 8px 0 15px;height:20px;line-height:20px;font-size:12px;background:#99CCFF;color:#fff;border-radius:5px 0 0 5px;cursor:pointer;}
                                     .detail_cont_item_actions_item_upload .fitem:hover {background:#80BFFF}
                                         .detail_cont_item_actions_item_upload .fitem:before {content:'';position:absolute;top:50%;left:5px;margin-top:-2px;width:3px;height:3px;border:1px solid #fff;border-radius:50%}
                                         .detail_cont_item_actions_item_upload .fitem a {color:#fff;}
@@ -254,6 +254,9 @@
     .shape.animating .side{
         -webkit-transition:opacity .6s ease-in-out;transition:opacity .6s ease-in-out
     }
+
+/* HACK */
+#editor > div:not(.fr-wrapper):not(.fr-toolbar):not(.fr-sticky-dummy), #editor > div > a[href="https://froala.com/wysiwyg-editor"] {display:none!important;}
 
 /* 图片预览 */
 .picpreview {position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.3);}

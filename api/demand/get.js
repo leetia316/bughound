@@ -8,6 +8,10 @@ module.exports = function(req, res) {
 	db.Demand.findById(_id)
 		.populate('files')
 		.populate('sbu')
+		.populate({
+			path: 'news',
+			populate: [{ path: 'user', model: 'User'},{ path: 'files', model: 'File'}]
+		})
 		.exec(function (err, doc) {
 			if(err) {
 				res.sendStatus(500);

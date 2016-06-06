@@ -27,18 +27,20 @@ module.exports = function(req, res) {
 		db.File.create(files, function(err, files) {
 			if(err) throw err;
 			let news = new db.News({
-				demand: demand,
 				type: 2,
 				files: files,
 				user: req.session._id || null
 			});
 			news.save(function(err) {
-				if(err) {
-					console.log(err);
-					res.sendStatus(500);
-				} else {
-					res.json(news);
-				}
+				if(err) throw err;
+				db.Demand.findById(demand, function(err, d) {
+					if(err) throw err;
+					d.news.push(news);
+					d.save(function(err) {
+						if(err) throw err;
+						res.json(news);
+					});
+				});
 			});
 		});
 	} else {
