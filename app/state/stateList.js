@@ -24,6 +24,10 @@ var stateList = {
 	            result = new UAParser().setUA(data[i].env.ua).getResult();
 	            data[i].device = result.device.model || '';
 	            data[i].files = data[i].files || [];
+
+	            // 文件计数
+	            data[i].filescount = data[i].files.length || 0;
+
 	            data[i].stateName = stateNames[data[i].state];
 	        }
 	        console.log(data);

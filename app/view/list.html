@@ -80,7 +80,8 @@
                         <div></div>
                     </div>
                 </div>    
-                <div style="display:inline-block;margin-left:20px;"><i class="iconfont">&#xe60a;</i>{{ x.files.length }}</div>
+                <div class="dlist_item_stat"><i class="iconfont">&#xe60a;</i>{{ x.filescount }}</div>
+                <div class="dlist_item_stat"><i class="iconfont">&#xe607;</i>{{ x.news.length }}</div>
                 <div class="dlist_item_meta ly_box_flexone">
                     <div class="dlist_item_state state{{ x.state }}">{{ x.stateName }}</div>
                     <div class="dlist_item_date">{{ x.createdAt | fmtDateNormal }}</div>
@@ -109,6 +110,8 @@
                         .dlist_item_label_box > div:nth-child(1) {padding:0 15px 0 5px;color:#fff;background:#ff4400;}
                         .dlist_item_label_box > div:nth-child(2) {position:relative;padding:0 5px;color:#ff4400;border-left:1px solid #ff4400;}
                             .dlist_item_label_box > div:nth-child(2):before {content:'';position:absolute;left:-1px;top:50%;display:block;width:6px;height:6px;border-bottom:1px solid #ff4400;border-left:1px solid #ff4400;background:#fff;-webkit-transform:rotate(45deg) translate(-50%, -50%);transform:rotate(45deg) translate(-50%, -50%);-webkit-transform-origin:top left;transform-origin:top left;}
+                .dlist_item_stat {display:inline-block;margin-left:20px;}
+                    .dlist_item_stat i.iconfont {margin-right:3px;color:#ff4400;}
                 .dlist_item_meta {margin-left:20px;line-height:22px;font-size:12px;color:rgba(0,0,0,.4);overflow:hidden;}
                     .dlist_item_state {float:left;font-weight:bold;}
                     .dlist_item_state.state0 {color:#CC3333;}

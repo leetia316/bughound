@@ -5,8 +5,12 @@ const
 
 module.exports = function(req, res) {
 	db.Demand.find({})
-		.populate('files')
+		// .populate('files')
 		.populate('sbu')
+		.populate({
+			path: 'news',
+			populate: { path: 'files', model: 'File'}
+		})
 		.sort({'createdAt': -1})
 		.exec(function (err, docs) {
 			if(err) {
