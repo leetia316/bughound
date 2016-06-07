@@ -19,19 +19,24 @@ module.exports = function(req, res) {
 			user: solver
 		});
 
-		news.save(function(err) {
+		db.Demand.update({_id:_id}, {$set: upobj, $push:{news:news}}, function (err, result) {
 			if(err) {
 				console.log(err);
 				res.sendStatus(500);
 			} else {
-				db.Demand.update({_id:_id}, {$set: upobj, $push:{news:news}}, function (err, doc) {
-					if(err) {
-						console.log(err);
-						res.sendStatus(500);
-					} else {
-						res.json(news);
-					}
-				});
+				console.log(result)
+				if(result.nModified!==0) {
+					news.save(function(err) {
+						if(err) {
+							console.log(err);
+							res.sendStatus(500);
+						} else {
+							res.json(news);
+						}
+					});
+				} else {
+					res.sendStatus(404);
+				}
 			}
 		});
 	}

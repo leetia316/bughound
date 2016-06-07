@@ -35,7 +35,7 @@ let demandSchema = new Schema({
 		ua: String
 	},
 	
-	state: {type: Number, required:true, default:0}, //状态
+	state: {type: Number, required:true, default:0}, //状态 0=未解决 1=解决
 	solver: {type: Schema.Types.ObjectId, ref: 'User'},
 	solvedate: Date		//解决时间
 						//提交时间=创建时间

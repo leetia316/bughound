@@ -50,7 +50,7 @@
                             
                             <div class="fr-view" ng-show="x.type==1"><span class="detail_cont_item_actions_item_user">{{ x.user.name || '佚名' }}</span> 说：<br><div ng-bind-html="x.comment | scehtml"></div></div>
                             
-                            <div class="detail_cont_item_actions_item_complete" ng-show="x.type==3"><span class="detail_cont_item_actions_item_user">{{ x.user.name }}</span> 完成了需求</div>
+                            <div class="detail_cont_item_actions_item_handle state{{ x.handle }}" ng-show="x.type==3"><span class="detail_cont_item_actions_item_user">{{ x.user.name }}</span> {{ x.handle==0 ? '驳回了需求' : '' }}{{ x.handle==1 ? '完成了需求' : '' }}</div>
                             
                             <div class="detail_cont_item_actions_item_upload" ng-show="x.type==2">
                                 <span class="detail_cont_item_actions_item_user">{{ x.user.name || '佚名' }}</span> 上传了文件 
@@ -133,7 +133,8 @@
                                     </div>
 
                                     <div class="fornow_menu_handle" ng-show="whatNowhandling=='handle'">
-                                        <button class="fornow_menu_handle_solve btn" ng-click="nowcompletefn()">完成需求</button>
+                                        <button class="fornow_menu_handle_solve btn" ng-click="nowhandlefn(0)" ng-show="data.state!==0">驳回需求</button>
+                                        <button class="fornow_menu_handle_solve btn" ng-click="nowhandlefn(1)" ng-show="data.state!==1">完成需求</button>
                                     </div>
                                 </div>
                             </div>
@@ -180,7 +181,9 @@
                             .detail_cont_item_actions_item_date div {position:relative;display:inline-block;padding-right:5px;font-size:12px;color:#888;}
                             .detail_cont_item_actions_item_date div:after {content:'';position:absolute;top:50%;right:-3px;display:block;width:3px;height:3px;border:1px solid #252535;border-radius:50%;background:#fff;-webkit-transform:translate(0, -3px);transform:translate(0, -3px);}
                         .detail_cont_item_actions_item_cont {padding:0 10px;}
-                            .detail_cont_item_actions_item_complete {color:#ff4400;}
+                            .detail_cont_item_actions_item_handle {color:#ff4400;}
+                            .detail_cont_item_actions_item_handle.state0 {color:#CC3333;}
+                            .detail_cont_item_actions_item_handle.state1 {color:#009966;}
                             .detail_cont_item_actions_item_user {font-size:12px;color:#CC3333;}
                             .detail_cont_item_actions_item_upload {}
                                 .detail_cont_item_actions_item_upload .flist {}

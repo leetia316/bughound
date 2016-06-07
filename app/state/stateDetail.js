@@ -94,18 +94,27 @@ var stateDetail = {
                 $scope.isShowFornowmenu = $scope.whatNowhandling = null;
             });
         }
-        $scope.nowcompletefn = function() {
+        $scope.nowhandlefn = function(state) {
+            var nowstate = $scope.data.state;
+            if( state===nowstate && (state===0 ||state===1) ) {
+                console.log(nowstate, state)
+                return;
+            }
             $http.post('api/demand/update', {
                 id: $scope.data._id,
-                state: 1
+                state: state
             }).success(function(data) {
-                _POP_.toast('需求已完成');
-                $scope.data.state = 1;
+                if(state===0) {
+                    _POP_.toast('需求已驳回');
+                } else if(state===1) {
+                    _POP_.toast('需求已完成');
+                }
+                $scope.data.state = state;
 
                 // 还是要处理一下下的
                 data.user = {};
                 data.user.name = Session.userName;
-                
+
                 $scope.data.news.push(data);
             }).error(function() {
                 _POP_.toast('未知错误');
