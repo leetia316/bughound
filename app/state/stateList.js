@@ -26,8 +26,18 @@ var stateList = {
 	            data[i].files = data[i].files || [];
 
 	            // 文件计数
-	            data[i].filescount = data[i].files.length || 0;
+	            var tcount = data[i].files && data[i].files.length ? data[i].files.length : 0;
+	            if(data[i].news && data[i].news.length) {
+	            	var tnews = data[i].news;
+	            	for(var j=0;j<tnews.length;j++) {
+	            		if(tnews[j].files && tnews[j].files.length) {
+	            			tcount += tnews[j].files.length;
+	            		}
+	            	}
+	            }
+	            data[i].filescount = tcount;
 
+	            // 状态名
 	            data[i].stateName = stateNames[data[i].state];
 	        }
 	        console.log(data);
