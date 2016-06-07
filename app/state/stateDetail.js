@@ -98,9 +98,15 @@ var stateDetail = {
             $http.post('api/demand/update', {
                 id: $scope.data._id,
                 state: 1
-            }).success(function() {
+            }).success(function(data) {
                 _POP_.toast('需求已完成');
                 $scope.data.state = 1;
+
+                // 还是要处理一下下的
+                data.user = {};
+                data.user.name = Session.userName;
+                
+                $scope.data.news.push(data);
             }).error(function() {
                 _POP_.toast('未知错误');
             });

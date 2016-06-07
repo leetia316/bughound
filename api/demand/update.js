@@ -13,23 +13,25 @@ module.exports = function(req, res) {
 		if(state===1 && solver) {
 			upobj.solver = solver;
 		}
-		db.Demand.update({_id:_id}, {$set: upobj}, function (err, doc) {
-			if(err) {
-				console.log(err);
-				res.sendStatus(500);
-			} else {
-				res.sendStatus(200);
-			}
-		});
 		let news = new db.News({
-			demand: _id,
 			type: 3,
 			handle: state,
 			user: solver
 		});
+
 		news.save(function(err) {
 			if(err) {
 				console.log(err);
+				res.sendStatus(500);
+			} else {
+				db.Demand.update({_id:_id}, {$set: upobj, $push:{news:news}}, function (err, doc) {
+					if(err) {
+						console.log(err);
+						res.sendStatus(500);
+					} else {
+						res.json(news);
+					}
+				});
 			}
 		});
 	}
