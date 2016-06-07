@@ -47,6 +47,19 @@ var stateDetail = {
     		data.pics = data.pics || [];
     		data.ua = new UAParser().setUA(data.env.ua).getResult();
 
+            // 文件计数
+            var totalFiles = data.files && data.files.length ? data.files : [];
+            if(data.news && data.news.length) {
+                var tnews = data.news;
+                for(var j=0;j<tnews.length;j++) {
+                    if(tnews[j].files && tnews[j].files.length) {
+                        totalFiles = totalFiles.concat(tnews[j].files);
+                        console.log(totalFiles)
+                    }
+                }
+            }
+            data.totalFiles = totalFiles;
+
     		$scope.data = data;
             console.log(data)
     	});

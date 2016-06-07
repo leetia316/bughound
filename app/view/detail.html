@@ -1,3 +1,5 @@
+{{ data.filescount }}
+
 <div class="detail" data-id="{{ data._id }}">
     <h3 class="detail_tit">{{ data.sbu.name }}<span ng-show="data.sbu.name"> · </span>{{ data.title }}</h3>
     <div class="detail_cont">
@@ -14,8 +16,8 @@
             <div class="detail_cont_item_main">
                 <ul class="detail_cont_item_files">
                     <span style="color:#ddd" ng-show="data.files.length==0">没有附件</span>
-                    <li ng-repeat="x in data.files"><a href="api/attachment/{{ x.name }}/{{ x.oname }}">{{ x.oname }}</a></li>
-                    <li class="detail_cont_item_files_preview" ng-show="(data.files | regex:'type':'^image/').length>0">
+                    <li ng-repeat="x in data.totalFiles"><a href="api/attachment/{{ x.name }}/{{ x.oname }}">{{ x.oname }}</a></li>
+                    <li class="detail_cont_item_files_preview" ng-show="(data.totalFiles | regex:'type':'^image/').length>0">
                         <button class="btn" ng-click="isShowPicpreview=true">图片预览</button>
                     </li>
                 </ul>
@@ -33,6 +35,11 @@
                         </div>
                         <div class="detail_cont_item_actions_item_cont ly_box_flexone">
                             <span class="detail_cont_item_actions_item_user">佚名</span> 提交了需求
+                            <div class="detail_cont_item_actions_item_upload">
+                                <div class="flist">
+                                    <div class="fitem" ng-repeat="f in data.files"><a href="api/attachment/{{ f.name }}/{{ f.oname }}">{{ f.oname }}</a></div>
+                                </div>
+                            </div>
                         </div>
                     </li>
                     <li class="detail_cont_item_actions_item ly_box" ng-repeat="x in data.news">
@@ -141,7 +148,7 @@
 <div class="picpreview" ng-show="isShowPicpreview">
     <div class="shape">
         <div class="sides">
-            <div class="side {{ $index===0 ? 'active' : ''}}" ng-repeat="img in data.files | regex:'type':'^image/'">
+            <div class="side {{ $index===0 ? 'active' : ''}}" ng-repeat="img in data.totalFiles | regex:'type':'^image/'">
                 <div><img ng-src="upload/{{img.name}}"></div>
             </div>
         </div>
