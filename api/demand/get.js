@@ -1,10 +1,11 @@
 'use strict';
 
 const
+	mongoose = require('mongoose'),
 	db = require('../../database/index.js');
 
 module.exports = function(req, res) {
-	let _id = req.query.id;
+	let _id = mongoose.Types.ObjectId( req.query.id );
 	db.Demand.findById(_id)
 		.populate('files')
 		.populate('sbu')

@@ -1,10 +1,11 @@
 'use strict';
 
 const
+	mongoose = require('mongoose'),
 	db = require('../../database/index.js');
 
 module.exports = function(req, res) {
-	let _id = req.body.id;
+	let _id = mongoose.Types.ObjectId( req.body.id );
 	let solver = req.session._id;
 	let state = req.body.state;
 	if(_id && !Number.isNaN(state)) {

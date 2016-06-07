@@ -3,11 +3,12 @@
 const
 	fs = require('fs'),
 	path = require('path'),
+	mongoose = require('mongoose'),
 	db = require('../../database/index.js'),
 	conf = require('../../config.js');
 
 module.exports = function(req, res) {
-	let demand = req.body.demand;
+	let demand = mongoose.Types.ObjectId( req.body.demand );
 	let files = req.body.files && req.body.files.length && req.body.files.length>0 ? req.body.files : [];
 	if(demand && files.length>0) {
 		// 文件转移

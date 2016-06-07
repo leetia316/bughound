@@ -9,6 +9,8 @@ const
 	cookieParser = require('cookie-parser'),
 	session = require('express-session'),
 	multer = require('multer'),
+	helmet = require('helmet'),
+	Ddos = require('ddos'),
 
 	api2 = require('./api/'),
 	conf = require('./config.js'),
@@ -37,6 +39,20 @@ let uploader = multer({
 	})
 });
 
+// Ddos
+let ddos = new Ddos({
+	// maxcount: 30,
+	// burst: 5,
+	// limit: burst * 4,  
+	// maxexpiry: 120,
+	// checkinterval: 1,
+	// errormessage: 'Error',
+	// testmode: false,
+	// silent: false,
+	// silentStart: false,
+	// responseStatus: 429
+});
+
 /*-----------------------
    中间件
  ------------------------*/
@@ -47,6 +63,8 @@ app.use(session({
     saveUninitialized: true
 }));
 app.use(cookieParser());
+app.use(helmet());
+// app.use(ddos.express);
 // 解析POST请求参数必需
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -71,7 +89,7 @@ function requireSignin(req, res, next) {
 		res.sendStatus(401);
 	}
 }
-app.post('/api/user/add', requireAdmin, api2.user.add);
+app.post('/api/user/add', ddos.express, requireAdmin, api2.user.add);
 app.post('/api/user/del', requireAdmin, api2.user.del);
 // app.post('/api/user/update', requireAdmin, api.user.update);
 app.get('/api/user/list', api2.user.list);
@@ -79,17 +97,17 @@ app.post('/api/user/signin', api2.user.signin);
 app.post('/api/user/signout', api2.user.signout);
 // app.post('/api/user/getpas', api.user.getpas);
 
-app.post('/api/demand/add', api2.demand.add);
+app.post('/api/demand/add', ddos.express, api2.demand.add);
 app.get('/api/demand/list', api2.demand.list);
 app.get('/api/demand/get', api2.demand.get);
 app.post('/api/demand/update', requireSignin, api2.demand.update);
 
-app.post('/api/sbu/add', api2.sbu.add);
+app.post('/api/sbu/add', ddos.express, api2.sbu.add);
 app.get('/api/sbu/list', api2.sbu.list);
 app.get('/api/sbu/search', api2.sbu.search);
 
-app.post('/api/news/add', api2.news.add);	//仅对 评论和需求操作动态 用
-app.post('/api/news/upload', api2.news.upload);	//仅对 上传动态 用
+app.post('/api/news/add', ddos.express, api2.news.add);	//仅对 评论和需求操作动态 用
+app.post('/api/news/upload', ddos.express, api2.news.upload);	//仅对 上传动态 用
 
 app.get('/api/auth', function(req, res) {
 	res.send({_id:req.session._id, erp:req.session.erp, name:req.session.name, isAdmin:!!req.session.isadmin})
@@ -105,5 +123,7 @@ app.post('/api/upload', uploader.single('file'), function(req, res) {
 
 // ----------------------------------------------- //
 let server = app.listen(conf.port, function() {
-	console.log('UFT Server Listening on port %d', server.address().port);
+	console.info('UFT Server Listening on port %d', server.address().port);
+	console.info('Helmet is protecting your app');
+	console.info('-------------------------------');
 });
