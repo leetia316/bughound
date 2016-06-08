@@ -11,7 +11,8 @@ angular.module('mine.regex', []).filter('regex', function() {
             // console.log(field, regex)
             OUTSIDE:
             for(var i=0;i<input.length;i++) {
-                var val = preval = input[i];
+                var val = input[i];
+                var preval = input[i];
                 for(var j=0;j<fields.length;j++) {
                     if(val) {
                         val = val[ fields[j] ];

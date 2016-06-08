@@ -101,10 +101,10 @@ app.post('/api/demand/add', ddos.express, api2.demand.add);
 app.get('/api/demand/list', api2.demand.list);
 app.get('/api/demand/get', api2.demand.get);
 app.post('/api/demand/update', function(req, res, next) {
-	let state = req.body.state;
-	if(state && state===0) {
+	let state = Number.parseInt( req.body.state );
+	if(state===0) {
 		next();
-	} else if(state && state===1) {
+	} else if(state===1) {
 		requireSignin(req, res, next);
 	} else {
 		res.sendStatus(404);

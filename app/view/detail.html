@@ -50,7 +50,7 @@
                             
                             <div class="fr-view" ng-show="x.type==1"><span class="detail_cont_item_actions_item_user">{{ x.user.name || '佚名' }}</span> 说：<br><div ng-bind-html="x.comment | scehtml"></div></div>
                             
-                            <div class="detail_cont_item_actions_item_handle state{{ x.handle }}" ng-show="x.type==3"><span class="detail_cont_item_actions_item_user">{{ x.user.name }}</span> {{ x.handle==0 ? '驳回了需求' : '' }}{{ x.handle==1 ? '完成了需求' : '' }}</div>
+                            <div class="detail_cont_item_actions_item_handle state{{ x.handle }}" ng-show="x.type==3"><span class="detail_cont_item_actions_item_user">{{ x.user.name || '佚名' }}</span> {{ x.handle==0 ? '驳回了需求' : '' }}{{ x.handle==1 ? '完成了需求' : '' }}</div>
                             
                             <div class="detail_cont_item_actions_item_upload" ng-show="x.type==2">
                                 <span class="detail_cont_item_actions_item_user">{{ x.user.name || '佚名' }}</span> 上传了文件 
