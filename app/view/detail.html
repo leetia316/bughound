@@ -73,7 +73,7 @@
                                     <div class="fornow_menu_btns" ng-show="!whatNowhandling">
                                         <button class="btn" ng-click="whatNowhandling='comment'"><i class="iconfont">&#xe607;</i></button>
                                         <button class="btn" ng-click="whatNowhandling='upload'"><i class="iconfont">&#xe609;</i></button>
-                                        <button class="btn" ng-click="whatNowhandling='handle'" ng-show="Session.userId"><i class="iconfont">&#xe608;</i></button>
+                                        <button class="btn" ng-click="whatNowhandling='handle'"><i class="iconfont">&#xe608;</i></button>
                                     </div>
 
                                     <div class="fornow_menu_comment" ng-show="whatNowhandling=='comment'">
@@ -133,8 +133,8 @@
                                     </div>
 
                                     <div class="fornow_menu_handle" ng-show="whatNowhandling=='handle'">
-                                        <button class="fornow_menu_handle_solve btn" ng-click="nowhandlefn(0)" ng-show="data.state!==0">驳回需求</button>
-                                        <button class="fornow_menu_handle_solve btn" ng-click="nowhandlefn(1)" ng-show="data.state!==1">完成需求</button>
+                                        <button class="fornow_menu_handle_btn btn" ng-click="nowhandlefn(0)" ng-disabled="data.state===0">驳回需求</button>
+                                        <button class="fornow_menu_handle_btn btn" ng-click="nowhandlefn(1)" ng-disabled="data.state===1">完成需求</button>
                                     </div>
                                 </div>
                             </div>
@@ -230,7 +230,8 @@
                                                     .uploader_action button {padding:6px 12px;}
                                         /* 需求处理 */
                                         .fornow_menu_handle {}
-                                            .fornow_menu_handle_solve {padding:0 5px;height:30px;font-size:12px;}
+                                            .fornow_menu_handle_btn {padding:0 5px;height:30px;font-size:12px;}
+                                            .fornow_menu_handle_btn[disabled], .fornow_menu_handle_btn[disabled]:hover {background:#999;cursor:not-allowed;}
 
 .shape {
     width:100%;

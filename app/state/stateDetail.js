@@ -96,10 +96,11 @@ var stateDetail = {
         }
         $scope.nowhandlefn = function(state) {
             var nowstate = $scope.data.state;
-            if( state===nowstate && (state===0 ||state===1) ) {
-                console.log(nowstate, state)
+
+            if( state===nowstate || (state!==0 && state!==1) ) {
                 return;
             }
+            
             $http.post('api/demand/update', {
                 id: $scope.data._id,
                 state: state

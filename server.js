@@ -100,8 +100,17 @@ app.post('/api/user/signout', api2.user.signout);
 app.post('/api/demand/add', ddos.express, api2.demand.add);
 app.get('/api/demand/list', api2.demand.list);
 app.get('/api/demand/get', api2.demand.get);
-app.post('/api/demand/update', requireSignin, api2.demand.update);
-
+app.post('/api/demand/update', function(req, res, next) {
+	let state = req.body.state;
+	if(state && state===0) {
+		next();
+	} else if(state && state===1) {
+		requireSignin(req, res, next);
+	} else {
+		res.sendStatus(404);
+	}
+}, api2.demand.update);
+   
 app.post('/api/sbu/add', ddos.express, api2.sbu.add);
 app.get('/api/sbu/list', api2.sbu.list);
 app.get('/api/sbu/search', api2.sbu.search);
