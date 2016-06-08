@@ -134,7 +134,7 @@
 
                                     <div class="fornow_menu_handle" ng-show="whatNowhandling=='handle'">
                                         <button class="fornow_menu_handle_btn btn" ng-click="nowhandlefn(0)" ng-disabled="data.state===0">驳回需求</button>
-                                        <button class="fornow_menu_handle_btn btn" ng-click="nowhandlefn(1)" ng-disabled="data.state===1">完成需求</button>
+                                        <button class="fornow_menu_handle_btn btn" ng-click="nowhandlefn(1)" ng-disabled="data.state===1 || !Session.userId">完成需求</button>
                                     </div>
                                 </div>
                             </div>
