@@ -21,7 +21,20 @@ angular.module('bughound', [
     'mine.Session'
 ], angular.noop)
 
+.factory('tooManyRequestNotifier', ['$q', '$injector', function($q, $injector) {
+    var tooManyRequestNotifier = {
+        responseError: function(response) {
+            if (response.status === 419){
+                _POP_.toast('Error code : 419 - [abbr] TMR');
+            }
+        }
+    };
+    return tooManyRequestNotifier;
+}])
+
 .config(function($stateProvider, $urlRouterProvider, $httpProvider) {
+    $httpProvider.interceptors.push('tooManyRequestNotifier');
+
     $urlRouterProvider.otherwise('list');  //无效路由
 
     $stateProvider
