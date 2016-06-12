@@ -12,7 +12,7 @@ var stateApply = {
 
 		// 选择业务
 		$scope.selectItem = function(id, name) {
-			console.log(id)
+			console.info('选择业务id', id);
 			$scope.d_sbuname = name;
 			$scope.d_sbu = id;
 			$scope.isdropdownactive = false;
@@ -51,10 +51,10 @@ var stateApply = {
 
 			$http.post('api/demand/add', {
 				title: $scope.d_title,
-				desc: jQuery('#editor').froalaEditor('html.get'),
-				files: uploadedList,
 				sbu: $scope.d_sbu || null,
 				sbustr: $scope.d_sbuname,
+				desc: jQuery('#editor').froalaEditor('html.get'),
+				files: uploadedList,
 
 				// ENV
 			    width: document.documentElement.clientWidth,

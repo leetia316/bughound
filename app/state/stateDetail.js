@@ -41,7 +41,7 @@ var stateDetail = {
 
     	$http.get('api/demand/get', {
     		params: {
-    			id: $stateParams.id
+    			did: $stateParams.id
     		}
     	}).success(function(data) {
     		data.pics = data.pics || [];

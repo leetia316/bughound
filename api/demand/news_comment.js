@@ -4,6 +4,12 @@ const
 	mongoose = require('mongoose'),
 	db = require('../../database/index.js');
 
+/**
+ * 需求评论
+ * ====================
+ * @param <String> did 需求id
+ * @param <Html String> comment 评论内容
+ */
 module.exports = function(req, res) {
 	let did = mongoose.Types.ObjectId( req.body.did );
 	let comment = req.body.comment;
@@ -16,13 +22,15 @@ module.exports = function(req, res) {
 		};
 		db.Demand.update({_id: did}, {$push: {'news': news}}, {new: true}, function(err, result) {
 			if(err) {
-				console.log(err);
+				throw err;
 				res.sendStatus(500);
-			} else {
+			} else if(result.nModified>0) {
 				res.json(news);
+			} else {
+				res.sendStatus(400);
 			}
 		});
 	} else {
-		res.sendStatus(404);
+		res.sendStatus(400);
 	}
 }

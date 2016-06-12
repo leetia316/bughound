@@ -4,9 +4,14 @@ const
 	mongoose = require('mongoose'),
 	db = require('../../database/index.js');
 
+/**
+ * 查询需求byid
+ * ====================
+ * @param <String> did 需求id
+ */
 module.exports = function(req, res) {
-	let _id = mongoose.Types.ObjectId( req.query.id );
-	db.Demand.findById(_id)
+	let did = mongoose.Types.ObjectId( req.query.did );
+	db.Demand.findById( did )
 		.populate('files')
 		.populate('sbu')
 		.populate({
@@ -15,6 +20,7 @@ module.exports = function(req, res) {
 		})
 		.exec(function (err, doc) {
 			if(err) {
+				throw err;
 				res.sendStatus(500);
 			} else if(!doc) {
 				res.sendStatus(404);
