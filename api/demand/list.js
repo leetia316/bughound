@@ -10,7 +10,7 @@ module.exports = function(req, res) {
 			path: 'news',
 			populate: { path: 'files', model: 'File'}
 		})
-		.sort({'createdAt': -1})
+		.sort({'updatedAt': -1, 'createdAt': -1})
 		.exec(function (err, docs) {
 			if(err) {
 				res.sendStatus(500);
