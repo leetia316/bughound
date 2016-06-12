@@ -3,8 +3,14 @@
 const
 	db = require('../../database/index.js');
 
+/**
+ * 添加用户
+ * ====================
+ * @param <String> erp ERP
+ * @param <name> name 名字
+ * @param <String> email 邮箱
+ */
 module.exports = function(req, res) {
-	console.log(req.body.erp, req.body.name, req.body.email)
 	let erp = req.body.erp,
 		name = req.body.name,
 		email = req.body.email;
@@ -16,12 +22,13 @@ module.exports = function(req, res) {
 		});
 		user.save(function(err) {
 			if(err) {
+				throw err;
 				res.sendStatus(500);
 			} else {
 				res.json({erp:erp, name:name, email:email});
 			}
 		});
 	} else {
-		res.sendStatus(404);
+		res.sendStatus(400);
 	}
 }
