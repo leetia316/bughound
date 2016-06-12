@@ -1,12 +1,13 @@
 <div class="loading" ng-hide="isLoaded"></div>
 <div class="dblist">
     <table class="dblist">
-        <thead><th>ERP帐号</th><th>用户名</th><th>邮箱</th><th></th></thead>
+        <thead><th>ERP帐号</th><th>用户名</th><th>邮箱</th><th>管理员</th><th></th></thead>
         <tbody>
             <tr ng-repeat="x in userList">
                 <td ng-bind="x.erp"></td>
                 <td><span ng-bind="x.name" ng-hide="x.isEditing">EC</span><input class="inp" type="text" ng-model="x.name" ng-show="x.isEditing"></td>
                 <td><span ng-bind="x.email" ng-hide="x.isEditing">EC@jd.com</span><input class="inp" type="text" ng-model="x.email" ng-show="x.isEditing"></td>
+                <td ng-bind="x.isadmin"></td>
                 <td>
                     <button class="btnsave" ng-click="update($index, x._id, x.name, x.email)" ng-show="x.isEditing">保存</button>
                     <button class="btnmodify" ng-click="(x.isEditing=true) && (x.originalName=x.name) && (x.originalEmail=x.email)" ng-hide="x.isEditing">修改</button>
@@ -34,7 +35,7 @@
 .dblist {}
     .dblist table {width:100%;text-align:center;}
         .dblist thead {}
-                .dblist th {padding:5px 0;width:25%;border-bottom:1px solid #D20000;}
+                .dblist th {padding:5px 0;width:20%;border-bottom:1px solid #D20000;}
         .dblist tbody {}
             .dblist tr:nth-child(2n+1){background:#EAEAEA;}
                 .dblist td {padding:5px 0;border-bottom:1px solid #D7D7D7;}
