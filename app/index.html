@@ -52,7 +52,8 @@
                 </div>
                 <form class="mod_hd_info_user_signin" ng-show="showLogin">
                     <input class="mod_hd_info_user_signin_erp {{signinErpHaserror && 'haserror'}}" type="text" placeholder="输入 ERP" ng-model="signinErp">
-                    <input class="mod_hd_info_user_signin_submit" type="submit" value="{{ userName ? '切换':'登录'}}" ng-click="signin()">
+                    <input class="mod_hd_info_user_signin_submit" type="submit" value="{{ userId ? '切换':'登录'}}" ng-click="signin()">
+                    <button class="mod_hd_info_user_signin_submit" ng-show="userId" ng-click="signout()">登出</button>
                 </form>
             </div>
         </div>
