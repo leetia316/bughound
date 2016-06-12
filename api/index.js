@@ -5,6 +5,7 @@ module.exports = {
 		add: require('./user/add'),
 		del: require('./user/del'),
 		list: require('./user/list'),
+		update: require('./user/update'),
 		signin: require('./user/signin'),
 		signout: require('./user/signout')
 	},

@@ -75,27 +75,15 @@ app.use('/upload', express.static(__dirname+'/upload'));
 /*-----------------------
    API
  ------------------------*/
-function requireAdmin(req, res, next) {
-	if(req.session.isadmin) {
-		next();
-	} else {
-		res.sendStatus(401);
-	}
-}
-function requireSignin(req, res, next) {
-	if(req.session.erp) {
-		next();
-	} else {
-		res.sendStatus(401);
-	}
-}
+function requireAdmin(req, res, next) { req.session.isadmin ? next() : res.sendStatus(401); }
+function requireSignin(req, res, next) { req.session.erp ? next() : res.sendStatus(401); }
+
 app.post('/api/user/add', ddos.express, requireAdmin, api2.user.add);
 app.post('/api/user/del', requireAdmin, api2.user.del);
-// app.post('/api/user/update', requireAdmin, api.user.update);
+app.post('/api/user/update', requireAdmin, api2.user.update);
 app.get('/api/user/list', api2.user.list);
 app.post('/api/user/signin', api2.user.signin);
 app.post('/api/user/signout', api2.user.signout);
-// app.post('/api/user/getpas', api.user.getpas);
 
 app.post('/api/demand/add', ddos.express, api2.demand.add);
 app.get('/api/demand/list', api2.demand.list);

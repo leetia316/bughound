@@ -66,7 +66,7 @@ var stateApply = {
 			    $scope.showSubmiting = false;
 			    $scope.bugid = data;
 			    $scope.isSubmitSucc = true;
-			}).catch(function(res, a) {
+			}).catch(function(res) {
 				if(res.status===404) {
 					$scope.showSubmiting = false;
 					_POP_.toast('申请失败');

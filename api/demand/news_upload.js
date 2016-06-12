@@ -48,7 +48,7 @@ module.exports = function(req, res) {
 					date: new Date()
 				};
 				
-				db.Demand.update({_id: did}, {$push: {'news': news}}, {new: true}, function(err, result) {
+				db.Demand.update({_id: did}, {$push: {'news': news}}, function(err, result) {
 					if(err) {
 						throw err;
 						res.sendStatus(500);
