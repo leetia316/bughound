@@ -15,7 +15,7 @@
             </div>
             <div class="detail_cont_item_main">
                 <ul class="detail_cont_item_files">
-                    <span style="color:#ddd" ng-show="data.files.length==0">没有附件</span>
+                    <span style="color:#ddd" ng-show="data.totalFiles.length==0">没有附件</span>
                     <li ng-repeat="x in data.totalFiles"><a href="api/attachment/{{ x.name }}/{{ x.oname }}">{{ x.oname }}</a></li>
                     <li class="detail_cont_item_files_preview" ng-show="(data.totalFiles | regex:'type':'^image/').length>0">
                         <button class="btn" ng-click="isShowPicpreview=true">图片预览</button>
@@ -44,7 +44,7 @@
                     </li>
                     <li class="detail_cont_item_actions_item ly_box" ng-repeat="x in data.news">
                         <div class="detail_cont_item_actions_item_date">
-                            <div>{{ x.createdAt | fmtDateNormal }}</div>
+                            <div>{{ x.date | fmtDateNormal }}</div>
                         </div>
                         <div class="detail_cont_item_actions_item_cont ly_box_flexone">
                             

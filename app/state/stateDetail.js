@@ -24,15 +24,15 @@ var stateDetail = {
                 }
             });
 
-            $http.post('api/news/upload', {
-                demand: $scope.data._id,
+            $http.post('api/demand/news_upload', {
+                did: $scope.data._id,
                 files: uploadedList
-            }).success(function(data) {
+            }).success(function(news) {
                 // 还是要处理一下下的
-                data.user = {};
-                data.user.name = Session.userName;
-
-                $scope.data.news.push(data);
+                news.user = {};
+                news.user.name = Session.userName;
+                
+                $scope.data.news.push(news);
                 _POP_.toast('文件已上传');
                 $scope.isShowFornowmenu = $scope.whatNowhandling = null;
                 $scope.uploader.clearQueue();
@@ -54,7 +54,6 @@ var stateDetail = {
                 for(var j=0;j<tnews.length;j++) {
                     if(tnews[j].files && tnews[j].files.length) {
                         totalFiles = totalFiles.concat(tnews[j].files);
-                        console.log(totalFiles)
                     }
                 }
             }
@@ -65,32 +64,22 @@ var stateDetail = {
     	});
 
 
-        $scope.submit = function() {
-            $http.post('api/demand/update', {
-                id: $stateParams.id,
-                state: 1
-            }).success(function() {
-                _POP_.toast('更新成功');
-            });
-        }
-
         $scope.nowcommentfn = function() {console.log(1234312)
             var html = jQuery('#editor').froalaEditor('html.get');
             if(!html) { _POP_.toast('你好像没有写什么');return; }
             console.log('fddsd')
 
-            $http.post('api/news/add', {
-                demand: $scope.data._id,
-                type: 1,
+            $http.post('api/demand/news_comment', {
+                did: $scope.data._id,
                 comment: html
-            }).success(function(data) {
+            }).success(function(news) {
                 _POP_.toast('评论成功');
                 
                 // 还是要处理一下下的
-                data.user = {};
-                data.user.name = Session.userName;
+                news.user = {};
+                news.user.name = Session.userName;
 
-                $scope.data.news.push(data);
+                $scope.data.news.push(news);
                 $scope.isShowFornowmenu = $scope.whatNowhandling = null;
             });
         }
@@ -101,10 +90,10 @@ var stateDetail = {
                 return;
             }
             
-            $http.post('api/demand/update', {
-                id: $scope.data._id,
-                state: state
-            }).success(function(data) {
+            $http.post('api/demand/news_handle', {
+                did: $scope.data._id,
+                handle: state
+            }).success(function(news) {
                 if(state===0) {
                     _POP_.toast('需求已驳回');
                 } else if(state===1) {
@@ -113,14 +102,14 @@ var stateDetail = {
                 $scope.data.state = state;
 
                 // 还是要处理一下下的
-                data.user = {};
-                data.user.name = Session.userName;
+                news.user = {};
+                news.user.name = Session.userName;
 
-                $scope.data.news.push(data);
+                $scope.data.news.push(news);
             }).error(function() {
                 _POP_.toast('未知错误');
             });
-            $scope.whatNowhandling = null;
+            $scope.isShowFornowmenu = $scope.whatNowhandling = null;
         }
 
         $scope.$watch('data.state', function(n, o, scope) {

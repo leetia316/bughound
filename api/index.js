@@ -12,15 +12,13 @@ module.exports = {
 		add: require('./demand/add'),
 		list: require('./demand/list'),
 		get: require('./demand/get'),
-		update: require('./demand/update')
+		newsComment: require('./demand/news_comment'),
+		newsUpload: require('./demand/news_upload'),
+		newsHandle: require('./demand/news_handle')
 	},
 	sbu: {
 		add: require('./sbu/add'),
 		list: require('./sbu/list'),
 		search: require('./sbu/search')
-	},
-	news: {
-		add: require('./news/add'),
-		upload: require('./news/upload')
 	}
 }

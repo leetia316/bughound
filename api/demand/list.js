@@ -5,7 +5,6 @@ const
 
 module.exports = function(req, res) {
 	db.Demand.find({})
-		// .populate('files')
 		.populate('sbu')
 		.populate({
 			path: 'news',

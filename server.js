@@ -100,23 +100,13 @@ app.post('/api/user/signout', api2.user.signout);
 app.post('/api/demand/add', ddos.express, api2.demand.add);
 app.get('/api/demand/list', api2.demand.list);
 app.get('/api/demand/get', api2.demand.get);
-app.post('/api/demand/update', function(req, res, next) {
-	let state = Number.parseInt( req.body.state );
-	if(state===0) {
-		next();
-	} else if(state===1) {
-		requireSignin(req, res, next);
-	} else {
-		res.sendStatus(404);
-	}
-}, api2.demand.update);
+app.post('/api/demand/news_comment', ddos.express, api2.demand.newsComment);
+app.post('/api/demand/news_upload', ddos.express, api2.demand.newsUpload);
+app.post('/api/demand/news_handle', api2.demand.newsHandle);
    
 app.post('/api/sbu/add', ddos.express, api2.sbu.add);
 app.get('/api/sbu/list', api2.sbu.list);
 app.get('/api/sbu/search', api2.sbu.search);
-
-app.post('/api/news/add', ddos.express, api2.news.add);	//仅对 评论和需求操作动态 用
-app.post('/api/news/upload', ddos.express, api2.news.upload);	//仅对 上传动态 用
 
 app.get('/api/auth', function(req, res) {
 	res.send({_id:req.session._id, erp:req.session.erp, name:req.session.name, isAdmin:!!req.session.isadmin})

@@ -8,9 +8,9 @@ const
 	conf = require('../../config.js');
 
 module.exports = function(req, res) {
-	let demand = mongoose.Types.ObjectId( req.body.demand );
+	let did = mongoose.Types.ObjectId( req.body.did );
 	let files = req.body.files && req.body.files.length && req.body.files.length>0 ? req.body.files : [];
-	if(demand && files.length>0) {
+	if(did && files.length>0) {
 		// 文件转移
 		files.forEach(function(item) {
 			let sf = path.join(conf.tmpdir, item.name);
@@ -27,21 +27,20 @@ module.exports = function(req, res) {
 
 		db.File.create(files, function(err, files) {
 			if(err) throw err;
-			let news = new db.News({
+			let news = {
 				type: 2,
 				files: files,
-				user: req.session._id || null
-			});
-			news.save(function(err) {
-				if(err) throw err;
-				db.Demand.findById(demand, function(err, d) {
-					if(err) throw err;
-					d.news.push(news);
-					d.save(function(err) {
-						if(err) throw err;
-						res.json(news);
-					});
-				});
+				user: req.session._id || null,
+				date: new Date()
+			};
+
+			db.Demand.update({_id: did}, {$push: {'news': news}}, {new: true}, function(err, result) {
+				if(err) {
+					console.log(err);
+					res.sendStatus(500);
+				} else {
+					res.json(news);
+				}
 			});
 		});
 	} else {
