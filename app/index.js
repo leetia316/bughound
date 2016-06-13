@@ -1,6 +1,6 @@
 var jQuery = $;
 
-angular.module('bughound', [
+angular.module('rocket', [
     'ui.router',
     'angularFileUpload',
     'angucomplete-alt',
@@ -21,19 +21,20 @@ angular.module('bughound', [
     'mine.Session'
 ], angular.noop)
 
-.factory('tooManyRequestNotifier', ['$q', '$injector', function($q, $injector) {
-    var tooManyRequestNotifier = {
+.factory('myInterceptor', function($q) {
+    return {
+        response: function (response) { return response; },
         responseError: function(response) {
             if (response.status === 419){
                 _POP_.toast('Error code : 419 - [abbr] TMR');
             }
+            return $q.reject(response);
         }
     };
-    return tooManyRequestNotifier;
-}])
+})
 
 .config(function($stateProvider, $urlRouterProvider, $httpProvider) {
-    $httpProvider.interceptors.push('tooManyRequestNotifier');
+    $httpProvider.interceptors.push('myInterceptor');
 
     $urlRouterProvider.otherwise('list');  //无效路由
 
@@ -41,7 +42,8 @@ angular.module('bughound', [
         .state('apply', stateApply)
         .state('list', stateList)
         .state('detail', stateDetail)
-        .state('idlist', stateIdlist);
+        .state('idlist', stateIdlist)
+        .state('sbulist', stateSbulist);
 })
 
 .run(function($rootScope, $http, $state, FileUploader, Session) {

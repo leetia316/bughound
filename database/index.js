@@ -42,7 +42,7 @@ let demandSchema = new Schema({
 			user: { type:Schema.Types.ObjectId, ref:'User' },
 
 			date: { type:Date, default:Date.now }
-		}, { timestamps: true }
+		}
 	],
 
 	env: {
@@ -60,7 +60,8 @@ let demandSchema = new Schema({
 
 // strategic business unit (SBU)
 let sbuSchema = new Schema({
-	name: {type:String, required:true, trim:true, minlength:1, maxlength:100, unique: true}
+	name: {type:String, required:true, trim:true, minlength:1, maxlength:30, unique: true},
+	historyname: [String]
 });
 
 

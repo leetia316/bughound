@@ -1,8 +1,8 @@
 <!DOCTYPE HTML>
-<html lang="zh-CN" ng-app="bughound">
+<html lang="zh-CN" ng-app="rocket">
 <head>
 <meta charset="utf-8" />
-<title>BugHound | JDC 轻量级 bug 平台</title>
+<title>Rocket | 需求提报平台</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -39,6 +39,9 @@
                 </li>
                 <li class="{{navidx==='apply' && 'active'}}">
                     <a ui-sref="apply">申请</a>
+                </li>
+                <li class="{{navidx==='sbulist' && 'active'}}">
+                    <a ui-sref="sbulist">业务</a>
                 </li>
                 <li class="{{navidx==='idlist' && 'active'}}" ng-show="userIsAdmin">
                     <a ui-sref="idlist">开发者</a>
@@ -112,6 +115,7 @@
 <script src="state/stateList.js"></script>
 <script src="state/stateDetail.js"></script>
 <script src="state/stateIdlist.js"></script>
+<script src="state/stateSbulist.js"></script>
 
 <script src="util.js"></script>
 <script src="index.js"></script>

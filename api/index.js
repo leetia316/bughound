@@ -20,6 +20,7 @@ module.exports = {
 	sbu: {
 		add: require('./sbu/add'),
 		list: require('./sbu/list'),
-		search: require('./sbu/search')
+		search: require('./sbu/search'),
+		rename: require('./sbu/rename')
 	}
 }
