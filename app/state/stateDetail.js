@@ -106,7 +106,7 @@ var stateDetail = {
                 // 还是要处理一下下的
                 news.user = {};
                 news.user.name = Session.userName;
-
+                
                 $scope.data.news.push(news);
             }).error(function() {
                 _POP_.toast('未知错误');

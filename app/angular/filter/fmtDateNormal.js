@@ -17,12 +17,24 @@ angular.module('mine.fmtDateNormal', []).filter('fmtDateNormal', [function() {
         } else if(sepdays>0) {
             return sepdays + '天前';
         } else {
-            if(now.getHours()-date.getHours()>0) {
-                return (now.getHours()-date.getHours())+'小时前';
-            } else if(now.getMinutes()-date.getMinutes()>0) {
-                return (now.getMinutes()-date.getMinutes())+'分钟前';
+            var seph = now.getHours()-date.getHours();
+            var sepm = now.getMinutes()-date.getMinutes();
+            var seps = now.getSeconds()-date.getSeconds();
+            if(seph>0) {
+                // 60-(now-past) = 60-past+now，(sepm+60)<60 等同 sepm<0
+                if(seph===1 && sepm<0) {
+                    return (sepm+60)+'分钟前';
+                } else {
+                    return seph+'小时前';
+                }
+            } else if(sepm>0) {
+                if(sepm===1 && seps<0) {
+                    return (seps+60)+'秒前';
+                } else {
+                    return sepm+'分钟前';
+                }
             } else {
-                return (now.getSeconds()-date.getSeconds())+'秒前';
+                return seps+'秒前';
             }
         }
     }
