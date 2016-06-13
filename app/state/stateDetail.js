@@ -67,7 +67,6 @@ var stateDetail = {
         $scope.nowcommentfn = function() {console.log(1234312)
             var html = jQuery('#editor').froalaEditor('html.get');
             if(!html) { _POP_.toast('你好像没有写什么');return; }
-            console.log('fddsd')
 
             $http.post('api/demand/news_comment', {
                 did: $scope.data._id,
@@ -81,6 +80,9 @@ var stateDetail = {
 
                 $scope.data.news.push(news);
                 $scope.isShowFornowmenu = $scope.whatNowhandling = null;
+
+                // 净空编辑器
+                jQuery('#editor').froalaEditor('html.set', '');
             });
         }
         $scope.nowhandlefn = function(state) {
