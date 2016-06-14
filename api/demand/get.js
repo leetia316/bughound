@@ -12,7 +12,7 @@ const
 module.exports = function(req, res) {
 	let did = mongoose.Types.ObjectId( req.query.did );
 	db.Demand.findById( did )
-		.populate('files')
+		.populate('file')
 		.populate('sbu')
 		.populate({
 			path: 'news',

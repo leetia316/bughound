@@ -6,6 +6,11 @@ var stateDetail = {
 
         $scope.Session = Session;
 
+        // 业务列表
+        $http.get('api/sbu/list').success(function(data) {
+            $scope.sbus = data;
+        });
+
         // 文件上传器
         $scope.uploader = new FileUploader({
             url: 'api/upload'

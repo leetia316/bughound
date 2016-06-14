@@ -1,7 +1,12 @@
 {{ data.filescount }}
 
 <div class="detail" data-id="{{ data._id }}">
-    <h3 class="detail_tit">{{ data.sbu.name }}<span ng-show="data.sbu.name"> · </span>{{ data.title }}</h3>
+    <h3 class="detail_tit">
+        {{ data.sbu.name }} · {{ data.title }}
+    </h3>
+    <div class="detail_sbu">
+        {{ data.sbu.name }}
+    </div>
     <div class="detail_cont">
         <div class="detail_cont_item">
             <div class="detail_cont_item_hd">
@@ -161,6 +166,7 @@
 @charset 'UTF-8';
 .detail {padding-bottom:50px;}
     .detail_tit {margin:30px 0 20px;text-align:center;font-size:18px;font-weight:bold;}
+    .detail_sbu {}
     .detail_cont {}
         .detail_cont_item {margin-bottom:10px;}
             .detail_cont_item_hd {font-weight:bold;border-bottom:1px solid #e1e1e2;}

@@ -1,6 +1,7 @@
 <div class="sbulist">
     <ul class="sbulist_ul">
-        <li class="sbulist_ul_item" ng-repeat="x in sbuList" ng-class=" x.isEditing ? 'editing' : '' ">
+        <li class="sbulist_ul_item ly_box" ng-repeat="x in sbuList" ng-class=" x.isEditing ? 'editing' : '' ">
+            <div class="sbulist_ul_item_demandcount">{{ x.count }}</div>
             <div class="sbulist_ul_item_name ly_box">
                 <div class="sbulist_ul_item_name_field">
                     <span ng-hide="x.isEditing">{{ x.name }}</span>
@@ -28,4 +29,5 @@
                     .sbulist_ul_item_name_field > input {display:block;width:100%;height:100%;border:0;background:transparent;text-align:center;}
                 .sbulist_ul_item_name_edit.btn {padding:0 10px;height:30px;border-radius:0 3px 3px 0;}
                 .sbulist_ul_item_name_cancel.btn {margin-left:5px;padding:0 10px;height:30px;}
+            .sbulist_ul_item_demandcount {width:50px;line-height:30px;text-align:center;}
 </style>

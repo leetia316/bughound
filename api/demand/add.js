@@ -54,7 +54,7 @@ module.exports = function(req, res) {
 				return false;
 			}
 		});
-
+		
 		db.File.create(files, function(err, files) {
 			if(err) {
 				throw err;

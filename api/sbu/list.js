@@ -8,12 +8,19 @@ const
  * ====================
  */
 module.exports = function(req, res) {
-	db.Sbu.find({}, function(err, docs) {
-		if(err) {
-			throw err;
-			res.sendStatus(500);
-		} else {
-			res.send(docs);
-		}
-	});
+	db.Demand
+		.aggregate()
+		.group( { _id: '$sbu', count: {$sum: 1} } )
+		.lookup( { from: 'sbus', localField:'_id', foreignField:'_id', as:'_id' } )
+		.exec(function(err, result) { 
+			if(err) {
+				console.error(err);
+				res.sendStatus(500);
+			} else {
+				result.forEach(function(item) {
+					Object.assign(item, item._id[0]);
+				});
+				res.send(result);
+			}
+		});
 }

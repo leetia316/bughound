@@ -2,6 +2,10 @@
   "name": "bughound",
   "version": "1.0.0",
   "description": "bug提交平台",
+  "engines": {
+    "node": ">=4.4.4",
+    "mongodb": ">=3.2.0"
+  },
   "main": "server.js",
   "scripts": {
     "test": "node server",
@@ -14,7 +18,7 @@
     "express": "^4.13.4",
     "express-session": "^1.13.0",
     "helmet": "^2.1.0",
-    "mongoose": "^4.4.19",
+    "mongoose": "^4.5.0",
     "multer": "^1.1.0",
     "nodemailer": "^1.11.0"
   },
