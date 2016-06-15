@@ -8,6 +8,15 @@
 
 ## 部署指引
 
+### 环境要求
+
+- NodeJS >= 4.4.4（LTS）
+- Mongodb >= 3.2.0
+
+* Mongodb用到了3.2.0才加进来的 `$lookup` *
+
+### 操作步骤
+
 ``` bash
 git clone https://github.com/o2team/bughound.git
 
@@ -26,3 +35,7 @@ mongod --dbpath database/data
 # 运行
 node server
 ```
+
+## 用户指引
+
+undefined

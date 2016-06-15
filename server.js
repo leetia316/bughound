@@ -87,6 +87,7 @@ app.post('/api/user/signout', api2.user.signout);
 
 app.post('/api/demand/add', ddos.express, api2.demand.add);
 app.get('/api/demand/list', api2.demand.list);
+app.get('/api/demand/listpart', api2.demand.listpart);
 app.get('/api/demand/get', api2.demand.get);
 app.post('/api/demand/news_comment', ddos.express, api2.demand.newsComment);
 app.post('/api/demand/news_upload', ddos.express, api2.demand.newsUpload);

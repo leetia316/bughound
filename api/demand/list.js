@@ -17,7 +17,7 @@ module.exports = function(req, res) {
 		.sort({'updatedAt': -1})
 		.exec(function (err, docs) {
 			if(err) {
-				throw err;
+				console.error(err);
 				res.sendStatus(500);
 			} else {
 				res.send(docs);

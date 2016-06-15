@@ -1,5 +1,5 @@
 <div class="apply">
-    <form class="apply_form ly_box" ng-hide="isSubmitSucc">
+    <form class="apply_form ly_box">
         <div class="apply_form_left">
             <dl class="form">
                 <dt><label>需求名称</label></dt>
@@ -105,17 +105,29 @@
             </dl>
         </div>
     </form>
-    <div class="apply_form_submit" ng-hide="isSubmitSucc"><button type="button" class="btn" ng-click="submit()">提交需求</button></div>
+    <div class="apply_form_submit"><button type="button" class="btn" ng-click="submit()">提交需求</button></div>
     
-    <div class="apply_header" ng-show="isSubmitSucc">
-        <div id="num" ng-bind="bugid"></div>
-        <h2>系统为您分配bug编号</h2>
-        <p>请将编号复制给开发人员</p>
+    <!-- S 提交成功弹层 -->
+    <div class="apply_succpop" ng-show="isSubmitSucc">
+        <div class="apply_succpop_main">
+            <div class="apply_succpop_main_wrap">
+                <div class="apply_succpop_top">嘿！</div>
+                <div class="apply_succpop_cont">
+                    <div class="apply_succpop_cont_text">
+                        您的需求已经提交，编号：
+                        <div class="apply_succpop_cont_text_num" ng-bind="bugid"></div>
+                        快去告诉小伙伴来处理吧
+                    </div>
+                    <div class="ly_box">
+                        <a href="#" class="apply_succpop_cont_continue ly_box_flexone" ui-sref="apply" ui-sref-opts="{reload:true}">继续申请</a>
+                        <a href="#" class="apply_succpop_cont_checknow ly_box_flexone" ui-sref="detail({id:bugid})">查看需求</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    
-    <span class="apply_submiting" ng-show="showSubmiting">提交中</span>
-    <a href="#" id="checkthis" ng-show="isSubmitSucc" ui-sref="detail({id:bugid})">查看当前需求</a>
-    <a href="#" id="refresh" ng-show="isSubmitSucc" ui-sref="apply" ui-sref-opts="{reload:true}">继续提需求</a>
+    <!-- E 提交成功弹层 -->
+
 </div>
 
 
@@ -208,7 +220,7 @@
 #editor .fr-wrapper h3 {font-size:1.17em;}
 #editor > div:not(.fr-wrapper):not(.fr-toolbar):not(.fr-sticky-dummy), #editor > div > a[href="https://froala.com/wysiwyg-editor"] {display:none!important;}
 
-/*业务选择*/
+/* 业务选择 */
 .dropdown {position:relative;font-size:13px;color:#333;vertical-align:middle;background:#fff;background-repeat:no-repeat;background-position:right 8px center;border:1px solid #ccc;border-radius:3px;outline:none;box-shadow:inset 0 1px 2px rgba(0,0,0,0.075);cursor:pointer;}
     .dropdown.active {border-bottom-color:transparent;}
         .dropdown_triangle {position:absolute;right:10px;top:10px;-webkit-transition:0.3s ease;transition:0.3s ease;}
@@ -221,4 +233,21 @@
                 .dropdown_menu_item .addsbu {line-height:1;}
                     .dropdown_menu_item .addsbu input {padding:0 8px;}
                     .dropdown_menu_item .addsbu button {margin-left:10px;padding:0 10px;height:30px;line-height:30px;background:#ff4400;}
+
+/* 提交成功弹层 */
+.apply_succpop {z-index:4;/*4才能掩盖编辑器*/position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.3);}
+    .apply_succpop_main {position:relative;top:25%;margin:0 auto;width:500px;}
+        .apply_succpop_main_wrap {
+            background:#fff;border-radius:5px;overflow:hidden;
+            -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);}
+            .apply_succpop_top {padding:0 10px;height:40px;line-height:40px;background:#384346;color:#fff;}
+            .apply_succpop_cont {}
+                .apply_succpop_cont_text {padding:15px 10px;line-height:2;border-left:2px solid #252535;border-right:2px solid #ff4400;background:#fafafa;}
+                    .apply_succpop_cont_text_num {text-align:center;color:#ff4400}
+                .apply_succpop_cont_continue, .apply_succpop_cont_checknow {height:40px;line-height:40px;text-align:center;}
+                .apply_succpop_cont_continue {background:#252535;color:#afaec5;}
+                .apply_succpop_cont_continue:hover {background:#2F2F44;color:#afaec5;}
+                .apply_succpop_cont_checknow {background:#ff4400;color:#f8f8f8;}
+                .apply_succpop_cont_checknow:hover {background:#dd4400;color:#f8f8f8;}
 </style>

@@ -42,7 +42,6 @@ var stateApply = {
 	    	if(!$scope.d_sbu && !$scope.d_sbuname) { _POP_.toast('所属业务不能为空'); return; }
 
 	    	var uploadedList = [];
-	        $scope.showSubmiting = true;
 	        angular.forEach($scope.uploader.queue, function(v, k) {
 	        	if(v.isSuccess) {
 	        		uploadedList.push({name:v.remoteName, oname:v.file.name, size:v.file.size, type:v.file.type});
@@ -63,12 +62,10 @@ var stateApply = {
 			    ua: navigator.userAgent
 			}).success(function(data) {
 				console.log(data)
-			    $scope.showSubmiting = false;
 			    $scope.bugid = data;
 			    $scope.isSubmitSucc = true;
 			}).catch(function(res) {
 				if(res.status===404) {
-					$scope.showSubmiting = false;
 					_POP_.toast('申请失败');
 				}
 			});

@@ -18,32 +18,39 @@ var stateList = {
 			$scope.sbus = data;
 		});
 
-       	$http.get('api/demand/list').success(function(data) {
+       	$http.get('api/demand/list', {
+       		params: {
+       			limit: $scope.itemsPerPage,
+       		}
+       	}).success(function(data) {
+       		console.info('raw response', data);
 	        var result;
-	        for(var i=0;i<data.length;i++) {
-	            result = new UAParser().setUA(data[i].env.ua).getResult();
-	            data[i].device = result.device.model || '';
-	            data[i].files = data[i].files || [];
+	        var demands = data;
+	        // var total = data.count;
+	        for(var i=0;i<demands.length;i++) {
+	            result = new UAParser().setUA(demands[i].env.ua).getResult();
+	            demands[i].device = result.device.model || '';
+	            demands[i].files = demands[i].files || [];
 
 	            // 文件计数
-	            var tcount = data[i].files && data[i].files.length ? data[i].files.length : 0;
-	            if(data[i].news && data[i].news.length) {
-	            	var tnews = data[i].news;
+	            var tcount = demands[i].files && demands[i].files.length ? demands[i].files.length : 0;
+	            if(demands[i].news && demands[i].news.length) {
+	            	var tnews = demands[i].news;
 	            	for(var j=0;j<tnews.length;j++) {
 	            		if(tnews[j].files && tnews[j].files.length) {
 	            			tcount += tnews[j].files.length;
 	            		}
 	            	}
 	            }
-	            data[i].filescount = tcount;
+	            demands[i].filescount = tcount;
 
 	            // 状态名
-	            data[i].stateName = stateNames[data[i].state];
+	            demands[i].stateName = stateNames[demands[i].state];
 	        }
-	        console.log(data);
+	        console.info('需求数据', demands);
 	        $scope.selectBugState = '';
 	        $scope.isLoaded = true;
-	        $scope.bugList = $scope.predlist = data || [];
+	        $scope.bugList = $scope.predlist = demands || [];
 	    });
 
 	    jQuery('.dsbuwrap').on('keyup', '#sbu_value', function(e) {
@@ -60,7 +67,7 @@ var stateList = {
 	    	}
 	    });
 	    $scope.$watch('selectBugState', function(n, o, scope) {
-	    	scope.stateName = stateNames[n];    
+	    	scope.stateName = stateNames[n];
 	    });
     }
 }

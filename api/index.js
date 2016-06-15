@@ -12,6 +12,7 @@ module.exports = {
 	demand: {
 		add: require('./demand/add'),
 		list: require('./demand/list'),
+		listpart: require('./demand/listpart'),
 		get: require('./demand/get'),
 		newsComment: require('./demand/news_comment'),
 		newsUpload: require('./demand/news_upload'),
