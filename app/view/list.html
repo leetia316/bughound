@@ -38,23 +38,6 @@
     </div>
 </div>
 
-<div class="dlist_turnpage">
-    <uib-pagination ng-show="totalcount > itemsPerPage"
-        total-items="totalcount" 
-        ng-model="currentPage" 
-        ng-change="selectPage()"
-        class="pagination-sm" 
-        boundary-links="true" 
-        rotate="false" 
-        num-pages="numPages"
-        items-per-page="itemsPerPage"
-        max-size="4"
-        previous-text="‹"
-        next-text="›"
-        first-text="«"
-        last-text="»"></uib-pagination>
-</div>
-
 <div class="dlist">
     <ul class="dlist_wrap">
         <li class="dlist_item" ui-sref="detail({id:x._id})" ng-repeat="x in bugList">
@@ -78,6 +61,23 @@
 
     <div class="loading" ng-hide="isLoaded"></div>
     <div class="buglist_none" ng-show="(bugList | filter:{state: selectBugState||selectBugState==0&&!selectBugId ? selectBugState : '', id:selectBugId, solver:(isMine?Session.userId:undefined)} | regex:'sbu.name':subsbustr).length==0"></div>
+</div>
+
+<div class="dlist_turnpage">
+    <uib-pagination ng-show="totalcount > itemsPerPage"
+        total-items="totalcount" 
+        ng-model="currentPage" 
+        ng-change="selectPage()"
+        class="pagination-sm" 
+        boundary-links="true" 
+        rotate="false" 
+        num-pages="numPages"
+        items-per-page="itemsPerPage"
+        max-size="4"
+        previous-text="‹"
+        next-text="›"
+        first-text="«"
+        last-text="»"></uib-pagination>
 </div>
 
 
@@ -110,7 +110,7 @@
     .search input.inp {width:100%;max-width:200px;}
     
 
-    .dlist_turnpage {margin-top:20px;text-align:center;}
+    .dlist_turnpage {margin-top:20px;text-align:right;}
         .pagination {display:inline-block;margin:0;padding:0;border-radius:4px;}
             .pagination > li {float:left;margin-left:-1px;border:1px solid #ddd;list-style:none;overflow:hidden;}
             .pagination > li:first-child {margin-left:0;border-top-left-radius:4px;border-bottom-left-radius:4px;}
