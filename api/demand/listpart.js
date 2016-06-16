@@ -6,24 +6,50 @@ const
 /**
  * 需求列表-截断（更人性）
  * ====================
- * @param [Number] limi 限制个数
+ * @desc 计算数量的那段跟查询那段好像有点冗余了，早晚干掉它
+ *
  * @param [String] select 选择字段 etc.多个字段用空格分开，遵循API写法
+ * @param [Number Array] states 需求的状态数组
+ * @param [String] sbu 业务ID精确匹配
  * @param [Number] skip 跳过个数
+ * @param [Number] limi 限制个数
  * @param [Boolean] count 是否计数
+ * @param [Bollean] mine 是否我的需求
  */
 module.exports = function(req, res) {
-	let limit = Number.parseInt(req.query.limit);
-	let select = req.query.select;
-	let skip = Number.parseInt(req.query.skip);
-	let count = !!req.query.count;
+	let select = req.body.select;
+	let states = req.body.states;
+	let sbu = req.body.sbu;
+	let limit = req.body.limit;
+	let skip = req.body.skip;
+	let count = !!req.body.count;
+	let mine = !!req.body.mine;
 		
-	limit = limit && Number.isInteger(limit) ? limit : 0;
-	select = select && typeof(select.trim)==='function' ? select.trim() : '';
-	skip = skip && Number.isInteger(skip) ? skip : 0;
-	
 	new Promise(function(resolve) {
+		// Count = 除去 [skip, limit] 其余条件组合取得的数量
 		if(count) {
-			db.Demand.count({}, function(err, count) {
+			let query =  db.Demand.find({})
+				.populate('sbu')
+				.populate({
+					path: 'news',
+					populate: { path: 'files', model: 'File'}
+				})
+				.sort({'updatedAt': -1});
+			
+			if(mine && req.session._id) {
+				query.where('solver').equals(req.session._id)
+			}
+			if(states && (states instanceof Array) && states.length>0 ) {
+				query.where('state').in(states)
+			}
+			if(sbu && typeof(sbu.trim)==='function') {
+				query.where('sbu').equals(sbu.trim());
+			}
+			if(select && typeof(select.trim)==='function') {
+				query.select( select.trim() );
+			}
+
+			query.count(function(err, count) {
 				if(err) {
 					reject(err);
 				} else {
@@ -34,27 +60,44 @@ module.exports = function(req, res) {
 			resolve();
 		}
 	}).then(function(count) {
-		db.Demand.find({})
+		let query =  db.Demand.find({})
 			.populate('sbu')
 			.populate({
 				path: 'news',
 				populate: { path: 'files', model: 'File'}
 			})
-			.sort({'updatedAt': -1})
-			.skip(skip)
-			.limit(limit)
-			.select(select)
-			.exec(function (err, docs) {
-				if(err) {
-					throw new Error(err);
+			.sort({'updatedAt': -1});
+
+		if(mine && req.session._id) {
+			query.where('solver').equals(req.session._id)
+		}
+		if(states && (states instanceof Array) && states.length>0 ) {
+			query.where('state').in(states)
+		}
+		if(sbu && typeof(sbu.trim)==='function') {
+			query.where('sbu').equals(sbu.trim());
+		}
+		if(select && typeof(select.trim)==='function') {
+			query.select( select.trim() );
+		}
+		if(skip && Number.isInteger(skip)) {
+			query.skip( skip );
+		}
+		if(limit && Number.isInteger(limit)) {
+			query.limit( limit );
+		}
+
+		query.exec(function (err, docs) {
+			if(err) {
+				throw new Error(err);
+			} else {
+				if(Number.isInteger(count)) {
+					res.json({demands: docs, count: count});
 				} else {
-					if(Number.isInteger(count)) {
-						res.json({demands: docs, count: count});
-					} else {
-						res.json({demands: docs});
-					}
+					res.json({demands: docs});
 				}
-			});
+			}
+		});
 	}).catch(function(err) {
 		console.error(err);
 		res.sendStatus(500);
