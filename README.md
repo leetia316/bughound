@@ -31,6 +31,7 @@ mkdir upload
 # 启动 Mongodb
 mongod --dbpath database/data
 # 手动添加第一个管理员用户，嗯手动，看下./database/index.js里的数据结构
+db.users.save({ erp:xxxx, name:右小镇, email:xxxx@xx.com, isadmin:1 })
 
 # 运行
 node server
