@@ -18,7 +18,6 @@ var stateSbulist = {
                     sid: x._id,
                     newname: x.name
                 }).then(function(res) {
-                    console.log('then')
                     if(res && res.status===200) {
                         _POP_.toast('修改成功');
                     }

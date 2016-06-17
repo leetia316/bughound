@@ -48,7 +48,7 @@ angular.module('rocket', [
 
 .run(function($rootScope, $http, $state, FileUploader, Session) {
     $http.get('api/auth').then(function(res) {
-        console.log(res.data)
+        console.info('用户信息', res.data);
         Session.create(res.data._id, res.data.erp, res.data.name, res.data.isAdmin);
     });
 

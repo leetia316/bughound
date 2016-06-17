@@ -24,7 +24,7 @@ var stateDetail = {
             var uploadedList = [];
             angular.forEach($scope.uploader.queue, function(v, k) {
                 if(v.isSuccess) {
-                    console.log(v)
+                    // console.log(v)
                     uploadedList.push({name:v.remoteName, oname:v.file.name, size:v.file.size, type:v.file.type});
                 }
             });
@@ -65,11 +65,11 @@ var stateDetail = {
             data.totalFiles = totalFiles;
 
     		$scope.data = data;
-            console.log(data)
+            console.info('需求数据', data);
     	});
 
 
-        $scope.nowcommentfn = function() {console.log(1234312)
+        $scope.nowcommentfn = function() {
             var html = jQuery('#editor').froalaEditor('html.get');
             if(!html) { _POP_.toast('你好像没有写什么');return; }
 

@@ -50,14 +50,14 @@ var stateList = {
 	    	});
 		}
 		//-----页面刚进来啊-----
-		demandsChange({
-       		// states: [0],
-       		// sbu: '',
-       		// skip: 0,
-       		limit: $scope.itemsPerPage,
-       		count: true,
-       		// mine: false
-       	});
+		// demandsChange({
+  //      		// states: [0],
+  //      		// sbu: '',
+  //      		// skip: 0,
+  //      		limit: $scope.itemsPerPage,
+  //      		count: true,
+  //      		// mine: false
+  //      	});
 
 		//-----选择业务-----
 	    $scope.selectedObject = function(selectedSbu) {

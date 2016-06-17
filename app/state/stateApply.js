@@ -61,7 +61,7 @@ var stateApply = {
 			    dpr: window.devicePixelRatio,
 			    ua: navigator.userAgent
 			}).success(function(data) {
-				console.log(data)
+				console.info('新需求ID', data)
 			    $scope.bugid = data;
 			    $scope.isSubmitSucc = true;
 			}).catch(function(res) {
@@ -91,7 +91,7 @@ var stateApply = {
     	});
 
     	document.addEventListener('paste', function (event) {
-		    console.log(event)
+		    // console.log(event)
 		    var isChrome = false;
 		    if ( event.clipboardData || event.originalEvent ) {
 		        //not for ie11   某些chrome版本使用的是event.originalEvent
