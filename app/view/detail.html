@@ -1,166 +1,200 @@
 {{ data.filescount }}
 
 <div class="detail" data-id="{{ data._id }}">
-    <h3 class="detail_tit">
-        {{ data.sbu.name }} · {{ data.title }}
-    </h3>
-    <!-- <div class="detail_sbu">
-        {{ data.sbu.name }}
-    </div> -->
-    <div class="detail_cont">
-        <div class="detail_cont_item">
-            <div class="detail_cont_item_hd">
-                <div class="detail_cont_item_hd_tit">需求描述</div>
-            </div>
-            <div class="detail_cont_item_main fr-view" ng-bind-html="(data.desc || '<span style=color:#ddd>某人这么懒，什么都没说</sp[an>') | scehtml"></div>
-        </div>
-        <div class="detail_cont_item">
-            <div class="detail_cont_item_hd">
-                <div class="detail_cont_item_hd_tit">附件</div>
-            </div>
-            <div class="detail_cont_item_main">
-                <ul class="detail_cont_item_files">
-                    <span style="color:#ddd" ng-show="data.totalFiles.length==0">没有附件</span>
-                    <li ng-repeat="x in data.totalFiles"><a href="api/attachment/{{ x.name }}/{{ x.oname }}">{{ x.oname }}</a></li>
-                    <li class="detail_cont_item_files_preview" ng-show="(data.totalFiles | regex:'type':'^image/').length>0">
-                        <button class="btn" ng-click="isShowPicpreview=true">图片预览</button>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <div class="detail_cont_item">
-            <div class="detail_cont_item_hd">
-                <div class="detail_cont_item_hd_tit">动态<div class="detail_cont_item_hd_tit_statename">{{ data.stateName }}</div></div>
-            </div>
-            <div class="detail_cont_item_main">
-                <ul class="detail_cont_item_actions">
-                    <li class="detail_cont_item_actions_item ly_box">
-                        <div class="detail_cont_item_actions_item_date">
-                            <div>{{ data.createdAt | fmtDateNormal }}</div>
-                        </div>
-                        <div class="detail_cont_item_actions_item_cont ly_box_flexone">
-                            <span class="detail_cont_item_actions_item_user">佚名</span> 提交了需求
-                            <div class="detail_cont_item_actions_item_upload">
-                                <div class="flist">
-                                    <div class="fitem" ng-repeat="f in data.files"><a href="api/attachment/{{ f.name }}/{{ f.oname }}">{{ f.oname }}</a></div>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="detail_cont_item_actions_item ly_box" ng-repeat="x in data.news">
-                        <div class="detail_cont_item_actions_item_date">
-                            <div>{{ x.date | fmtDateNormal }}</div>
-                        </div>
-                        <div class="detail_cont_item_actions_item_cont ly_box_flexone">
-                            
-                            <div class="fr-view" ng-show="x.type==1"><span class="detail_cont_item_actions_item_user">{{ x.user.name || '佚名' }}</span> 说：<br><div ng-bind-html="x.comment | scehtml"></div></div>
-                            
-                            <div class="detail_cont_item_actions_item_handle state{{ x.handle }}" ng-show="x.type==3"><span class="detail_cont_item_actions_item_user">{{ x.user.name || '佚名' }}</span> {{ x.handle==0 ? '驳回了需求' : '' }}{{ x.handle==1 ? '完成了需求' : '' }}</div>
-                            
-                            <div class="detail_cont_item_actions_item_upload" ng-show="x.type==2">
-                                <span class="detail_cont_item_actions_item_user">{{ x.user.name || '佚名' }}</span> 上传了文件 
-                                <div class="flist">
-                                    <div class="fitem" ng-repeat="f in x.files"><a href="api/attachment/{{ f.name }}/{{ f.oname }}">{{ f.oname }}</a></div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </li>
-                    <li class="detail_cont_item_actions_item ly_box">
-                        <div class="detail_cont_item_actions_item_date">
-                            <div>现在</div>
-                        </div>
-                        <div class="detail_cont_item_actions_item_cont ly_box_flexone">
-                            <div class="fornow" on-outside-element-click="isShowFornowmenu=whatNowhandling=false">
-                                <button class="fornow_btn btn" ng-click="(whatNowhandling=false) || (isShowFornowmenu=!isShowFornowmenu)">做点什么</button>
-
-                                <div class="fornow_menu" ng-show="isShowFornowmenu">
-                                    <div class="fornow_menu_btns" ng-show="!whatNowhandling">
-                                        <button class="btn" ng-click="whatNowhandling='comment'"><i class="iconfont">&#xe607;</i></button>
-                                        <button class="btn" ng-click="whatNowhandling='upload'"><i class="iconfont">&#xe609;</i></button>
-                                        <button class="btn" ng-click="whatNowhandling='handle'"><i class="iconfont">&#xe608;</i></button>
-                                    </div>
-
-                                    <div class="fornow_menu_comment" ng-show="whatNowhandling=='comment'">
-                                        <!-- <input class="inp" type="text" ng-model="nowcomment"> -->
-                                        <div><div id="editor" class="inp" ng-model="nowcomment"></div></div>
-                                        <button class="fornow_menu_comment_confirm btn" ng-click="nowcommentfn()">确定</button>
-                                        <button class="fornow_menu_comment_cancel btn" ng-click="whatNowhandling=isShowFornowmenu=null">取消</button>
-                                    </div>
-
-                                    <div class="fornow_menu_upload" ng-show="whatNowhandling=='upload'">
-                                        <div class="fornow_menu_upload_cont">
-                                            <table class="uploader_table">
-                                                <thead>
-                                                    <tr>
-                                                        <th width="40%">文件名</th>
-                                                        <th>大小</th>
-                                                        <th>进度</th>
-                                                        <th>状态</th>
-                                                        <th>操作</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr ng-repeat="item in uploader.queue">
-                                                        <td><strong style="word-break:break-all;">{{ item.file.name }}</strong></td>
-                                                        <td nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
-                                                        <td class="pg">
-                                                            <div class="progress">
-                                                                <div class="progress_bar" role="progressbar" ng-style="{ 'width':item.progress + '%' }"></div>
-                                                            </div>
-                                                        </td>
-                                                        <td class="status">
-                                                            <span ng-show="item.isSuccess"><i class="iconfont">&#xe605;</i></span>
-                                                            <span ng-show="item.isCancel"><i class="iconfont">&#xe604;</i></span>
-                                                            <span ng-show="item.isError"><i class="iconfont">&#xe606;</i></span>
-                                                        </td>
-                                                        <td class="action" nowrap>
-                                                            <!-- <button class="action_upload" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">上传</button> -->
-                                                            <!-- <button class="action_cancel" ng-click="item.cancel()" ng-disabled="!item.isUploading">取消</button> -->
-                                                            <button class="action_remove" ng-click="item.remove()">移除</button>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                            <div class="uploader_left">
-                                                <div class="uploader_drop" nv-file-drop uploader="uploader" contenteditable>把文件拖到这里上传，或者直接粘贴截图文件</div>
-                                            </div>
-                                            <div class="uploader_progress" style="">
-                                                <div class="uploader_progress_bar" role="progressbar" ng-style="{ 'width': uploader.progress + '%' }"></div>
-                                            </div>
-                                            
-                                            <div class="uploader_action">
-                                                <button class="uploader_action_uploadall" ng-click="uploader.uploadAll()" ng-disabled="!uploader.getNotUploadedItems().length">上传全部</button>
-                                                <!-- <button class="uploader_action_cancelall" ng-click="uploader.cancelAll()" ng-disabled="!uploader.isUploading">取消全部</button> -->
-                                                <button class="uploader_action_removeall" ng-click="uploader.clearQueue()" ng-disabled="!uploader.queue.length">移除全部</button>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="fornow_menu_handle" ng-show="whatNowhandling=='handle'">
-                                        <button class="fornow_menu_handle_btn btn" ng-click="nowhandlefn(0)" ng-disabled="data.state===0">驳回需求</button>
-                                        <button class="fornow_menu_handle_btn btn" ng-click="nowhandlefn(1)" ng-disabled="data.state===1 || !Session.userId">完成需求</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </div>
+  <h3 class="detail_tit">
+    {{ data.sbu.name }} · {{ data.title }}
+  </h3>
+  <!-- <div class="detail_sbu">
+    {{ data.sbu.name }}
+  </div> -->
+  <div class="detail_cont">
+    <div class="detail_cont_item">
+      <div class="detail_cont_item_hd">
+        <div class="detail_cont_item_hd_tit">需求描述</div>
+      </div>
+      <div class="detail_cont_item_main fr-view" ng-bind-html="(data.desc || '<span style=color:#ddd>某人这么懒，什么都没说</sp[an>') | scehtml"></div>
     </div>
+    <div class="detail_cont_item">
+      <div class="detail_cont_item_hd">
+        <div class="detail_cont_item_hd_tit">附件</div>
+      </div>
+      <div class="detail_cont_item_main">
+        <ul class="detail_cont_item_files">
+          <span style="color:#ddd" ng-show="data.totalFiles.length==0">没有附件</span>
+          <li ng-repeat="x in data.totalFiles"><a href="api/attachment/{{ x.name }}/{{ x.oname }}">{{ x.oname }}</a></li>
+          <li class="detail_cont_item_files_preview" ng-show="(data.totalFiles | regex:'type':'^image/').length>0">
+            <button class="btn" ng-click="isShowPicpreview=true">图片预览</button>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="detail_cont_item">
+      <div class="detail_cont_item_hd">
+        <div class="detail_cont_item_hd_tit">动态<div class="detail_cont_item_hd_tit_statename">{{ data.stateName }}</div></div>
+      </div>
+      <div class="detail_cont_item_main">
+        <ul class="detail_cont_item_actions">
+          <li class="detail_cont_item_actions_item ly_box">
+            <div class="detail_cont_item_actions_item_date">
+              <div>{{ data.createdAt | fmtDateNormal }}</div>
+            </div>
+            <div class="detail_cont_item_actions_item_cont ly_box_flexone">
+              <span class="detail_cont_item_actions_item_user">佚名</span> 提交了需求
+              <div class="detail_cont_item_actions_item_upload">
+                <div class="flist">
+                  <div class="fitem" ng-repeat="f in data.files"><a href="api/attachment/{{ f.name }}/{{ f.oname }}">{{ f.oname }}</a></div>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li class="detail_cont_item_actions_item ly_box" ng-repeat="x in data.news">
+            <div class="detail_cont_item_actions_item_date">
+              <div>{{ x.date | fmtDateNormal }}</div>
+            </div>
+            <div class="detail_cont_item_actions_item_cont ly_box_flexone">
+              <div class="fr-view" ng-show="x.type==1"><span class="detail_cont_item_actions_item_user">{{ x.user.name || '佚名' }}</span> 说：<br><div ng-bind-html="x.comment | scehtml"></div></div>
+
+              <div class="detail_cont_item_actions_item_handle state{{ x.handle }}" ng-show="x.type==3"><span class="detail_cont_item_actions_item_user">{{ x.user.name || '佚名' }}</span> {{ x.handle==0 ? '驳回了需求' : '' }}{{ x.handle==1 ? '完成了需求' : '' }}</div>
+
+              <div class="detail_cont_item_actions_item_upload" ng-show="x.type==2">
+                <span class="detail_cont_item_actions_item_user">{{ x.user.name || '佚名' }}</span> 上传了文件
+                <div class="flist">
+                  <div class="fitem" ng-repeat="f in x.files"><a href="api/attachment/{{ f.name }}/{{ f.oname }}">{{ f.oname }}</a></div>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li class="detail_cont_item_actions_item ly_box">
+            <div class="detail_cont_item_actions_item_date">
+              <div>现在</div>
+            </div>
+            <div class="detail_cont_item_actions_item_cont ly_box_flexone">
+              <div class="fornow" on-outside-element-click="isShowFornowmenu=whatNowhandling=false">
+                <button class="fornow_btn btn" ng-click="(whatNowhandling=false) || (isShowFornowmenu=!isShowFornowmenu)">做点什么</button>
+
+                <div class="fornow_menu" ng-show="isShowFornowmenu">
+                  <div class="fornow_menu_btns" ng-show="!whatNowhandling">
+                    <button class="btn" ng-click="whatNowhandling='comment'"><i class="iconfont">&#xe607;</i></button>
+                    <button class="btn" ng-click="whatNowhandling='upload'"><i class="iconfont">&#xe609;</i></button>
+                    <button class="btn" ng-click="whatNowhandling='handle'"><i class="iconfont">&#xe608;</i></button>
+                  </div>
+
+                  <div class="fornow_menu_comment" ng-show="whatNowhandling=='comment'">
+                    <!-- <input class="inp" type="text" ng-model="nowcomment"> -->
+                    <div><div id="editor" class="inp" ng-model="nowcomment"></div></div>
+                    <button class="fornow_menu_comment_confirm btn" ng-click="nowcommentfn()">确定</button>
+                    <button class="fornow_menu_comment_cancel btn" ng-click="whatNowhandling=isShowFornowmenu=null">取消</button>
+                  </div>
+
+                  <div class="fornow_menu_upload" ng-show="whatNowhandling=='upload'">
+                    <div class="fornow_menu_upload_cont">
+                      <table class="uploader_table">
+                        <thead>
+                          <tr>
+                            <th width="40%">文件名</th>
+                            <th>大小</th>
+                            <th>进度</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr ng-repeat="item in uploader.queue">
+                            <td><strong style="word-break:break-all;">{{ item.file.name }}</strong></td>
+                            <td nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+                            <td class="pg">
+                              <div class="progress">
+                                <div class="progress_bar" role="progressbar" ng-style="{ 'width':item.progress + '%' }"></div>
+                              </div>
+                            </td>
+                            <td class="status">
+                              <span ng-show="item.isSuccess"><i class="iconfont">&#xe605;</i></span>
+                              <span ng-show="item.isCancel"><i class="iconfont">&#xe604;</i></span>
+                              <span ng-show="item.isError"><i class="iconfont">&#xe606;</i></span>
+                            </td>
+                            <td class="action" nowrap>
+                              <!-- <button class="action_upload" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">上传</button> -->
+                              <!-- <button class="action_cancel" ng-click="item.cancel()" ng-disabled="!item.isUploading">取消</button> -->
+                              <button class="action_remove" ng-click="item.remove()">移除</button>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <div class="uploader_left">
+                        <div class="uploader_drop" nv-file-drop uploader="uploader" contenteditable>把文件拖到这里上传，或者直接粘贴截图文件</div>
+                      </div>
+                      <div class="uploader_progress" style="">
+                        <div class="uploader_progress_bar" role="progressbar" ng-style="{ 'width': uploader.progress + '%' }"></div>
+                      </div>
+
+                      <div class="uploader_action">
+                        <button class="uploader_action_uploadall" ng-click="uploader.uploadAll()" ng-disabled="!uploader.getNotUploadedItems().length">上传全部</button>
+                        <!-- <button class="uploader_action_cancelall" ng-click="uploader.cancelAll()" ng-disabled="!uploader.isUploading">取消全部</button> -->
+                        <button class="uploader_action_removeall" ng-click="uploader.clearQueue()" ng-disabled="!uploader.queue.length">移除全部</button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="fornow_menu_handle" ng-show="whatNowhandling=='handle'">
+                    <button class="fornow_menu_handle_btn btn" ng-click="nowhandlefn(0)" ng-disabled="data.state===0">驳回需求</button>
+                    <button class="fornow_menu_handle_btn btn" ng-click="nowhandlefn(1)" ng-disabled="data.state===1 || !Session.userId">完成需求</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div class="picpreview" ng-show="isShowPicpreview">
-    <div class="shape">
-        <div class="sides">
-            <div class="side {{ $index===0 ? 'active' : ''}}" ng-repeat="img in data.totalFiles | regex:'type':'^image/'">
-                <div><img ng-src="upload/{{img.name}}"></div>
-            </div>
-        </div>
+  <div class="shape">
+    <div class="sides">
+      <div class="side {{ $index===0 ? 'active' : ''}}" ng-repeat="img in data.totalFiles | regex:'type':'^image/'">
+        <div><img ng-src="upload/{{img.name}}"></div>
+      </div>
     </div>
-    <div class="preview_close" ng-click="isShowPicpreview=false"><i class="iconfont">&#xe606;</i></div>
+  </div>
+  <div class="preview_close" ng-click="isShowPicpreview=false"><i class="iconfont">&#xe606;</i></div>
 </div>
+
+<script>
+var idx = 0;
+jQuery('.picpreview').on('click', function() {
+    var shape = document.querySelector('.shape');
+    var sides = document.querySelector('.sides');
+    var side = document.querySelectorAll('.side');
+    var len = side.length;
+    if(len<=1) {
+        return;
+    }
+    var preidx = idx;
+    idx = (idx+1)%len;
+    shape.style.cssText = 'width:'+sides.clientWidth+'px;height:'+sides.clientHeight+'px';
+    shape.classList.add('animating');
+    sides.style.cssText = 'transform:translateX(0px) rotateY(-180deg)';
+    side[preidx].style.cssText = 'transform:rotateY(0deg)';
+    side[preidx].classList.add('hidden');
+    side[idx].style.cssText = 'left:0;transform:rotateY(180deg)';
+    side[idx].classList.add('animating');
+    setTimeout(function() {
+        shape.removeAttribute('style');
+        shape.classList.remove('animating');
+        sides.removeAttribute('style');
+        side[preidx].removeAttribute('style');
+        side[preidx].classList.remove('hidden');
+        side[preidx].classList.remove('active');
+        side[idx].removeAttribute('style');
+        side[idx].classList.remove('animating');
+        side[idx].classList.add('active');
+    }, 600);
+});
+// shape.addEventListener('click', function() {
+
+// });
+</script>
 
 <style>
 @charset 'UTF-8';
@@ -282,39 +316,3 @@
         .preview_close i.iconfont:hover {border-color:#fff;color:#fff;}
     .picpreview .shape {margin:20px auto 0;max-width:80%;}
 </style>
-
-<script>
-var idx = 0;
-jQuery('.picpreview').on('click', function() {
-    var shape = document.querySelector('.shape');
-    var sides = document.querySelector('.sides');
-    var side = document.querySelectorAll('.side');
-    var len = side.length;
-    if(len<=1) {
-        return;
-    }
-    var preidx = idx;
-    idx = (idx+1)%len;
-    shape.style.cssText = 'width:'+sides.clientWidth+'px;height:'+sides.clientHeight+'px';
-    shape.classList.add('animating');
-    sides.style.cssText = 'transform:translateX(0px) rotateY(-180deg)';
-    side[preidx].style.cssText = 'transform:rotateY(0deg)';
-    side[preidx].classList.add('hidden');
-    side[idx].style.cssText = 'left:0;transform:rotateY(180deg)';
-    side[idx].classList.add('animating');
-    setTimeout(function() {
-        shape.removeAttribute('style');
-        shape.classList.remove('animating');
-        sides.removeAttribute('style');
-        side[preidx].removeAttribute('style');
-        side[preidx].classList.remove('hidden');
-        side[preidx].classList.remove('active');
-        side[idx].removeAttribute('style');
-        side[idx].classList.remove('animating');
-        side[idx].classList.add('active');
-    }, 600);
-});
-// shape.addEventListener('click', function() {
-    
-// });
-</script>
