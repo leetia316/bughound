@@ -2,102 +2,118 @@
   <input class="inp" type="tel" placeholder="bug编号筛选" ng-model="selectBugId">
 </form> -->
 
-<div class="cohead ly_box">
-  <ul class="cohead_collection ly_box ly_box_flexone">
-    <li class="cohead_collection_item {{ !isMine?'active':'' }}" ng-click="selectMineDemand(false)"><i class="iconfont">&#xe602;</i>所有需求</li>
-    <li class="cohead_collection_item {{ isMine?'active':'' }}" ng-show="Session.userErp" ng-click="selectMineDemand(true)"><i class="iconfont">&#xe601;</i>我的需求</li>
-  </ul>
-  <div class="cohead_state">
-    <div class="cohead_state_main">
-      <div class="cohead_state_main_show"><span>{{stateNames[selectBugState] || '全部'}}</span><i class="iconfont">&#xe603;</i></div>
-      <div class="cohead_state_main_dropdown">
-        <ul>
-          <li ng-click="selectBugState=''">全部</li>
-          <li ng-click="selectBugState=0">未解决</li>
-          <li ng-click="selectBugState=1">已解决</li>
-          <!-- <li ng-click="selectBugState=2">已关闭</li> -->
-        </ul>
+<div class="plist">
+  <div class="cohead ly_box">
+    <ul class="cohead_collection ly_box ly_box_flexone">
+      <li class="cohead_collection_item {{ !isMine?'active':'' }}" ng-click="selectMineDemand(false)"><!-- <i class="iconfont">&#xe602;</i> -->所有需求</li>
+      <li class="cohead_collection_item {{ isMine?'active':'' }}" ng-show="Session.userErp" ng-click="selectMineDemand(true)"><!-- <i class="iconfont">&#xe601;</i> -->我的需求</li>
+    </ul>
+    <!-- <div class="cohead_state">
+      <div class="cohead_state_main">
+        <div class="cohead_state_main_show"><span>{{stateNames[selectBugState] || '全部'}}</span><i class="iconfont">&#xe603;</i></div>
+        <div class="cohead_state_main_dropdown">
+          <ul>
+            <li ng-click="selectBugState=''">全部</li>
+            <li ng-click="selectBugState=0">未解决</li>
+            <li ng-click="selectBugState=1">已解决</li>
+            <li ng-click="selectBugState=2">已关闭</li>xx
+          </ul>
+        </div>
       </div>
+    </div> -->
+    <div class="dsbuwrap" style="margin-left:20px;">
+      <angucomplete-alt
+        id="sbu"
+        placeholder="业务筛选"
+        pause="100"
+        input-changed="inputChanged"
+        selected-object="selectedObject"
+        local-data="sbus"
+        search-fields="name"
+        title-field="name"
+        minlength="1"
+        text-searching="正在搜索..."
+        text-no-results="没有找到匹配的"
+        match-class="highlight"
+        input-class="inp dsbu form-control form-control-small" />
     </div>
   </div>
-  <div class="dsbuwrap" style="margin-top:19px;margin-left:20px;">
-    <angucomplete-alt
-      id="sbu"
-      placeholder="业务筛选"
-      pause="100"
-      input-changed="inputChanged"
-      selected-object="selectedObject"
-      local-data="sbus"
-      search-fields="name"
-      title-field="name"
-      minlength="1"
-      text-searching="正在搜索..."
-      text-no-results="没有找到匹配的"
-      match-class="highlight"
-      input-class="inp dsbu form-control form-control-small" />
-  </div>
-</div>
 
-<div class="dlist">
-  <ul class="dlist_wrap">
-    <li class="dlist_item" ui-sref="detail({id:x._id})" ng-repeat="x in bugList">
-      <div class="dlist_item_cont ly_box">
-        <div class="dlist_item_label">
-          <div class="dlist_item_label_box ly_box">
-            <div>{{ x.sbu && x.sbu.name }}</div>
-            <div>{{ x.title }}</div>
-            <div></div>
+  <div class="dlist">
+    <ul class="dlist_wrap">
+      <li class="dlist_item" ui-sref="detail({id:x._id})" ng-repeat="x in bugList">
+        <div class="dlist_item_cont">
+          <div class="dlist_item_label">
+            <div class="dlist_item_label_box ly_box">
+              <div>{{ x.sbu && x.sbu.name }}</div>
+              <div>{{ x.title }}</div>
+              <div></div>
+            </div>
+          </div>
+          <div class="dlist_item_info">
+            <div class="dlist_item_stat"><i class="iconfont">&#xe60a;</i>{{ x.filescount }}</div>
+            <div class="dlist_item_stat"><i class="iconfont">&#xe607;</i>{{ x.news.length }}</div>
+            <div class="dlist_item_stat">{{ stateNames[x.state] }}</div>
+            <div class="dlist_item_stat">{{ x.updatedAt | fmtDateNormal }}</div>
           </div>
         </div>
-        <div class="dlist_item_stat"><i class="iconfont">&#xe60a;</i>{{ x.filescount }}</div>
-        <div class="dlist_item_stat"><i class="iconfont">&#xe607;</i>{{ x.news.length }}</div>
-        <div class="dlist_item_meta ly_box_flexone">
-          <div class="dlist_item_state state{{ x.state }}">{{ stateNames[x.state] }}</div>
-          <div class="dlist_item_date">{{ x.updatedAt | fmtDateNormal }} 最后更新</div>
-        </div>
-      </div>
-    </li>
-  </ul>
+      </li>
+    </ul>
 
-  <div class="loading" ng-hide="isLoaded"></div>
-  <div class="buglist_none" ng-show="(bugList | filter:{state: selectBugState||selectBugState==0&&!selectBugId ? selectBugState : '', id:selectBugId, solver:(isMine?Session.userId:undefined)} | regex:'sbu.name':subsbustr).length==0"></div>
-</div>
+    <div class="loading" ng-hide="isLoaded"></div>
+    <div class="buglist_none" ng-show="(bugList | filter:{state: selectBugState||selectBugState==0&&!selectBugId ? selectBugState : '', id:selectBugId, solver:(isMine?Session.userId:undefined)} | regex:'sbu.name':subsbustr).length==0"></div>
+  </div>
 
-<div class="dlist_turnpage">
-  <uib-pagination ng-show="totalcount > itemsPerPage"
-    total-items="totalcount"
-    ng-model="currentPage"
-    ng-change="selectPage()"
-    class="pagination-sm"
-    boundary-links="true"
-    rotate="false"
-    num-pages="numPages"
-    items-per-page="itemsPerPage"
-    max-size="4"
-    previous-text="‹"
-    next-text="›"
-    first-text="«"
-    last-text="»"></uib-pagination>
+  <div class="dlist_turnpage">
+    <uib-pagination ng-show="totalcount > itemsPerPage"
+      total-items="totalcount"
+      ng-model="currentPage"
+      ng-change="selectPage()"
+      class="pagination-sm"
+      boundary-links="true"
+      rotate="false"
+      num-pages="numPages"
+      items-per-page="itemsPerPage"
+      max-size="4"
+      previous-text="‹"
+      next-text="›"
+      first-text="«"
+      last-text="»"></uib-pagination>
+  </div>
 </div>
 
 
 <style>
-@charset 'UTF-8';
+.plist {
+  padding: 0 4% 80px;
+}
 
 .dlist {margin-top:20px;}
     .dlist_wrap {}
-        .dlist_item {margin-bottom:15px;/*border-top:1px solid #ddd;border-bottom:1px solid #ddd;*/border-radius:.285em;box-shadow:0 1px 3px 0 #d4d4d5, 0 0 0 1px #d4d4d5;cursor:pointer;}
+.dlist_item {
+  margin-bottom: 15px;
+  /*border-top:1px solid #ddd;border-bottom:1px solid #ddd;*/
+  border-radius: 3px;
+  box-shadow: 0 1px 3px 0 #d4d4d5, 0 0 0 1px #d4d4d5;
+  cursor: pointer;
+}
         .dlist_item:hover {background:#f8f8f8;/*transform:translate(-5px, 0);transition:.3s ease;*/}
             .dlist_item_cont {padding:10px 15px;}
-                .dlist_item_label {display:inline-block;}
+.dlist_item_label {
+}
                     .dlist_item_label_box {border-radius:2px;border:1px solid #ff4400;opacity:.9}
                         .dlist_item_label_box div {height:20px;line-height:20px;}
                         .dlist_item_label_box > div:nth-child(1) {padding:0 15px 0 5px;color:#fff;background:#ff4400;}
                         .dlist_item_label_box > div:nth-child(2) {position:relative;padding:0 5px;color:#ff4400;border-left:1px solid #ff4400;}
                             .dlist_item_label_box > div:nth-child(2):before {content:'';position:absolute;left:-1px;top:50%;display:block;width:6px;height:6px;border-bottom:1px solid #ff4400;border-left:1px solid #ff4400;background:#fff;-webkit-transform:rotate(45deg) translate(-50%, -50%);transform:rotate(45deg) translate(-50%, -50%);-webkit-transform-origin:top left;transform-origin:top left;}
-                .dlist_item_stat {display:inline-block;margin-left:20px;}
+.dlist_item_info {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+.dlist_item_stat {
+}
                     .dlist_item_stat i.iconfont {margin-right:3px;color:#ff4400;}
-                .dlist_item_meta {margin-left:20px;line-height:22px;font-size:12px;color:rgba(0,0,0,.4);overflow:hidden;}
                     .dlist_item_state {float:left;font-weight:bold;}
                     .dlist_item_state.state0 {color:#CC3333;}
                     .dlist_item_state.state1 {color:#009966;}
@@ -124,7 +140,14 @@
                 .pagination > .disabled > a {pointer-events:none;cursor:default;}
 .cohead {margin:20px 0 0;border-bottom:2px solid #e5e5e5;}
     .cohead_collection {}
-        .cohead_collection_item {margin-right:30px;margin-bottom:-2px;height:52px;line-height:50px;font-size:20px;border-bottom:2px solid transparent;cursor:pointer;}
+.cohead_collection_item {
+  margin-bottom: -2px;
+  padding: 0 5px;
+  height: 32px;
+  line-height: 30px;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+}
         .cohead_collection_item.active {color:#ff4400;border-color:#ff4400;}
             .cohead_collection_item i.iconfont {margin-right:3px;}
     .cohead_state {}

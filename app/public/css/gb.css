@@ -47,15 +47,32 @@ i.iconfont {font-family:iconfont;line-height:1;}
 		.mod_hd_logo {padding:0 15px;height:53px;background:#FF4400;cursor:pointer;}
 			.mod_hd_logo i {display:block;margin-top:10px;width:30px;height:30px;background:url(../img/rocket.png);background-size:100%;}
 			.mod_hd_logo div {margin-left:5px;line-height:50px;font-size:20px;}
-		.mod_hd_nav {margin-left:20px;}
-			.mod_hd_nav_ul {}
-				.mod_hd_nav li {padding:0 15px;}
-					.mod_hd_nav li a {line-height:50px;font-weight:bold;color:#757393;}
-					.mod_hd_nav li a:hover {color:#afaec5;}
-					.mod_hd_nav li.active a {color:#fff;}
-		.mod_hd_info {}
-			.mod_hd_info_user {position:relative;}
-				.mod_hd_info_user_main {line-height:50px;cursor:pointer;}
+.mod_hd_nav {
+  height: 50px;
+}
+.mod_hd_nav_ul {
+  height: 100%;
+}
+.mod_hd_nav li {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: #757393;
+}
+.mod_hd_nav li.active {
+  color: #fff;
+}
+.mod_hd_info {}
+.mod_hd_info_user {
+  position: relative;
+}
+.mod_hd_info_user_main {
+  padding: 0 10px;
+  line-height: 50px;
+  cursor: pointer;
+}
 					.mod_hd_info_user i {font-size:20px;vertical-align:middle;}
 					.mod_hd_info_user_text {margin-left:5px;color:#afaec5;}
 				.mod_hd_info_user_signin {z-index:1;position:absolute;top:100%;right:-20px;padding:10px 20px;background:#252535;}

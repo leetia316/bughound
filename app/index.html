@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html lang="zh-CN" ng-app="rocket">
 <head>
-<meta charset="utf-8" />
+<meta charset="utf-8">
 <title>Rocket | 需求提报平台</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -17,35 +17,28 @@
 <link rel="stylesheet" href="public/froala_editor_2.3.0/css/plugins/fullscreen.css">
 
 <!-- s dev -->
-<meta http-equiv="cache-control" content="max-age=0" />
-<meta http-equiv="cache-control" content="no-cache" />
-<meta http-equiv="expires" content="0" />
-<meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
-<meta http-equiv="pragma" content="no-cache" />
+<meta http-equiv="cache-control" content="max-age=0">
+<meta http-equiv="cache-control" content="no-cache">
+<meta http-equiv="expires" content="0">
+<meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT">
+<meta http-equiv="pragma" content="no-cache">
 <!-- e dev -->
 </head>
-<body ng-controller="mainctrl">
+<body ng-controller="mainctrl" ontouchstart>
 
 <!-- S 头部 -->
 <header class="mod_hd">
   <div class="mod_hd_cont ly_box">
     <div class="mod_hd_logo ly_box" ui-sref="apply">
-      <i class="ly_box_flexone"><!-- &#xe600; --></i><div>需求提报</div>
+      <i class="ly_box_flexone"><!-- &#xe600; --></i>
+      <!-- <div>需求提报</div> -->
     </div>
     <nav class="mod_hd_nav ly_box_flexone">
       <ul class="mod_hd_nav_ul ly_box">
-        <li class="{{navidx === 'list' && 'active'}}">
-          <a ui-sref="list">广场</a>
-        </li>
-        <li class="{{navidx === 'apply' && 'active'}}">
-          <a ui-sref="apply">申请</a>
-        </li>
-        <li class="{{navidx === 'sbulist' && 'active'}}">
-          <a ui-sref="sbulist">业务</a>
-        </li>
-        <li class="{{navidx === 'idlist' && 'active'}}" ng-show="userIsAdmin">
-          <a ui-sref="idlist">开发者</a>
-        </li>
+        <li class="{{navidx === 'list' && 'active'}}" ui-sref="list">广场</li>
+        <li class="{{navidx === 'apply' && 'active'}}" ui-sref="apply">申请</li>
+        <li class="{{navidx === 'sbulist' && 'active'}}" ui-sref="sbulist">业务</li>
+        <li class="{{navidx === 'idlist' && 'active'}}" ng-show="userIsAdmin" ui-sref="idlist">开发者</li>
       </ul>
     </nav>
     <div class="mod_hd_info">
