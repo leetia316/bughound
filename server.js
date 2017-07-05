@@ -1,21 +1,20 @@
 'use strict';
+ 
+const fs = require('fs')
+const path = require('path')
 
-const 
-	fs = require('fs'),
-	path = require('path'),
+const express = require('express')
+const bodyParser = require('body-parser')
+const cookieParser = require('cookie-parser')
+const session = require('express-session')
+const multer = require('multer')
+const helmet = require('helmet')
+const Ddos = require('ddos')
 
-	express = require('express'),
-	bodyParser = require('body-parser'),
-	cookieParser = require('cookie-parser'),
-	session = require('express-session'),
-	multer = require('multer'),
-	helmet = require('helmet'),
-	Ddos = require('ddos'),
+const api2 = require('./api/')
+const conf = require('./config.js')
 
-	api2 = require('./api/'),
-	conf = require('./config.js'),
-
-	app = express();
+const app = express();
 
 // Multer 上传器
 let uploader = multer({
