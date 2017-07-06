@@ -1,0 +1,16 @@
+<div class="sbulist">
+  <ul class="sbulist_ul">
+    <li class="sbulist_ul_item ly_box" ng-repeat="x in sbuList" ng-class=" x.isEditing ? 'editing' : '' ">
+      <div class="sbulist_ul_item_demandcount">{{ x.count }}</div>
+      <div class="sbulist_ul_item_name ly_box">
+        <div class="sbulist_ul_item_name_field">
+          <span ng-hide="x.isEditing">{{ x.name }}</span>
+          <input type="text" ng-model="x.name" ng-show="x.isEditing">
+        </div>
+        <button class="sbulist_ul_item_name_edit btn" ng-click="toggleEditing(x)"><i class="iconfont" ng-hide="x.isEditing">&#xe60b;</i><span ng-show="x.isEditing">保存</span></button>
+        <button class="sbulist_ul_item_name_cancel btn" ng-click="toggleEditing(x, true)" ng-show="x.isEditing">取消</button>
+      </div>
+      <div ng-repeat="y in x.historyname">{{'黑恶黑'}}</div>
+    </li>
+  </ul>
+</div>

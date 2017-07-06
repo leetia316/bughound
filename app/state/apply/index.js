@@ -1,12 +1,16 @@
+var style = require('./style.scss')
+var template = require('./template.html')
+
 var stateApply = {
   url: '/apply',
-  templateUrl: 'view/apply.html',
+  template: template,
   controller: function ($rootScope, $scope, $http, FileUploader) {
     var gIdx = 0
 		var files = []
 
   	// 业务列表
-  	$http.get('api/sbu/list').success(function (data) {
+  	$http.get('api/sbu/list').then(function (res) {
+      var data = res.data
   		$scope.sbus = data
   	})
 
@@ -65,7 +69,8 @@ var stateApply = {
 		    height: document.documentElement.clientHeight,
 		    dpr: window.devicePixelRatio,
 		    ua: navigator.userAgent
-  		}).success(function (data) {
+  		}).then(function (res) {
+        var data = res.data
   			console.info('新需求ID', data)
 		    $scope.bugid = data
 		    $scope.isSubmitSucc = true
@@ -196,3 +201,5 @@ var stateApply = {
   	})
   }
 }
+
+module.exports = stateApply

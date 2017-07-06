@@ -1,8 +1,12 @@
+var style = require('./style.scss')
+var template = require('./template.html')
+
 var stateIdlist = {
   url: '/idlist',
-  templateUrl: 'view/idlist.html',
+  template: template,
   controller: function ($rootScope, $scope, $http) {
-   	$http.get('api/user/list').success(function (data) {
+   	$http.get('api/user/list').then(function (res) {
+      var data = res.data
    		$scope.userList = data
    		$scope.isLoaded = true
       console.info('用户数据', data)
@@ -13,7 +17,7 @@ var stateIdlist = {
    			uid: uid,
    			name: name,
         email: email
-   		}).success(function () {
+   		}).then(function () {
         _POP_.toast('修改成功')
    			$scope.userList[idx].isEditing = false
    		})
@@ -28,7 +32,7 @@ var stateIdlist = {
    		$rootScope.modConfirmConfirm = function () {
    			$http.post('api/user/del', {
      			uid: uid
-     		}).success(function () {
+     		}).then(function () {
      			_POP_.toast('删除成功')
      			$rootScope.isPopupModConfirm = false
      			$scope.userList.splice(idx, 1)
@@ -40,7 +44,8 @@ var stateIdlist = {
    			erp: $scope.newErp,
    			name: $scope.newName,
         email: $scope.newEmail
-   		}).success(function (data) {
+   		}).then(function (res) {
+        var data = res.data
    			$scope.isAdding = false
    			$scope.newErp = null
    			$scope.newName = null
@@ -50,3 +55,5 @@ var stateIdlist = {
    	}
   }
 }
+
+module.exports = stateIdlist

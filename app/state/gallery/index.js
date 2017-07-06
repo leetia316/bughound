@@ -1,6 +1,9 @@
+var style = require('./style.scss')
+var template = require('./template.html')
+
 var stateList = {
   url: '/list',
-  templateUrl: 'view/list.html',
+  template: template,
   controller: function ($rootScope, $scope, $http, $state, Session) {
   	var preSelectBugState
 
@@ -14,12 +17,16 @@ var stateList = {
 	  $scope.isMine = false
 
 		// 业务列表
-		$http.get('api/sbu/list').success(function (data) {
-			$scope.sbus = data
+		$http.get('api/sbu/list').then(function (res) {
+			$scope.sbus = res.data
 		})
 
 	  var demandsChange = function (opts) {
-			$http.post('api/demand/listpart', opts).success(function (data) {
+			$http.post('api/demand/listpart', opts).then(function (res) {
+        if (res.status !== 200) {
+          return
+        }
+        var data = res.data
   	    var result
   	    var demands = data.demands
   	    if (data.count) {
@@ -120,3 +127,5 @@ var stateList = {
     })
   }
 }
+
+module.exports = stateList

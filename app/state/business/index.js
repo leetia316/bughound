@@ -1,8 +1,12 @@
+var style = require('./style.scss')
+var template = require('./template.html')
+
 var stateSbulist = {
   url: '/sbulist',
-  templateUrl: 'view/sbulist.html',
+  template: template,
   controller: function ($rootScope, $scope, $http) {
-   	$http.get('api/sbu/list').success(function (data) {
+   	$http.get('api/sbu/list').then(function (res) {
+      var data = res.data
    		$scope.sbuList = data
       console.info('业务数据', data)
    	})
@@ -35,3 +39,5 @@ var stateSbulist = {
     }
   }
 }
+
+module.exports = stateSbulist

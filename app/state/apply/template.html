@@ -1,0 +1,127 @@
+<div class="apply">
+  <form class="apply_form ly_box">
+    <div class="apply_form_left">
+      <dl class="form">
+        <dt><label>需求名称</label></dt>
+        <dd><input class="inp" type="text" style="width:100%;" placeholder="需求名称" ng-model="d_title"></dd>
+      </dl>
+
+      <dl class="form">
+        <dt><label>所属业务{{searchStr}}</label></dt>
+        <dd>
+          <!-- <angucomplete-alt
+            id="sbu"
+            placeholder="输入业务"
+            pause="100"
+            selected-object="d_sbu"
+            local-data="sbus"
+            search-fields="name"
+            title-field="name"
+            minlength="1"
+            text-searching="正在搜索..."
+            text-no-results="没有找到匹配的"
+            match-class="highlight"
+            input-class="inp dsbu form-control form-control-small" /> -->
+          <div class="dropdown {{isdropdownactive ? 'active' : ''}}" on-outside-element-click="isdropdownactive=false">
+            <!-- <input type="hidden"> -->
+            <i class="dropdown_triangle iconfont" ng-click="isdropdownactive=!isdropdownactive">&#xe603;</i>
+            <div class="dropdown_text" ng-click="isdropdownactive=!isdropdownactive">{{ d_sbuname || '选择一项业务' }}</div>
+            <div class="dropdown_menu">
+              <div class="dropdown_menu_item" ng-repeat="x in sbus" ng-click="selectItem(x._id, x.name)">{{ x.name }}
+              </div>
+              <div class="dropdown_menu_item">
+                <div class="addsbu ly_box">
+                  <input class="inp ly_box_flexone" type="text" ng-model="newsbu">
+                  <button class="btn" ng-click="addSbu(newsbu)">添加</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </dd>
+      </dl>
+
+      <dl class="form">
+        <dt><label>需求描述</label></dt>
+        <!-- <dd><textarea class="formfield_desc" placeholder="需求描述" ng-model="d_desc"></textarea></dd> -->
+        <dd>
+          <div id="editor"></div>
+        </dd>
+      </dl>
+    </div>
+    <div class="apply_form_right">
+      <dl class="form">
+        <dt><label>文件上传</label></dt>
+        <dd class="uploader">
+          <table class="uploader_table">
+            <thead>
+              <tr>
+                <th width="40%">文件名</th>
+                <th>大小</th>
+                <th>进度</th>
+                <th>状态</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="item in uploader.queue">
+                <td><strong style="word-break:break-all;">{{ item.file.name }}</strong></td>
+                <td nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+                <td class="pg">
+                  <div class="progress">
+                    <div class="progress_bar" role="progressbar" ng-style="{ 'width':item.progress + '%' }"></div>
+                  </div>
+                </td>
+                <td class="status">
+                  <span ng-show="item.isSuccess"><i class="iconfont">&#xe605;</i></span>
+                  <span ng-show="item.isCancel"><i class="iconfont">&#xe604;</i></span>
+                  <span ng-show="item.isError"><i class="iconfont">&#xe606;</i></span>
+                </td>
+                <td class="action" nowrap>
+                  <button class="action_upload" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">上传</button>
+                  <button class="action_cancel" ng-click="item.cancel()" ng-disabled="!item.isUploading">取消</button>
+                  <button class="action_remove" ng-click="item.remove()">移除</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- 上传进度
+          <div class="uploader_progress" style="">
+              <div class="uploader_progress_bar" role="progressbar" ng-style="{ 'width': uploader.progress + '%' }"></div>
+          </div>
+
+          <div class="uploader_action">
+            <button class="uploader_action_uploadall" ng-click="uploader.uploadAll()" ng-disabled="!uploader.getNotUploadedItems().length">上传全部</button>
+            <button class="uploader_action_cancelall" ng-click="uploader.cancelAll()" ng-disabled="!uploader.isUploading">取消全部</button>
+            <button class="uploader_action_removeall" ng-click="uploader.clearQueue()" ng-disabled="!uploader.queue.length">移除全部</button>
+          </div> -->
+          <div class="uploader_left">
+            <div class="uploader_drop" nv-file-drop uploader="uploader" contenteditable>把文件拖到这里上传，或者直接粘贴截图文件</div>
+          </div>
+        </dd>
+      </dl>
+    </div>
+  </form>
+  <div class="apply_form_submit"><button type="button" class="btn" ng-click="submit()">提交需求</button></div>
+
+  <!-- S 提交成功弹层 -->
+  <div class="apply_succpop" ng-show="isSubmitSucc">
+    <div class="apply_succpop_main">
+      <div class="apply_succpop_main_wrap">
+        <div class="apply_succpop_top">嘿！</div>
+        <div class="apply_succpop_cont">
+          <div class="apply_succpop_cont_text">
+            您的需求已经提交，编号：
+            <div class="apply_succpop_cont_text_num" ng-bind="bugid"></div>
+            快去告诉小伙伴来处理吧
+          </div>
+          <div class="ly_box">
+            <a href="#" class="apply_succpop_cont_continue ly_box_flexone" ui-sref="apply" ui-sref-opts="{reload:true}">继续申请</a>
+            <a href="#" class="apply_succpop_cont_checknow ly_box_flexone" ui-sref="detail({id:bugid})">查看需求</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- E 提交成功弹层 -->
+</div>

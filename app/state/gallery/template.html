@@ -1,0 +1,83 @@
+<!-- <form class="search">
+  <input class="inp" type="tel" placeholder="bug编号筛选" ng-model="selectBugId">
+</form> -->
+
+<div class="plist">
+  <div class="cohead ly_box">
+    <ul class="cohead_collection ly_box ly_box_flexone">
+      <li class="cohead_collection_item {{ !isMine?'active':'' }}" ng-click="selectMineDemand(false)"><!-- <i class="iconfont">&#xe602;</i> -->所有需求</li>
+      <li class="cohead_collection_item {{ isMine?'active':'' }}" ng-show="Session.userErp" ng-click="selectMineDemand(true)"><!-- <i class="iconfont">&#xe601;</i> -->我的需求</li>
+    </ul>
+    <!-- <div class="cohead_state">
+      <div class="cohead_state_main">
+        <div class="cohead_state_main_show"><span>{{stateNames[selectBugState] || '全部'}}</span><i class="iconfont">&#xe603;</i></div>
+        <div class="cohead_state_main_dropdown">
+          <ul>
+            <li ng-click="selectBugState=''">全部</li>
+            <li ng-click="selectBugState=0">未解决</li>
+            <li ng-click="selectBugState=1">已解决</li>
+            <li ng-click="selectBugState=2">已关闭</li>xx
+          </ul>
+        </div>
+      </div>
+    </div> -->
+    <div class="dsbuwrap" style="margin-left:20px;">
+      <angucomplete-alt
+        id="sbu"
+        placeholder="业务筛选"
+        pause="100"
+        input-changed="inputChanged"
+        selected-object="selectedObject"
+        local-data="sbus"
+        search-fields="name"
+        title-field="name"
+        minlength="1"
+        text-searching="正在搜索..."
+        text-no-results="没有找到匹配的"
+        match-class="highlight"
+        input-class="inp dsbu form-control form-control-small" />
+    </div>
+  </div>
+
+  <div class="dlist">
+    <ul class="dlist_wrap">
+      <li class="dlist_item" ui-sref="detail({id:x._id})" ng-repeat="x in bugList">
+        <div class="dlist_item_cont">
+          <div class="dlist_item_label">
+            <div class="dlist_item_label_box ly_box">
+              <div>{{ x.sbu && x.sbu.name }}</div>
+              <div>{{ x.title }}</div>
+              <div></div>
+            </div>
+          </div>
+          <div class="dlist_item_info">
+            <div class="dlist_item_stat"><i class="iconfont">&#xe60a;</i>{{ x.filescount }}</div>
+            <div class="dlist_item_stat"><i class="iconfont">&#xe607;</i>{{ x.news.length }}</div>
+            <div class="dlist_item_stat">{{ stateNames[x.state] }}</div>
+            <div class="dlist_item_stat">{{ x.updatedAt | fmtDateNormal }}</div>
+          </div>
+        </div>
+      </li>
+    </ul>
+
+    <div class="loading" ng-hide="isLoaded"></div>
+    <div class="buglist_none" ng-show="(bugList | filter:{state: selectBugState||selectBugState==0&&!selectBugId ? selectBugState : '', id:selectBugId, solver:(isMine?Session.userId:undefined)} | regex:'sbu.name':subsbustr).length==0"></div>
+  </div>
+
+  <div class="dlist_turnpage">
+    <uib-pagination ng-show="totalcount > itemsPerPage"
+      total-items="totalcount"
+      ng-model="currentPage"
+      ng-change="selectPage()"
+      class="pagination-sm"
+      boundary-links="true"
+      rotate="false"
+      num-pages="numPages"
+      items-per-page="itemsPerPage"
+      max-size="4"
+      previous-text="‹"
+      next-text="›"
+      first-text="«"
+      last-text="»"></uib-pagination>
+  </div>
+</div>

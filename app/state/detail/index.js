@@ -1,13 +1,17 @@
+var style = require('./style.scss')
+var template = require('./template.html')
+
 var stateDetail = {
   url: '/detail/:id',
-  templateUrl: 'view/detail.html',
+  template: template,
   controller: function ($rootScope, $scope, $http, $state, $stateParams, Session, FileUploader) {
     var stateNames = ['未完成', '已完成', '已关闭']
 
     $scope.Session = Session
 
     // 业务列表
-    $http.get('api/sbu/list').success(function (data) {
+    $http.get('api/sbu/list').then(function (res) {
+      var data = res.data
       $scope.sbus = data
     })
 
@@ -34,7 +38,8 @@ var stateDetail = {
       $http.post('api/demand/news_upload', {
         did: $scope.data._id,
         files: uploadedList
-      }).success(function (news) {
+      }).then(function (res) {
+        var news = res.data
         // 还是要处理一下下的
         news.user = {}
         news.user.name = Session.userName
@@ -50,7 +55,8 @@ var stateDetail = {
   		params: {
   			did: $stateParams.id
   		}
-  	}).success(function (data) {
+  	}).then(function (res) {
+      var data = res.data
   		data.pics = data.pics || []
   		data.ua = new UAParser().setUA(data.env.ua).getResult()
 
@@ -81,7 +87,8 @@ var stateDetail = {
       $http.post('api/demand/news_comment', {
         did: $scope.data._id,
         comment: html
-      }).success(function (news) {
+      }).then(function (res) {
+        var news = res.data
         _POP_.toast('评论成功')
 
         // 还是要处理一下下的
@@ -105,7 +112,8 @@ var stateDetail = {
       $http.post('api/demand/news_handle', {
         did: $scope.data._id,
         handle: state
-      }).success(function (news) {
+      }).then(function (res) {
+        var news = res.data
         if (state === 0) {
           _POP_.toast('需求已驳回')
         } else if (state === 1) {
@@ -242,3 +250,5 @@ var stateDetail = {
     })
   }
 }
+
+module.exports = stateDetail
