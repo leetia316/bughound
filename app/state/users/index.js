@@ -2,7 +2,7 @@ var style = require('./style.scss')
 var template = require('./template.html')
 
 var stateIdlist = {
-  url: '/idlist',
+  url: '/users',
   template: template,
   controller: function ($rootScope, $scope, $http) {
    	$http.get('api/user/list').then(function (res) {

@@ -17,10 +17,10 @@ var mineOnOutsideElementClick = require('./angular/directive/onOutsideElementCli
 var mineSession = require('./angular/service/Session')
 
 var stateApply = require('./state/apply')
-var stateList = require('./state/gallery')
+var stateGallery = require('./state/gallery')
 var stateDetail = require('./state/detail')
-var stateIdlist = require('./state/users')
-var stateSbulist = require('./state/business')
+var stateUsers = require('./state/users')
+var stateBusiness = require('./state/business')
 
 angular.module('rocket', [
   'ui.router',
@@ -56,14 +56,14 @@ angular.module('rocket', [
 }).config(function ($stateProvider, $urlRouterProvider, $httpProvider) {
   $httpProvider.interceptors.push('myInterceptor')
 
-  $urlRouterProvider.otherwise('list')
+  $urlRouterProvider.otherwise('gallery')
 
   $stateProvider
     .state('apply', stateApply)
-    .state('list', stateList)
+    .state('gallery', stateGallery)
     .state('detail', stateDetail)
-    .state('idlist', stateIdlist)
-    .state('sbulist', stateSbulist)
+    .state('users', stateUsers)
+    .state('business', stateBusiness)
 }).run(function ($rootScope, $http, $state, FileUploader, Session) {
   $http.get('api/auth').then(function (res) {
     console.info('用户信息', res.data)

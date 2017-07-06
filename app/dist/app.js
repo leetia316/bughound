@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 60);
+/******/ 	return __webpack_require__(__webpack_require__.s = 61);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -732,7 +732,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
  */
 /** */
 var hof_1 = __webpack_require__(2);
-var stateObject_1 = __webpack_require__(24);
+var stateObject_1 = __webpack_require__(26);
 var toStr = Object.prototype.toString;
 var tis = function (t) { return function (x) { return typeof (x) === t; }; };
 exports.isUndefined = tis('undefined');
@@ -1052,17 +1052,17 @@ function __export(m) {
 }
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(__webpack_require__(12));
-__export(__webpack_require__(64));
 __export(__webpack_require__(65));
 __export(__webpack_require__(66));
 __export(__webpack_require__(67));
-__export(__webpack_require__(77));
+__export(__webpack_require__(68));
 __export(__webpack_require__(78));
 __export(__webpack_require__(79));
-__export(__webpack_require__(45));
-__export(__webpack_require__(40));
 __export(__webpack_require__(80));
-__export(__webpack_require__(83));
+__export(__webpack_require__(47));
+__export(__webpack_require__(42));
+__export(__webpack_require__(81));
+__export(__webpack_require__(84));
 //# sourceMappingURL=index.js.map
 
 /***/ }),
@@ -1083,7 +1083,7 @@ var predicates_1 = __webpack_require__(1);
 var rejectFactory_1 = __webpack_require__(13);
 var common_1 = __webpack_require__(0);
 var hof_1 = __webpack_require__(2);
-var transition_1 = __webpack_require__(18);
+var transition_1 = __webpack_require__(20);
 var resolvable_1 = __webpack_require__(15);
 /**
  * Returns a string shortened to a maximum length
@@ -1633,7 +1633,7 @@ var common_1 = __webpack_require__(0);
 var hof_1 = __webpack_require__(2);
 var predicates_1 = __webpack_require__(1);
 var coreservices_1 = __webpack_require__(3);
-var paramType_1 = __webpack_require__(28);
+var paramType_1 = __webpack_require__(30);
 /** @hidden */ var hasOwn = Object.prototype.hasOwnProperty;
 /** @hidden */ var isShorthand = function (cfg) {
     return ["value", "type", "squash", "array", "dynamic"].filter(hasOwn.bind(cfg || {})).length === 0;
@@ -1826,7 +1826,7 @@ exports.Param = Param;
 /* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(62);
+__webpack_require__(63);
 module.exports = angular;
 
 
@@ -1843,10 +1843,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 /** @module common */ /** for typedoc */
 __export(__webpack_require__(0));
 __export(__webpack_require__(3));
-__export(__webpack_require__(17));
+__export(__webpack_require__(19));
 __export(__webpack_require__(2));
 __export(__webpack_require__(1));
-__export(__webpack_require__(25));
+__export(__webpack_require__(27));
 __export(__webpack_require__(5));
 __export(__webpack_require__(6));
 //# sourceMappingURL=index.js.map
@@ -2388,6 +2388,447 @@ exports.locationPluginFactory = locationPluginFactory;
 
 /***/ }),
 /* 17 */
+/***/ (function(module, exports) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+// css base code, injected by the css-loader
+module.exports = function(useSourceMap) {
+	var list = [];
+
+	// return the list of modules as css string
+	list.toString = function toString() {
+		return this.map(function (item) {
+			var content = cssWithMappingToString(item, useSourceMap);
+			if(item[2]) {
+				return "@media " + item[2] + "{" + content + "}";
+			} else {
+				return content;
+			}
+		}).join("");
+	};
+
+	// import a list of modules into the list
+	list.i = function(modules, mediaQuery) {
+		if(typeof modules === "string")
+			modules = [[null, modules, ""]];
+		var alreadyImportedModules = {};
+		for(var i = 0; i < this.length; i++) {
+			var id = this[i][0];
+			if(typeof id === "number")
+				alreadyImportedModules[id] = true;
+		}
+		for(i = 0; i < modules.length; i++) {
+			var item = modules[i];
+			// skip already imported module
+			// this implementation is not 100% perfect for weird media query combinations
+			//  when a module is imported multiple times with different media queries.
+			//  I hope this will never occur (Hey this way we have smaller bundles)
+			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
+				if(mediaQuery && !item[2]) {
+					item[2] = mediaQuery;
+				} else if(mediaQuery) {
+					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
+				}
+				list.push(item);
+			}
+		}
+	};
+	return list;
+};
+
+function cssWithMappingToString(item, useSourceMap) {
+	var content = item[1] || '';
+	var cssMapping = item[3];
+	if (!cssMapping) {
+		return content;
+	}
+
+	if (useSourceMap && typeof btoa === 'function') {
+		var sourceMapping = toComment(cssMapping);
+		var sourceURLs = cssMapping.sources.map(function (source) {
+			return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */'
+		});
+
+		return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
+	}
+
+	return [content].join('\n');
+}
+
+// Adapted from convert-source-map (MIT)
+function toComment(sourceMap) {
+	// eslint-disable-next-line no-undef
+	var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
+	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
+
+	return '/*# ' + data + ' */';
+}
+
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+
+var stylesInDom = {};
+
+var	memoize = function (fn) {
+	var memo;
+
+	return function () {
+		if (typeof memo === "undefined") memo = fn.apply(this, arguments);
+		return memo;
+	};
+};
+
+var isOldIE = memoize(function () {
+	// Test for IE <= 9 as proposed by Browserhacks
+	// @see http://browserhacks.com/#hack-e71d8692f65334173fee715c222cb805
+	// Tests for existence of standard globals is to allow style-loader
+	// to operate correctly into non-standard environments
+	// @see https://github.com/webpack-contrib/style-loader/issues/177
+	return window && document && document.all && !window.atob;
+});
+
+var getElement = (function (fn) {
+	var memo = {};
+
+	return function(selector) {
+		if (typeof memo[selector] === "undefined") {
+			memo[selector] = fn.call(this, selector);
+		}
+
+		return memo[selector]
+	};
+})(function (target) {
+	return document.querySelector(target)
+});
+
+var singleton = null;
+var	singletonCounter = 0;
+var	stylesInsertedAtTop = [];
+
+var	fixUrls = __webpack_require__(108);
+
+module.exports = function(list, options) {
+	if (typeof DEBUG !== "undefined" && DEBUG) {
+		if (typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
+	}
+
+	options = options || {};
+
+	options.attrs = typeof options.attrs === "object" ? options.attrs : {};
+
+	// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
+	// tags it will allow on a page
+	if (!options.singleton) options.singleton = isOldIE();
+
+	// By default, add <style> tags to the <head> element
+	if (!options.insertInto) options.insertInto = "head";
+
+	// By default, add <style> tags to the bottom of the target
+	if (!options.insertAt) options.insertAt = "bottom";
+
+	var styles = listToStyles(list, options);
+
+	addStylesToDom(styles, options);
+
+	return function update (newList) {
+		var mayRemove = [];
+
+		for (var i = 0; i < styles.length; i++) {
+			var item = styles[i];
+			var domStyle = stylesInDom[item.id];
+
+			domStyle.refs--;
+			mayRemove.push(domStyle);
+		}
+
+		if(newList) {
+			var newStyles = listToStyles(newList, options);
+			addStylesToDom(newStyles, options);
+		}
+
+		for (var i = 0; i < mayRemove.length; i++) {
+			var domStyle = mayRemove[i];
+
+			if(domStyle.refs === 0) {
+				for (var j = 0; j < domStyle.parts.length; j++) domStyle.parts[j]();
+
+				delete stylesInDom[domStyle.id];
+			}
+		}
+	};
+};
+
+function addStylesToDom (styles, options) {
+	for (var i = 0; i < styles.length; i++) {
+		var item = styles[i];
+		var domStyle = stylesInDom[item.id];
+
+		if(domStyle) {
+			domStyle.refs++;
+
+			for(var j = 0; j < domStyle.parts.length; j++) {
+				domStyle.parts[j](item.parts[j]);
+			}
+
+			for(; j < item.parts.length; j++) {
+				domStyle.parts.push(addStyle(item.parts[j], options));
+			}
+		} else {
+			var parts = [];
+
+			for(var j = 0; j < item.parts.length; j++) {
+				parts.push(addStyle(item.parts[j], options));
+			}
+
+			stylesInDom[item.id] = {id: item.id, refs: 1, parts: parts};
+		}
+	}
+}
+
+function listToStyles (list, options) {
+	var styles = [];
+	var newStyles = {};
+
+	for (var i = 0; i < list.length; i++) {
+		var item = list[i];
+		var id = options.base ? item[0] + options.base : item[0];
+		var css = item[1];
+		var media = item[2];
+		var sourceMap = item[3];
+		var part = {css: css, media: media, sourceMap: sourceMap};
+
+		if(!newStyles[id]) styles.push(newStyles[id] = {id: id, parts: [part]});
+		else newStyles[id].parts.push(part);
+	}
+
+	return styles;
+}
+
+function insertStyleElement (options, style) {
+	var target = getElement(options.insertInto)
+
+	if (!target) {
+		throw new Error("Couldn't find a style target. This probably means that the value for the 'insertInto' parameter is invalid.");
+	}
+
+	var lastStyleElementInsertedAtTop = stylesInsertedAtTop[stylesInsertedAtTop.length - 1];
+
+	if (options.insertAt === "top") {
+		if (!lastStyleElementInsertedAtTop) {
+			target.insertBefore(style, target.firstChild);
+		} else if (lastStyleElementInsertedAtTop.nextSibling) {
+			target.insertBefore(style, lastStyleElementInsertedAtTop.nextSibling);
+		} else {
+			target.appendChild(style);
+		}
+		stylesInsertedAtTop.push(style);
+	} else if (options.insertAt === "bottom") {
+		target.appendChild(style);
+	} else {
+		throw new Error("Invalid value for parameter 'insertAt'. Must be 'top' or 'bottom'.");
+	}
+}
+
+function removeStyleElement (style) {
+	if (style.parentNode === null) return false;
+	style.parentNode.removeChild(style);
+
+	var idx = stylesInsertedAtTop.indexOf(style);
+	if(idx >= 0) {
+		stylesInsertedAtTop.splice(idx, 1);
+	}
+}
+
+function createStyleElement (options) {
+	var style = document.createElement("style");
+
+	options.attrs.type = "text/css";
+
+	addAttrs(style, options.attrs);
+	insertStyleElement(options, style);
+
+	return style;
+}
+
+function createLinkElement (options) {
+	var link = document.createElement("link");
+
+	options.attrs.type = "text/css";
+	options.attrs.rel = "stylesheet";
+
+	addAttrs(link, options.attrs);
+	insertStyleElement(options, link);
+
+	return link;
+}
+
+function addAttrs (el, attrs) {
+	Object.keys(attrs).forEach(function (key) {
+		el.setAttribute(key, attrs[key]);
+	});
+}
+
+function addStyle (obj, options) {
+	var style, update, remove, result;
+
+	// If a transform function was defined, run it on the css
+	if (options.transform && obj.css) {
+	    result = options.transform(obj.css);
+
+	    if (result) {
+	    	// If transform returns a value, use that instead of the original css.
+	    	// This allows running runtime transformations on the css.
+	    	obj.css = result;
+	    } else {
+	    	// If the transform function returns a falsy value, don't add this css.
+	    	// This allows conditional loading of css
+	    	return function() {
+	    		// noop
+	    	};
+	    }
+	}
+
+	if (options.singleton) {
+		var styleIndex = singletonCounter++;
+
+		style = singleton || (singleton = createStyleElement(options));
+
+		update = applyToSingletonTag.bind(null, style, styleIndex, false);
+		remove = applyToSingletonTag.bind(null, style, styleIndex, true);
+
+	} else if (
+		obj.sourceMap &&
+		typeof URL === "function" &&
+		typeof URL.createObjectURL === "function" &&
+		typeof URL.revokeObjectURL === "function" &&
+		typeof Blob === "function" &&
+		typeof btoa === "function"
+	) {
+		style = createLinkElement(options);
+		update = updateLink.bind(null, style, options);
+		remove = function () {
+			removeStyleElement(style);
+
+			if(style.href) URL.revokeObjectURL(style.href);
+		};
+	} else {
+		style = createStyleElement(options);
+		update = applyToTag.bind(null, style);
+		remove = function () {
+			removeStyleElement(style);
+		};
+	}
+
+	update(obj);
+
+	return function updateStyle (newObj) {
+		if (newObj) {
+			if (
+				newObj.css === obj.css &&
+				newObj.media === obj.media &&
+				newObj.sourceMap === obj.sourceMap
+			) {
+				return;
+			}
+
+			update(obj = newObj);
+		} else {
+			remove();
+		}
+	};
+}
+
+var replaceText = (function () {
+	var textStore = [];
+
+	return function (index, replacement) {
+		textStore[index] = replacement;
+
+		return textStore.filter(Boolean).join('\n');
+	};
+})();
+
+function applyToSingletonTag (style, index, remove, obj) {
+	var css = remove ? "" : obj.css;
+
+	if (style.styleSheet) {
+		style.styleSheet.cssText = replaceText(index, css);
+	} else {
+		var cssNode = document.createTextNode(css);
+		var childNodes = style.childNodes;
+
+		if (childNodes[index]) style.removeChild(childNodes[index]);
+
+		if (childNodes.length) {
+			style.insertBefore(cssNode, childNodes[index]);
+		} else {
+			style.appendChild(cssNode);
+		}
+	}
+}
+
+function applyToTag (style, obj) {
+	var css = obj.css;
+	var media = obj.media;
+
+	if(media) {
+		style.setAttribute("media", media)
+	}
+
+	if(style.styleSheet) {
+		style.styleSheet.cssText = css;
+	} else {
+		while(style.firstChild) {
+			style.removeChild(style.firstChild);
+		}
+
+		style.appendChild(document.createTextNode(css));
+	}
+}
+
+function updateLink (link, options, obj) {
+	var css = obj.css;
+	var sourceMap = obj.sourceMap;
+
+	/*
+		If convertToAbsoluteUrls isn't defined, but sourcemaps are enabled
+		and there is no publicPath defined then lets turn convertToAbsoluteUrls
+		on by default.  Otherwise default to the convertToAbsoluteUrls option
+		directly
+	*/
+	var autoFixUrls = options.convertToAbsoluteUrls === undefined && sourceMap;
+
+	if (options.convertToAbsoluteUrls || autoFixUrls) {
+		css = fixUrls(css);
+	}
+
+	if (sourceMap) {
+		// http://stackoverflow.com/a/26603875
+		css += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + " */";
+	}
+
+	var blob = new Blob([css], { type: "text/css" });
+
+	var oldSrc = link.href;
+
+	link.href = URL.createObjectURL(blob);
+
+	if(oldSrc) URL.revokeObjectURL(oldSrc);
+}
+
+
+/***/ }),
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2476,7 +2917,7 @@ exports.Glob = Glob;
 //# sourceMappingURL=glob.js.map
 
 /***/ }),
-/* 18 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2494,13 +2935,13 @@ var predicates_1 = __webpack_require__(1);
 var hof_1 = __webpack_require__(2);
 var interface_1 = __webpack_require__(9); // has or is using
 var transitionHook_1 = __webpack_require__(14);
-var hookRegistry_1 = __webpack_require__(26);
-var hookBuilder_1 = __webpack_require__(31);
-var pathFactory_1 = __webpack_require__(19);
+var hookRegistry_1 = __webpack_require__(28);
+var hookBuilder_1 = __webpack_require__(33);
+var pathFactory_1 = __webpack_require__(21);
 var targetState_1 = __webpack_require__(7);
 var param_1 = __webpack_require__(10);
 var resolvable_1 = __webpack_require__(15);
-var resolveContext_1 = __webpack_require__(20);
+var resolveContext_1 = __webpack_require__(22);
 /** @hidden */
 var stateSelf = hof_1.prop("self");
 /**
@@ -3112,7 +3553,7 @@ exports.Transition = Transition;
 //# sourceMappingURL=transition.js.map
 
 /***/ }),
-/* 19 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3122,7 +3563,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var common_1 = __webpack_require__(0);
 var hof_1 = __webpack_require__(2);
 var targetState_1 = __webpack_require__(7);
-var pathNode_1 = __webpack_require__(27);
+var pathNode_1 = __webpack_require__(29);
 /**
  * This class contains functions which convert TargetStates, Nodes and paths from one type to another.
  */
@@ -3291,7 +3732,7 @@ exports.PathUtils = PathUtils;
 //# sourceMappingURL=pathFactory.js.map
 
 /***/ }),
-/* 20 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3303,9 +3744,9 @@ var common_1 = __webpack_require__(0);
 var hof_1 = __webpack_require__(2);
 var trace_1 = __webpack_require__(6);
 var coreservices_1 = __webpack_require__(3);
-var interface_1 = __webpack_require__(32);
+var interface_1 = __webpack_require__(34);
 var resolvable_1 = __webpack_require__(15);
-var pathFactory_1 = __webpack_require__(19);
+var pathFactory_1 = __webpack_require__(21);
 var strings_1 = __webpack_require__(5);
 var when = interface_1.resolvePolicies.when;
 var ALL_WHENS = [when.EAGER, when.LAZY];
@@ -3497,7 +3938,7 @@ var UIInjectorImpl = (function () {
 //# sourceMappingURL=resolveContext.js.map
 
 /***/ }),
-/* 21 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4006,7 +4447,7 @@ exports.UrlMatcher = UrlMatcher;
 //# sourceMappingURL=urlMatcher.js.map
 
 /***/ }),
-/* 22 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4057,7 +4498,7 @@ exports.BaseLocationServices = BaseLocationServices;
 //# sourceMappingURL=baseLocationService.js.map
 
 /***/ }),
-/* 23 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4077,12 +4518,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 /** for typedoc */
 var angular_1 = __webpack_require__(8);
 var core_1 = __webpack_require__(4);
-var views_1 = __webpack_require__(30);
-var templateFactory_1 = __webpack_require__(84);
-var stateProvider_1 = __webpack_require__(56);
-var onEnterExitRetain_1 = __webpack_require__(85);
-var locationServices_1 = __webpack_require__(86);
-var urlRouterProvider_1 = __webpack_require__(57);
+var views_1 = __webpack_require__(32);
+var templateFactory_1 = __webpack_require__(85);
+var stateProvider_1 = __webpack_require__(58);
+var onEnterExitRetain_1 = __webpack_require__(86);
+var locationServices_1 = __webpack_require__(87);
+var urlRouterProvider_1 = __webpack_require__(59);
 angular_1.ng.module("ui.router.angular1", []);
 var mod_init = angular_1.ng.module('ui.router.init', []);
 var mod_util = angular_1.ng.module('ui.router.util', ['ng', 'ui.router.init']);
@@ -4179,7 +4620,7 @@ exports.getLocals = function (ctx) {
 //# sourceMappingURL=services.js.map
 
 /***/ }),
-/* 24 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4187,7 +4628,7 @@ exports.getLocals = function (ctx) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var common_1 = __webpack_require__(0);
 var hof_1 = __webpack_require__(2);
-var glob_1 = __webpack_require__(17);
+var glob_1 = __webpack_require__(19);
 var predicates_1 = __webpack_require__(1);
 /**
  * Internal representation of a UI-Router state.
@@ -4299,7 +4740,7 @@ exports.StateObject = StateObject;
 //# sourceMappingURL=stateObject.js.map
 
 /***/ }),
-/* 25 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4351,7 +4792,7 @@ exports.Queue = Queue;
 //# sourceMappingURL=queue.js.map
 
 /***/ }),
-/* 26 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4364,7 +4805,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var common_1 = __webpack_require__(0);
 var predicates_1 = __webpack_require__(1);
 var interface_1 = __webpack_require__(9); // has or is using
-var glob_1 = __webpack_require__(17);
+var glob_1 = __webpack_require__(19);
 /**
  * Determines if the given state matches the matchCriteria
  *
@@ -4513,7 +4954,7 @@ exports.makeEvent = makeEvent;
 //# sourceMappingURL=hookRegistry.js.map
 
 /***/ }),
-/* 27 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4596,7 +5037,7 @@ exports.PathNode = PathNode;
 //# sourceMappingURL=pathNode.js.map
 
 /***/ }),
-/* 28 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4744,7 +5185,7 @@ function ArrayType(type, mode) {
 //# sourceMappingURL=paramType.js.map
 
 /***/ }),
-/* 29 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4756,23 +5197,23 @@ Object.defineProperty(exports, "__esModule", { value: true });
  */
 /** for typedoc */
 var interface_1 = __webpack_require__(9);
-var transition_1 = __webpack_require__(18);
-var hookRegistry_1 = __webpack_require__(26);
-var coreResolvables_1 = __webpack_require__(68);
-var redirectTo_1 = __webpack_require__(69);
-var onEnterExitRetain_1 = __webpack_require__(70);
-var resolve_1 = __webpack_require__(71);
-var views_1 = __webpack_require__(72);
-var updateGlobals_1 = __webpack_require__(73);
-var url_1 = __webpack_require__(74);
-var lazyLoad_1 = __webpack_require__(47);
-var transitionEventType_1 = __webpack_require__(48);
+var transition_1 = __webpack_require__(20);
+var hookRegistry_1 = __webpack_require__(28);
+var coreResolvables_1 = __webpack_require__(69);
+var redirectTo_1 = __webpack_require__(70);
+var onEnterExitRetain_1 = __webpack_require__(71);
+var resolve_1 = __webpack_require__(72);
+var views_1 = __webpack_require__(73);
+var updateGlobals_1 = __webpack_require__(74);
+var url_1 = __webpack_require__(75);
+var lazyLoad_1 = __webpack_require__(49);
+var transitionEventType_1 = __webpack_require__(50);
 var transitionHook_1 = __webpack_require__(14);
 var predicates_1 = __webpack_require__(1);
 var common_1 = __webpack_require__(0);
 var hof_1 = __webpack_require__(2);
-var ignoredTransition_1 = __webpack_require__(75);
-var invalidTransition_1 = __webpack_require__(76);
+var ignoredTransition_1 = __webpack_require__(76);
+var invalidTransition_1 = __webpack_require__(77);
 /**
  * The default [[Transition]] options.
  *
@@ -4989,7 +5430,7 @@ exports.TransitionService = TransitionService;
 //# sourceMappingURL=transitionService.js.map
 
 /***/ }),
-/* 30 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5104,7 +5545,7 @@ exports.Ng1ViewConfig = Ng1ViewConfig;
 //# sourceMappingURL=views.js.map
 
 /***/ }),
-/* 31 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5229,7 +5670,7 @@ function tupleSort(reverseDepthSort) {
 //# sourceMappingURL=hookBuilder.js.map
 
 /***/ }),
-/* 32 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5250,7 +5691,7 @@ exports.resolvePolicies = {
 //# sourceMappingURL=interface.js.map
 
 /***/ }),
-/* 33 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5265,7 +5706,7 @@ var common_1 = __webpack_require__(0);
 var predicates_1 = __webpack_require__(1);
 var hof_1 = __webpack_require__(2);
 var coreservices_1 = __webpack_require__(3);
-var paramType_1 = __webpack_require__(28);
+var paramType_1 = __webpack_require__(30);
 /**
  * A registry for parameter types.
  *
@@ -5412,7 +5853,7 @@ initDefaultTypes();
 //# sourceMappingURL=paramTypes.js.map
 
 /***/ }),
-/* 34 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5462,7 +5903,7 @@ exports.StateParams = StateParams;
 //# sourceMappingURL=stateParams.js.map
 
 /***/ }),
-/* 35 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5748,7 +6189,7 @@ exports.StateBuilder = StateBuilder;
 //# sourceMappingURL=stateBuilder.js.map
 
 /***/ }),
-/* 36 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5817,7 +6258,7 @@ exports.StateMatcher = StateMatcher;
 //# sourceMappingURL=stateMatcher.js.map
 
 /***/ }),
-/* 37 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5826,7 +6267,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 /** @module state */ /** for typedoc */
 var common_1 = __webpack_require__(0);
 var predicates_1 = __webpack_require__(1);
-var stateObject_1 = __webpack_require__(24);
+var stateObject_1 = __webpack_require__(26);
 var hof_1 = __webpack_require__(2);
 /** @internalapi */
 var StateQueueManager = (function () {
@@ -5915,7 +6356,7 @@ exports.StateQueueManager = StateQueueManager;
 //# sourceMappingURL=stateQueueManager.js.map
 
 /***/ }),
-/* 38 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5925,9 +6366,9 @@ exports.StateQueueManager = StateQueueManager;
  * @module state
  */ /** for typedoc */
 Object.defineProperty(exports, "__esModule", { value: true });
-var stateMatcher_1 = __webpack_require__(36);
-var stateBuilder_1 = __webpack_require__(35);
-var stateQueueManager_1 = __webpack_require__(37);
+var stateMatcher_1 = __webpack_require__(38);
+var stateBuilder_1 = __webpack_require__(37);
+var stateQueueManager_1 = __webpack_require__(39);
 var common_1 = __webpack_require__(0);
 var hof_1 = __webpack_require__(2);
 var StateRegistry = (function () {
@@ -6077,7 +6518,7 @@ exports.StateRegistry = StateRegistry;
 //# sourceMappingURL=stateRegistry.js.map
 
 /***/ }),
-/* 39 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6090,17 +6531,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
 /** */
 var common_1 = __webpack_require__(0);
 var predicates_1 = __webpack_require__(1);
-var queue_1 = __webpack_require__(25);
+var queue_1 = __webpack_require__(27);
 var coreservices_1 = __webpack_require__(3);
-var pathFactory_1 = __webpack_require__(19);
-var pathNode_1 = __webpack_require__(27);
-var transitionService_1 = __webpack_require__(29);
+var pathFactory_1 = __webpack_require__(21);
+var pathNode_1 = __webpack_require__(29);
+var transitionService_1 = __webpack_require__(31);
 var rejectFactory_1 = __webpack_require__(13);
 var targetState_1 = __webpack_require__(7);
 var param_1 = __webpack_require__(10);
-var glob_1 = __webpack_require__(17);
-var resolveContext_1 = __webpack_require__(20);
-var lazyLoad_1 = __webpack_require__(47);
+var glob_1 = __webpack_require__(19);
+var resolveContext_1 = __webpack_require__(22);
+var lazyLoad_1 = __webpack_require__(49);
 var hof_1 = __webpack_require__(2);
 /**
  * Provides state related service functions
@@ -6656,7 +7097,7 @@ exports.StateService = StateService;
 //# sourceMappingURL=stateService.js.map
 
 /***/ }),
-/* 40 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6666,16 +7107,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
  * @coreapi
  * @module core
  */ /** */
-var urlMatcherFactory_1 = __webpack_require__(41);
-var urlRouter_1 = __webpack_require__(42);
-var transitionService_1 = __webpack_require__(29);
-var view_1 = __webpack_require__(44);
-var stateRegistry_1 = __webpack_require__(38);
-var stateService_1 = __webpack_require__(39);
-var globals_1 = __webpack_require__(45);
+var urlMatcherFactory_1 = __webpack_require__(43);
+var urlRouter_1 = __webpack_require__(44);
+var transitionService_1 = __webpack_require__(31);
+var view_1 = __webpack_require__(46);
+var stateRegistry_1 = __webpack_require__(40);
+var stateService_1 = __webpack_require__(41);
+var globals_1 = __webpack_require__(47);
 var common_1 = __webpack_require__(0);
 var predicates_1 = __webpack_require__(1);
-var urlService_1 = __webpack_require__(46);
+var urlService_1 = __webpack_require__(48);
 var trace_1 = __webpack_require__(6);
 /** @hidden */
 var _routerInstance = 0;
@@ -6846,7 +7287,7 @@ exports.UIRouter = UIRouter;
 //# sourceMappingURL=router.js.map
 
 /***/ }),
-/* 41 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6858,9 +7299,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
  */ /** for typedoc */
 var common_1 = __webpack_require__(0);
 var predicates_1 = __webpack_require__(1);
-var urlMatcher_1 = __webpack_require__(21);
+var urlMatcher_1 = __webpack_require__(23);
 var param_1 = __webpack_require__(10);
-var paramTypes_1 = __webpack_require__(33);
+var paramTypes_1 = __webpack_require__(35);
 /**
  * Factory for [[UrlMatcher]] instances.
  *
@@ -6979,7 +7420,7 @@ exports.UrlMatcherFactory = UrlMatcherFactory;
 //# sourceMappingURL=urlMatcherFactory.js.map
 
 /***/ }),
-/* 42 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6992,9 +7433,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 /** for typedoc */
 var common_1 = __webpack_require__(0);
 var predicates_1 = __webpack_require__(1);
-var urlMatcher_1 = __webpack_require__(21);
+var urlMatcher_1 = __webpack_require__(23);
 var hof_1 = __webpack_require__(2);
-var urlRule_1 = __webpack_require__(43);
+var urlRule_1 = __webpack_require__(45);
 var targetState_1 = __webpack_require__(7);
 /** @hidden */
 function appendBasePath(url, isHtml5, absolute, baseHref) {
@@ -7258,7 +7699,7 @@ function getHandlerFn(handler) {
 //# sourceMappingURL=urlRouter.js.map
 
 /***/ }),
-/* 43 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7268,7 +7709,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
  * @coreapi
  * @module url
  */ /** */
-var urlMatcher_1 = __webpack_require__(21);
+var urlMatcher_1 = __webpack_require__(23);
 var predicates_1 = __webpack_require__(1);
 var common_1 = __webpack_require__(0);
 var hof_1 = __webpack_require__(2);
@@ -7473,7 +7914,7 @@ exports.BaseUrlRule = BaseUrlRule;
 //# sourceMappingURL=urlRule.js.map
 
 /***/ }),
-/* 44 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7764,7 +8205,7 @@ exports.ViewService = ViewService;
 //# sourceMappingURL=view.js.map
 
 /***/ }),
-/* 45 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7774,8 +8215,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
  * @coreapi
  * @module core
  */ /** */
-var stateParams_1 = __webpack_require__(34);
-var queue_1 = __webpack_require__(25);
+var stateParams_1 = __webpack_require__(36);
+var queue_1 = __webpack_require__(27);
 /**
  * Global router state
  *
@@ -7808,7 +8249,7 @@ exports.UIRouterGlobals = UIRouterGlobals;
 //# sourceMappingURL=globals.js.map
 
 /***/ }),
-/* 46 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7894,7 +8335,7 @@ exports.UrlService = UrlService;
 //# sourceMappingURL=urlService.js.map
 
 /***/ }),
-/* 47 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7997,7 +8438,7 @@ exports.lazyLoadState = lazyLoadState;
 //# sourceMappingURL=lazyLoad.js.map
 
 /***/ }),
-/* 48 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8031,7 +8472,7 @@ exports.TransitionEventType = TransitionEventType;
 //# sourceMappingURL=transitionEventType.js.map
 
 /***/ }),
-/* 49 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8092,7 +8533,7 @@ exports.$q = {
 //# sourceMappingURL=q.js.map
 
 /***/ }),
-/* 50 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8198,7 +8639,7 @@ exports.$injector = {
 //# sourceMappingURL=injector.js.map
 
 /***/ }),
-/* 51 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8220,7 +8661,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
  */
 /** */
 var utils_1 = __webpack_require__(16);
-var baseLocationService_1 = __webpack_require__(22);
+var baseLocationService_1 = __webpack_require__(24);
 /** A `LocationServices` that uses the browser hash "#" to get/set the current location */
 var HashLocationService = (function (_super) {
     __extends(HashLocationService, _super);
@@ -8245,7 +8686,7 @@ exports.HashLocationService = HashLocationService;
 //# sourceMappingURL=hashLocationService.js.map
 
 /***/ }),
-/* 52 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8266,7 +8707,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
  * @module vanilla
  */
 /** */
-var baseLocationService_1 = __webpack_require__(22);
+var baseLocationService_1 = __webpack_require__(24);
 /** A `LocationServices` that gets/sets the current location from an in-memory object */
 var MemoryLocationService = (function (_super) {
     __extends(MemoryLocationService, _super);
@@ -8285,7 +8726,7 @@ exports.MemoryLocationService = MemoryLocationService;
 //# sourceMappingURL=memoryLocationService.js.map
 
 /***/ }),
-/* 53 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8302,7 +8743,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var utils_1 = __webpack_require__(16);
-var baseLocationService_1 = __webpack_require__(22);
+var baseLocationService_1 = __webpack_require__(24);
 /**
  * A `LocationServices` that gets/sets the current location using the browser's `location` and `history` apis
  *
@@ -8343,7 +8784,7 @@ exports.PushStateLocationService = PushStateLocationService;
 //# sourceMappingURL=pushStateLocationService.js.map
 
 /***/ }),
-/* 54 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8374,7 +8815,7 @@ exports.MemoryLocationConfig = MemoryLocationConfig;
 //# sourceMappingURL=memoryLocationConfig.js.map
 
 /***/ }),
-/* 55 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8427,7 +8868,7 @@ exports.BrowserLocationConfig = BrowserLocationConfig;
 //# sourceMappingURL=browserLocationConfig.js.map
 
 /***/ }),
-/* 56 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8573,7 +9014,7 @@ exports.StateProvider = StateProvider;
 //# sourceMappingURL=stateProvider.js.map
 
 /***/ }),
-/* 57 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8785,454 +9226,10 @@ exports.UrlRouterProvider = UrlRouterProvider;
 //# sourceMappingURL=urlRouterProvider.js.map
 
 /***/ }),
-/* 58 */
+/* 60 */
 /***/ (function(module, exports) {
 
-/*
-	MIT License http://www.opensource.org/licenses/mit-license.php
-	Author Tobias Koppers @sokra
-*/
-// css base code, injected by the css-loader
-module.exports = function(useSourceMap) {
-	var list = [];
-
-	// return the list of modules as css string
-	list.toString = function toString() {
-		return this.map(function (item) {
-			var content = cssWithMappingToString(item, useSourceMap);
-			if(item[2]) {
-				return "@media " + item[2] + "{" + content + "}";
-			} else {
-				return content;
-			}
-		}).join("");
-	};
-
-	// import a list of modules into the list
-	list.i = function(modules, mediaQuery) {
-		if(typeof modules === "string")
-			modules = [[null, modules, ""]];
-		var alreadyImportedModules = {};
-		for(var i = 0; i < this.length; i++) {
-			var id = this[i][0];
-			if(typeof id === "number")
-				alreadyImportedModules[id] = true;
-		}
-		for(i = 0; i < modules.length; i++) {
-			var item = modules[i];
-			// skip already imported module
-			// this implementation is not 100% perfect for weird media query combinations
-			//  when a module is imported multiple times with different media queries.
-			//  I hope this will never occur (Hey this way we have smaller bundles)
-			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
-				if(mediaQuery && !item[2]) {
-					item[2] = mediaQuery;
-				} else if(mediaQuery) {
-					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
-				}
-				list.push(item);
-			}
-		}
-	};
-	return list;
-};
-
-function cssWithMappingToString(item, useSourceMap) {
-	var content = item[1] || '';
-	var cssMapping = item[3];
-	if (!cssMapping) {
-		return content;
-	}
-
-	if (useSourceMap && typeof btoa === 'function') {
-		var sourceMapping = toComment(cssMapping);
-		var sourceURLs = cssMapping.sources.map(function (source) {
-			return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */'
-		});
-
-		return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
-	}
-
-	return [content].join('\n');
-}
-
-// Adapted from convert-source-map (MIT)
-function toComment(sourceMap) {
-	// eslint-disable-next-line no-undef
-	var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
-	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
-
-	return '/*# ' + data + ' */';
-}
-
-
-/***/ }),
-/* 59 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/*
-	MIT License http://www.opensource.org/licenses/mit-license.php
-	Author Tobias Koppers @sokra
-*/
-
-var stylesInDom = {};
-
-var	memoize = function (fn) {
-	var memo;
-
-	return function () {
-		if (typeof memo === "undefined") memo = fn.apply(this, arguments);
-		return memo;
-	};
-};
-
-var isOldIE = memoize(function () {
-	// Test for IE <= 9 as proposed by Browserhacks
-	// @see http://browserhacks.com/#hack-e71d8692f65334173fee715c222cb805
-	// Tests for existence of standard globals is to allow style-loader
-	// to operate correctly into non-standard environments
-	// @see https://github.com/webpack-contrib/style-loader/issues/177
-	return window && document && document.all && !window.atob;
-});
-
-var getElement = (function (fn) {
-	var memo = {};
-
-	return function(selector) {
-		if (typeof memo[selector] === "undefined") {
-			memo[selector] = fn.call(this, selector);
-		}
-
-		return memo[selector]
-	};
-})(function (target) {
-	return document.querySelector(target)
-});
-
-var singleton = null;
-var	singletonCounter = 0;
-var	stylesInsertedAtTop = [];
-
-var	fixUrls = __webpack_require__(107);
-
-module.exports = function(list, options) {
-	if (typeof DEBUG !== "undefined" && DEBUG) {
-		if (typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
-	}
-
-	options = options || {};
-
-	options.attrs = typeof options.attrs === "object" ? options.attrs : {};
-
-	// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
-	// tags it will allow on a page
-	if (!options.singleton) options.singleton = isOldIE();
-
-	// By default, add <style> tags to the <head> element
-	if (!options.insertInto) options.insertInto = "head";
-
-	// By default, add <style> tags to the bottom of the target
-	if (!options.insertAt) options.insertAt = "bottom";
-
-	var styles = listToStyles(list, options);
-
-	addStylesToDom(styles, options);
-
-	return function update (newList) {
-		var mayRemove = [];
-
-		for (var i = 0; i < styles.length; i++) {
-			var item = styles[i];
-			var domStyle = stylesInDom[item.id];
-
-			domStyle.refs--;
-			mayRemove.push(domStyle);
-		}
-
-		if(newList) {
-			var newStyles = listToStyles(newList, options);
-			addStylesToDom(newStyles, options);
-		}
-
-		for (var i = 0; i < mayRemove.length; i++) {
-			var domStyle = mayRemove[i];
-
-			if(domStyle.refs === 0) {
-				for (var j = 0; j < domStyle.parts.length; j++) domStyle.parts[j]();
-
-				delete stylesInDom[domStyle.id];
-			}
-		}
-	};
-};
-
-function addStylesToDom (styles, options) {
-	for (var i = 0; i < styles.length; i++) {
-		var item = styles[i];
-		var domStyle = stylesInDom[item.id];
-
-		if(domStyle) {
-			domStyle.refs++;
-
-			for(var j = 0; j < domStyle.parts.length; j++) {
-				domStyle.parts[j](item.parts[j]);
-			}
-
-			for(; j < item.parts.length; j++) {
-				domStyle.parts.push(addStyle(item.parts[j], options));
-			}
-		} else {
-			var parts = [];
-
-			for(var j = 0; j < item.parts.length; j++) {
-				parts.push(addStyle(item.parts[j], options));
-			}
-
-			stylesInDom[item.id] = {id: item.id, refs: 1, parts: parts};
-		}
-	}
-}
-
-function listToStyles (list, options) {
-	var styles = [];
-	var newStyles = {};
-
-	for (var i = 0; i < list.length; i++) {
-		var item = list[i];
-		var id = options.base ? item[0] + options.base : item[0];
-		var css = item[1];
-		var media = item[2];
-		var sourceMap = item[3];
-		var part = {css: css, media: media, sourceMap: sourceMap};
-
-		if(!newStyles[id]) styles.push(newStyles[id] = {id: id, parts: [part]});
-		else newStyles[id].parts.push(part);
-	}
-
-	return styles;
-}
-
-function insertStyleElement (options, style) {
-	var target = getElement(options.insertInto)
-
-	if (!target) {
-		throw new Error("Couldn't find a style target. This probably means that the value for the 'insertInto' parameter is invalid.");
-	}
-
-	var lastStyleElementInsertedAtTop = stylesInsertedAtTop[stylesInsertedAtTop.length - 1];
-
-	if (options.insertAt === "top") {
-		if (!lastStyleElementInsertedAtTop) {
-			target.insertBefore(style, target.firstChild);
-		} else if (lastStyleElementInsertedAtTop.nextSibling) {
-			target.insertBefore(style, lastStyleElementInsertedAtTop.nextSibling);
-		} else {
-			target.appendChild(style);
-		}
-		stylesInsertedAtTop.push(style);
-	} else if (options.insertAt === "bottom") {
-		target.appendChild(style);
-	} else {
-		throw new Error("Invalid value for parameter 'insertAt'. Must be 'top' or 'bottom'.");
-	}
-}
-
-function removeStyleElement (style) {
-	if (style.parentNode === null) return false;
-	style.parentNode.removeChild(style);
-
-	var idx = stylesInsertedAtTop.indexOf(style);
-	if(idx >= 0) {
-		stylesInsertedAtTop.splice(idx, 1);
-	}
-}
-
-function createStyleElement (options) {
-	var style = document.createElement("style");
-
-	options.attrs.type = "text/css";
-
-	addAttrs(style, options.attrs);
-	insertStyleElement(options, style);
-
-	return style;
-}
-
-function createLinkElement (options) {
-	var link = document.createElement("link");
-
-	options.attrs.type = "text/css";
-	options.attrs.rel = "stylesheet";
-
-	addAttrs(link, options.attrs);
-	insertStyleElement(options, link);
-
-	return link;
-}
-
-function addAttrs (el, attrs) {
-	Object.keys(attrs).forEach(function (key) {
-		el.setAttribute(key, attrs[key]);
-	});
-}
-
-function addStyle (obj, options) {
-	var style, update, remove, result;
-
-	// If a transform function was defined, run it on the css
-	if (options.transform && obj.css) {
-	    result = options.transform(obj.css);
-
-	    if (result) {
-	    	// If transform returns a value, use that instead of the original css.
-	    	// This allows running runtime transformations on the css.
-	    	obj.css = result;
-	    } else {
-	    	// If the transform function returns a falsy value, don't add this css.
-	    	// This allows conditional loading of css
-	    	return function() {
-	    		// noop
-	    	};
-	    }
-	}
-
-	if (options.singleton) {
-		var styleIndex = singletonCounter++;
-
-		style = singleton || (singleton = createStyleElement(options));
-
-		update = applyToSingletonTag.bind(null, style, styleIndex, false);
-		remove = applyToSingletonTag.bind(null, style, styleIndex, true);
-
-	} else if (
-		obj.sourceMap &&
-		typeof URL === "function" &&
-		typeof URL.createObjectURL === "function" &&
-		typeof URL.revokeObjectURL === "function" &&
-		typeof Blob === "function" &&
-		typeof btoa === "function"
-	) {
-		style = createLinkElement(options);
-		update = updateLink.bind(null, style, options);
-		remove = function () {
-			removeStyleElement(style);
-
-			if(style.href) URL.revokeObjectURL(style.href);
-		};
-	} else {
-		style = createStyleElement(options);
-		update = applyToTag.bind(null, style);
-		remove = function () {
-			removeStyleElement(style);
-		};
-	}
-
-	update(obj);
-
-	return function updateStyle (newObj) {
-		if (newObj) {
-			if (
-				newObj.css === obj.css &&
-				newObj.media === obj.media &&
-				newObj.sourceMap === obj.sourceMap
-			) {
-				return;
-			}
-
-			update(obj = newObj);
-		} else {
-			remove();
-		}
-	};
-}
-
-var replaceText = (function () {
-	var textStore = [];
-
-	return function (index, replacement) {
-		textStore[index] = replacement;
-
-		return textStore.filter(Boolean).join('\n');
-	};
-})();
-
-function applyToSingletonTag (style, index, remove, obj) {
-	var css = remove ? "" : obj.css;
-
-	if (style.styleSheet) {
-		style.styleSheet.cssText = replaceText(index, css);
-	} else {
-		var cssNode = document.createTextNode(css);
-		var childNodes = style.childNodes;
-
-		if (childNodes[index]) style.removeChild(childNodes[index]);
-
-		if (childNodes.length) {
-			style.insertBefore(cssNode, childNodes[index]);
-		} else {
-			style.appendChild(cssNode);
-		}
-	}
-}
-
-function applyToTag (style, obj) {
-	var css = obj.css;
-	var media = obj.media;
-
-	if(media) {
-		style.setAttribute("media", media)
-	}
-
-	if(style.styleSheet) {
-		style.styleSheet.cssText = css;
-	} else {
-		while(style.firstChild) {
-			style.removeChild(style.firstChild);
-		}
-
-		style.appendChild(document.createTextNode(css));
-	}
-}
-
-function updateLink (link, options, obj) {
-	var css = obj.css;
-	var sourceMap = obj.sourceMap;
-
-	/*
-		If convertToAbsoluteUrls isn't defined, but sourcemaps are enabled
-		and there is no publicPath defined then lets turn convertToAbsoluteUrls
-		on by default.  Otherwise default to the convertToAbsoluteUrls option
-		directly
-	*/
-	var autoFixUrls = options.convertToAbsoluteUrls === undefined && sourceMap;
-
-	if (options.convertToAbsoluteUrls || autoFixUrls) {
-		css = fixUrls(css);
-	}
-
-	if (sourceMap) {
-		// http://stackoverflow.com/a/26603875
-		css += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + " */";
-	}
-
-	var blob = new Blob([css], { type: "text/css" });
-
-	var oldSrc = link.href;
-
-	link.href = URL.createObjectURL(blob);
-
-	if(oldSrc) URL.revokeObjectURL(oldSrc);
-}
-
-
-/***/ }),
-/* 60 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-__webpack_require__(61);
+module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACUAAAAzCAYAAAAQEcGFAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAxRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNS1jMDIxIDc5LjE1NTc3MiwgMjAxNC8wMS8xMy0xOTo0NDowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6ODE0Q0VBQUIxMDE5MTFFNTg2OEFCNUJCRTdCNDVDQTEiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6ODE0Q0VBQUExMDE5MTFFNTg2OEFCNUJCRTdCNDVDQTEiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTQgV2luZG93cyI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSIxNjVGM0U1MjEwN0UxQjNBNUE0OTExMkMxQkI0QzExNyIgc3RSZWY6ZG9jdW1lbnRJRD0iMTY1RjNFNTIxMDdFMUIzQTVBNDkxMTJDMUJCNEMxMTciLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz4DS60jAAAI4ElEQVR42rRZWUxUVxg+c2eDGUZQcANpH1yiiUZpXRqNoigafTFqXRqVh8Y9plYTdxuLCdpUqTHGJ5fUB2yCSmINWBsxiHtdcUkUjWIUERWURWWbOf2+U+50gLmzAJ7k5N577rnnfOff//+apJQiUGtsbDRZrVZMkyY0Nbmurs6iaZowm80edtHJzRJsAoDYAOjLjx8/RjocDieenRERES6+AuBSgCp3u931uH+H8U+dAcrkh1ImbGIFJSzYaIrH4/kamy3FPMv169fNFy9etPTp08fau3dv05gxYySoVmC323/Fd0+bmpo0ULW4w6gIyrcDhL2qqmozNqgEOA8oJGfOnEnkMiEhQc6fP1+OGjVKdu/eXY1NnTpVlpWVNWDuLzjEVw0NDXFYw9R63XB664FI9J/RSy9duiQHDx4sIyMjZUZGhsSmlCuJTb33b968kdu3b1dzpk2bRqpdwfDIT58+DewIMO8NNotAz6iuri6dMGGCZ+DAgTI3N1dicQUAlPPe61c2UEc9p6amyh49esjy8vJKDM/CWAzA29oNCie0Y9MtAFUeGxvr2bRpk6JIqE0HuXfvXklNLSwsrMNYOkD1wrqWsEGRQriZiI8rJk+eLJcuXSo70vLz86XFYpEnTpyoB6gsAqPihAUKJ7KAZRsoJ9A42dFGql24cEEpAQA2YugBemK47IvCQpnZ2dly3rx5QTdk95Uvo3blyhUFLC8vz4P5+eDIIIhJZCigNHzopm3CIiI5OTmYIRWHDh0SlZWVQc3M8OHDxZ07dwS00vT06dMUyNoWsNUeipnScApupt2/fz8oKFBHwICKrKwsBTAQeFh6AQ0WZ86cEQMGDBCvXr36DmOrQC1XUFT19fWRkKe9NIiQrTYaZaRp4bTMzEw5duxYmo86PKbgqgVkH0hKbDZYbgKkAxZFRUUCQA2pEK7HWLNmjXj+/Lk4cuSIHc+/4WCxwaIAMyb+PmXKFHn58mV1Mq5148aNFlSBlW5ByXAoxzmlpaUSNlDChTU2ew1jSkGmbABhnTRpkqCws0FTxLBhwxRVOMnlcgmn0ynWr1//v9qGSTk4cDFjxgyRnp5OY7oE+5oNJ+OlA5MOPX78WCYmJvo9JZSghUlob3v//r3s2rUrfaYb+ya+ffs22tBOQZa20o3hNPLDhw9+N9adcEfbtm3b5Pjx43lbgh4PcFa/vg/y0hWb5u7atUtu3bq10wAYyR9MgywuLnZDvn7Eo8svKICgpU3FR+7o6GjFrs8FjA0GWA4dOpS3xdjnC3BK8xu6AFAcrukENGTIkE6RoUCN8f69e/eacPs99og0iqeINh6o/9i8ebNcsmSJotbnAMU14RVkUlISDepNDMWga34jTxhQqmsPAHvI+Pv06dPtBhXoO/1dVFSUhF9sBEEmQODtRuEw2dgFFEp98eJFbVxcnGSM3tnU0sVi5cqVcu3atbzPQY8COJNfUM2CHwvkaUePHn0P2+XpbDD6IaGBym7h4PSJfTCuGYLSNRJ9MRxp1f79+yVY2qlmQbd95MatW7f4+IMh+1oBIzmz+/bt6y4pKekUNvquwfvVq1fLPXv2MHDMRVhjDgqKHdrxze3bt6uZbrU3dAnUzp49K0eOHMl1v2AyGxIodAr+n2lpaXLHjh1tTtrRRkViBgQhTwuJfc32i2ZiIkjbyKSztra2Rf7XkWBQ/54+9+HDhyW+MXrAhlM0gYUPbDZbwYoVK8TBgwe94Yp+9Ve50cOeYDE/e//+/QWSWC8WLZRYCMBqwO+s5cuXM+FUsbq+YbBYPZTIdNCgQQJBZXigwLoahM25sFn1iInEu3fvWlDJd/Ng1PEHHOuKsrIyS1igIiIi6EArwMK/u3XrJl6+fMngsA01mjOjoJRp3RAmCyTC5rBA6RkWtPASnKj72rVrKoVCtNpio1OnToVEGT+cELCFml45DAcUgTyOj49vePTokXqmgMJVqMyHbJ0zZ46SN988MRiV2Eh5aKDWLL9SC7PG9gay1dSzZ0/1EBMTw0UE07Rz586JESNGkA3e9AxyEpBKOmhECsLhcPDZGS77hG5T9MXGjRsn8vLyFAWOHz8uFi5cqHJHsjYnJ0cgFg9IIYJETqDEICEhwY3nRL/lxSB90smTJ6tnzZqljB+SSzl79mx1z5wOqbm3kEbwdLT+Cm2+hhMhkipVgrr3WdoM1c2oDgqwQPstEtIPILVaGAKvNmeRbfr06d6KH6s3ixYt8mvV9TE9qk1JSZH79u3j0NqQ3YxP10CBLc+ePWtkHQvC6Y21IWOq/klAzIigSQHdjJ6UHD58WEIEOLcOaye1B5Qdmna+V69ecsGCBaq+ySSDoBBFqE0YhjSn5kFDF9ZTuUbz3L/AiW7tATV62bJlVevWrVOLMrmAMVWgyEKKJ1nILNiIXWxMdletWqW+ISC8/wlXB953CQsU2BIBWcqHLHn0xbkZI9K5c+fKgoICVoUNWcWiLssCu3fvVgfhAdgXL15Mll/FNOZ+5pCjhGajmQRZGg57ZPL1edBEAaEWo0ePFmBFG9XfuXMnVV25EdowRK8CrFbzXr9+rewZNJl1940A6zb842DUnzx5Uud0OltQgdHo1atXDYWaITTNAstIVILWNQnWRWGA+XE2tTss9lVUVNAYVbMqc/78eS/7KENkYaAATjcT+hhtGA4oN2zYoKrRmZmZdQC6MdBvEL8dwkkhLD5w4ICSBSaqNKC0McxG+MuEAuz7Q4BAaDYKCwvVb5Tk5GSlmZzPvxk0ukVFRcpogko9ffczhRL/YEMNcpWKECYDznjIsWPHrJANE9iiXMrdu3eVjKg6pc0m7Ha7irkAQIDFAocQSA5Ev3791BjCauX3MPcmYvSV8J//oLsD/Vozal2gulEul4tJ42AIPf1UNGUEVweo1BvjLvq+mpoaD+yZFUrhAmgX2KTK4nhfi/snGOfvt8ugZgFrwXTywf73BQyHmAaxHo7v+DPIQ7ax/AhQHqo7QZJ6eu30P12SekRAOaIGm0AhD8GCam3+rP4rwACky3NBX4guvgAAAABJRU5ErkJggg=="
 
 /***/ }),
 /* 61 */
@@ -9241,28 +9238,37 @@ __webpack_require__(61);
 "use strict";
 
 
+__webpack_require__(62);
+
+/***/ }),
+/* 62 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
 var angular = __webpack_require__(11);
-var uirouter = __webpack_require__(63);
-var angularFileUpload = __webpack_require__(92);
-var angucompleteAlt = __webpack_require__(93);
-var angularUIBootstrap = __webpack_require__(94);
+var uirouter = __webpack_require__(64);
+var angularFileUpload = __webpack_require__(93);
+var angucompleteAlt = __webpack_require__(94);
+var angularUIBootstrap = __webpack_require__(95);
 
-var mineScehtml = __webpack_require__(96);
-var mineFmtDateNormal = __webpack_require__(97);
-var mineRegex = __webpack_require__(98);
-var mineSlice = __webpack_require__(99);
+var mineScehtml = __webpack_require__(97);
+var mineFmtDateNormal = __webpack_require__(98);
+var mineRegex = __webpack_require__(99);
+var mineSlice = __webpack_require__(100);
 
-var mineFileModel = __webpack_require__(100);
-var mineOnDocumentClick = __webpack_require__(101);
-var mineOnOutsideElementClick = __webpack_require__(102);
+var mineFileModel = __webpack_require__(101);
+var mineOnDocumentClick = __webpack_require__(102);
+var mineOnOutsideElementClick = __webpack_require__(103);
 
-var mineSession = __webpack_require__(103);
+var mineSession = __webpack_require__(104);
 
-var stateApply = __webpack_require__(104);
-var stateList = __webpack_require__(109);
+var stateApply = __webpack_require__(105);
+var stateGallery = __webpack_require__(110);
 var stateDetail = __webpack_require__(114);
-var stateIdlist = __webpack_require__(115);
-var stateSbulist = __webpack_require__(116);
+var stateUsers = __webpack_require__(118);
+var stateBusiness = __webpack_require__(122);
 
 angular.module('rocket', ['ui.router', 'angularFileUpload', 'angucomplete-alt', 'ui.bootstrap',
 
@@ -9288,9 +9294,9 @@ angular.module('rocket', ['ui.router', 'angularFileUpload', 'angucomplete-alt', 
 }).config(function ($stateProvider, $urlRouterProvider, $httpProvider) {
   $httpProvider.interceptors.push('myInterceptor');
 
-  $urlRouterProvider.otherwise('list');
+  $urlRouterProvider.otherwise('gallery');
 
-  $stateProvider.state('apply', stateApply).state('list', stateList).state('detail', stateDetail).state('idlist', stateIdlist).state('sbulist', stateSbulist);
+  $stateProvider.state('apply', stateApply).state('gallery', stateGallery).state('detail', stateDetail).state('users', stateUsers).state('business', stateBusiness);
 }).run(function ($rootScope, $http, $state, FileUploader, Session) {
   $http.get('api/auth').then(function (res) {
     console.info('用户信息', res.data);
@@ -9337,7 +9343,7 @@ angular.module('rocket', ['ui.router', 'angularFileUpload', 'angucomplete-alt', 
 });
 
 /***/ }),
-/* 62 */
+/* 63 */
 /***/ (function(module, exports) {
 
 /**
@@ -43173,7 +43179,7 @@ $provide.value("$locale", {
 !window.angular.$$csp().noInlineStyle && window.angular.element(document.head).prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>');
 
 /***/ }),
-/* 63 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43186,35 +43192,19 @@ function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
 Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(23));
-__export(__webpack_require__(30));
-__export(__webpack_require__(56));
-__export(__webpack_require__(57));
-__webpack_require__(87);
+__export(__webpack_require__(25));
+__export(__webpack_require__(32));
+__export(__webpack_require__(58));
+__export(__webpack_require__(59));
 __webpack_require__(88);
 __webpack_require__(89);
 __webpack_require__(90);
 __webpack_require__(91);
+__webpack_require__(92);
 exports.default = "ui.router";
 var core = __webpack_require__(4);
 exports.core = core;
 __export(__webpack_require__(4));
-//# sourceMappingURL=index.js.map
-
-/***/ }),
-/* 64 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-function __export(m) {
-    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-}
-Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(10));
-__export(__webpack_require__(33));
-__export(__webpack_require__(34));
-__export(__webpack_require__(28));
 //# sourceMappingURL=index.js.map
 
 /***/ }),
@@ -43227,9 +43217,10 @@ function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
 Object.defineProperty(exports, "__esModule", { value: true });
-/** @module path */ /** for typedoc */
-__export(__webpack_require__(27));
-__export(__webpack_require__(19));
+__export(__webpack_require__(10));
+__export(__webpack_require__(35));
+__export(__webpack_require__(36));
+__export(__webpack_require__(30));
 //# sourceMappingURL=index.js.map
 
 /***/ }),
@@ -43242,10 +43233,9 @@ function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
 Object.defineProperty(exports, "__esModule", { value: true });
-/** @module resolve */ /** for typedoc */
-__export(__webpack_require__(32));
-__export(__webpack_require__(15));
-__export(__webpack_require__(20));
+/** @module path */ /** for typedoc */
+__export(__webpack_require__(29));
+__export(__webpack_require__(21));
 //# sourceMappingURL=index.js.map
 
 /***/ }),
@@ -43258,13 +43248,10 @@ function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
 Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(35));
-__export(__webpack_require__(24));
-__export(__webpack_require__(36));
-__export(__webpack_require__(37));
-__export(__webpack_require__(38));
-__export(__webpack_require__(39));
-__export(__webpack_require__(7));
+/** @module resolve */ /** for typedoc */
+__export(__webpack_require__(34));
+__export(__webpack_require__(15));
+__export(__webpack_require__(22));
 //# sourceMappingURL=index.js.map
 
 /***/ }),
@@ -43273,10 +43260,29 @@ __export(__webpack_require__(7));
 
 "use strict";
 
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
+Object.defineProperty(exports, "__esModule", { value: true });
+__export(__webpack_require__(37));
+__export(__webpack_require__(26));
+__export(__webpack_require__(38));
+__export(__webpack_require__(39));
+__export(__webpack_require__(40));
+__export(__webpack_require__(41));
+__export(__webpack_require__(7));
+//# sourceMappingURL=index.js.map
+
+/***/ }),
+/* 69 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
 Object.defineProperty(exports, "__esModule", { value: true });
 /** @module hooks */ /** */
-var transition_1 = __webpack_require__(18);
-var router_1 = __webpack_require__(40);
+var transition_1 = __webpack_require__(20);
+var router_1 = __webpack_require__(42);
 function addCoreResolvables(trans) {
     trans.addResolvable({ token: router_1.UIRouter, deps: [], resolveFn: function () { return trans.router; }, data: trans.router }, "");
     trans.addResolvable({ token: transition_1.Transition, deps: [], resolveFn: function () { return trans; }, data: trans }, "");
@@ -43292,7 +43298,7 @@ exports.registerAddCoreResolvables = function (transitionService) {
 //# sourceMappingURL=coreResolvables.js.map
 
 /***/ }),
-/* 69 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43335,7 +43341,7 @@ exports.registerRedirectToHook = function (transitionService) {
 //# sourceMappingURL=redirectTo.js.map
 
 /***/ }),
-/* 70 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43398,7 +43404,7 @@ exports.registerOnEnterHook = function (transitionService) {
 //# sourceMappingURL=onEnterExitRetain.js.map
 
 /***/ }),
-/* 71 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43407,7 +43413,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 /** @module hooks */
 /** for typedoc */
 var common_1 = __webpack_require__(0);
-var resolveContext_1 = __webpack_require__(20);
+var resolveContext_1 = __webpack_require__(22);
 var hof_1 = __webpack_require__(2);
 /**
  * A [[TransitionHookFn]] which resolves all EAGER Resolvables in the To Path
@@ -43447,7 +43453,7 @@ exports.registerLazyResolveState = function (transitionService) {
 //# sourceMappingURL=resolve.js.map
 
 /***/ }),
-/* 72 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43500,7 +43506,7 @@ exports.registerActivateViews = function (transitionService) {
 //# sourceMappingURL=views.js.map
 
 /***/ }),
-/* 73 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43541,7 +43547,7 @@ exports.registerUpdateGlobalState = function (transitionService) {
 //# sourceMappingURL=updateGlobals.js.map
 
 /***/ }),
-/* 74 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43572,7 +43578,7 @@ exports.registerUpdateUrl = function (transitionService) {
 //# sourceMappingURL=url.js.map
 
 /***/ }),
-/* 75 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43609,7 +43615,7 @@ exports.registerIgnoredTransitionHook = function (transitionService) {
 //# sourceMappingURL=ignoredTransition.js.map
 
 /***/ }),
-/* 76 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43634,7 +43640,7 @@ exports.registerInvalidTransitionHook = function (transitionService) {
 //# sourceMappingURL=invalidTransition.js.map
 
 /***/ }),
-/* 77 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43658,30 +43664,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
  * @module transition
  */ /** for typedoc */
 __export(__webpack_require__(9));
-__export(__webpack_require__(31));
-__export(__webpack_require__(26));
+__export(__webpack_require__(33));
+__export(__webpack_require__(28));
 __export(__webpack_require__(13));
-__export(__webpack_require__(18));
+__export(__webpack_require__(20));
 __export(__webpack_require__(14));
-__export(__webpack_require__(48));
-__export(__webpack_require__(29));
-//# sourceMappingURL=index.js.map
-
-/***/ }),
-/* 78 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-function __export(m) {
-    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-}
-Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(21));
-__export(__webpack_require__(41));
-__export(__webpack_require__(42));
-__export(__webpack_require__(43));
-__export(__webpack_require__(46));
+__export(__webpack_require__(50));
+__export(__webpack_require__(31));
 //# sourceMappingURL=index.js.map
 
 /***/ }),
@@ -43694,7 +43683,11 @@ function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
 Object.defineProperty(exports, "__esModule", { value: true });
+__export(__webpack_require__(23));
+__export(__webpack_require__(43));
 __export(__webpack_require__(44));
+__export(__webpack_require__(45));
+__export(__webpack_require__(48));
 //# sourceMappingURL=index.js.map
 
 /***/ }),
@@ -43707,13 +43700,8 @@ function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
 Object.defineProperty(exports, "__esModule", { value: true });
-/**
- * @internalapi
- * @module vanilla
- */
-/** */
-__export(__webpack_require__(81));
-//# sourceMappingURL=vanilla.js.map
+__export(__webpack_require__(46));
+//# sourceMappingURL=index.js.map
 
 /***/ }),
 /* 81 */
@@ -43725,20 +43713,38 @@ function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
 Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(49));
-__export(__webpack_require__(50));
-__export(__webpack_require__(22));
-__export(__webpack_require__(51));
-__export(__webpack_require__(52));
-__export(__webpack_require__(53));
-__export(__webpack_require__(54));
-__export(__webpack_require__(55));
-__export(__webpack_require__(16));
+/**
+ * @internalapi
+ * @module vanilla
+ */
+/** */
 __export(__webpack_require__(82));
-//# sourceMappingURL=index.js.map
+//# sourceMappingURL=vanilla.js.map
 
 /***/ }),
 /* 82 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
+Object.defineProperty(exports, "__esModule", { value: true });
+__export(__webpack_require__(51));
+__export(__webpack_require__(52));
+__export(__webpack_require__(24));
+__export(__webpack_require__(53));
+__export(__webpack_require__(54));
+__export(__webpack_require__(55));
+__export(__webpack_require__(56));
+__export(__webpack_require__(57));
+__export(__webpack_require__(16));
+__export(__webpack_require__(83));
+//# sourceMappingURL=index.js.map
+
+/***/ }),
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43749,14 +43755,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
  * @module vanilla
  */
 /** */
-var browserLocationConfig_1 = __webpack_require__(55);
-var hashLocationService_1 = __webpack_require__(51);
+var browserLocationConfig_1 = __webpack_require__(57);
+var hashLocationService_1 = __webpack_require__(53);
 var utils_1 = __webpack_require__(16);
-var pushStateLocationService_1 = __webpack_require__(53);
-var memoryLocationService_1 = __webpack_require__(52);
-var memoryLocationConfig_1 = __webpack_require__(54);
-var injector_1 = __webpack_require__(50);
-var q_1 = __webpack_require__(49);
+var pushStateLocationService_1 = __webpack_require__(55);
+var memoryLocationService_1 = __webpack_require__(54);
+var memoryLocationConfig_1 = __webpack_require__(56);
+var injector_1 = __webpack_require__(52);
+var q_1 = __webpack_require__(51);
 var coreservices_1 = __webpack_require__(3);
 function servicesPlugin(router) {
     coreservices_1.services.$injector = injector_1.$injector;
@@ -43773,7 +43779,7 @@ exports.memoryLocationPlugin = utils_1.locationPluginFactory("vanilla.memoryLoca
 //# sourceMappingURL=plugins.js.map
 
 /***/ }),
-/* 83 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43800,7 +43806,7 @@ exports.UIRouterPluginBase = UIRouterPluginBase;
 //# sourceMappingURL=interface.js.map
 
 /***/ }),
-/* 84 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44000,7 +44006,7 @@ var scopeBindings = function (bindingsObj) { return Object.keys(bindingsObj || {
 //# sourceMappingURL=templateFactory.js.map
 
 /***/ }),
-/* 85 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44008,7 +44014,7 @@ var scopeBindings = function (bindingsObj) { return Object.keys(bindingsObj || {
 Object.defineProperty(exports, "__esModule", { value: true });
 /** @module ng1 */ /** */
 var core_1 = __webpack_require__(4);
-var services_1 = __webpack_require__(23);
+var services_1 = __webpack_require__(25);
 /**
  * This is a [[StateBuilder.builder]] function for angular1 `onEnter`, `onExit`,
  * `onRetain` callback hooks on a [[Ng1StateDeclaration]].
@@ -44031,7 +44037,7 @@ exports.getStateHookBuilder = function (hookName) {
 //# sourceMappingURL=onEnterExitRetain.js.map
 
 /***/ }),
-/* 86 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44112,7 +44118,7 @@ exports.Ng1LocationServices = Ng1LocationServices;
 //# sourceMappingURL=locationServices.js.map
 
 /***/ }),
-/* 87 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44486,7 +44492,7 @@ var $urlMatcherFactoryProvider;
 //# sourceMappingURL=injectables.js.map
 
 /***/ }),
-/* 88 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45063,7 +45069,7 @@ angular_1.ng.module('ui.router.state')
 //# sourceMappingURL=stateDirectives.js.map
 
 /***/ }),
-/* 89 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45115,7 +45121,7 @@ angular_1.ng.module('ui.router.state')
 //# sourceMappingURL=stateFilters.js.map
 
 /***/ }),
-/* 90 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45128,8 +45134,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var angular_1 = __webpack_require__(8);
 var angular_2 = __webpack_require__(11);
 var core_1 = __webpack_require__(4);
-var views_1 = __webpack_require__(30);
-var services_1 = __webpack_require__(23);
+var views_1 = __webpack_require__(32);
+var services_1 = __webpack_require__(25);
 exports.uiView = ['$view', '$animate', '$uiViewScroll', '$interpolate', '$q',
     function $ViewDirective($view, $animate, $uiViewScroll, $interpolate, $q) {
         function getRenderer(attrs, scope) {
@@ -45411,7 +45417,7 @@ angular_1.ng.module('ui.router.state').directive('uiView', $ViewDirectiveFill);
 //# sourceMappingURL=viewDirective.js.map
 
 /***/ }),
-/* 91 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45440,7 +45446,7 @@ angular_1.ng.module('ui.router.state').provider('$uiViewScroll', $ViewScrollProv
 //# sourceMappingURL=viewScroll.js.map
 
 /***/ }),
-/* 92 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -47534,7 +47540,7 @@ return /******/ (function(modules) { // webpackBootstrap
 //# sourceMappingURL=angular-file-upload.js.map
 
 /***/ }),
-/* 93 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*
@@ -48386,16 +48392,16 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 
 /***/ }),
-/* 94 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(95);
+__webpack_require__(96);
 
 module.exports = 'ui.bootstrap';
 
 
 /***/ }),
-/* 95 */
+/* 96 */
 /***/ (function(module, exports) {
 
 /*
@@ -56176,7 +56182,7 @@ angular.module('ui.bootstrap.timepicker').run(function() {!angular.$$csp().noInl
 angular.module('ui.bootstrap.typeahead').run(function() {!angular.$$csp().noInlineStyle && !angular.$$uibTypeaheadCss && angular.element(document).find('head').prepend('<style type="text/css">[uib-typeahead-popup].dropdown-menu{display:block;}</style>'); angular.$$uibTypeaheadCss = true; });
 
 /***/ }),
-/* 96 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -56189,7 +56195,7 @@ angular.module('mine.scehtml', []).filter('scehtml', ['$sce', function ($sce) {
 }]);
 
 /***/ }),
-/* 97 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -56226,7 +56232,7 @@ angular.module('mine.fmtDateNormal', []).filter('fmtDateNormal', [function () {
 }]);
 
 /***/ }),
-/* 98 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -56265,7 +56271,7 @@ angular.module('mine.regex', []).filter('regex', function () {
 });
 
 /***/ }),
-/* 99 */
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -56293,7 +56299,7 @@ angular.module('mine.slice', []).filter('slice', function () {
 });
 
 /***/ }),
-/* 100 */
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -56318,7 +56324,7 @@ angular.module('mine.fileModel', []).directive('fileModel', ['$parse', function 
 }]);
 
 /***/ }),
-/* 101 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -56344,7 +56350,7 @@ angular.module('mine.onDocumentClick', []).directive('onDocumentClick', ['$docum
 }]);
 
 /***/ }),
-/* 102 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -56374,7 +56380,7 @@ angular.module('mine.onOutsideElementClick', []).directive('onOutsideElementClic
 }]);
 
 /***/ }),
-/* 103 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -56397,14 +56403,14 @@ angular.module('mine.Session', []).service('Session', function ($rootScope) {
 });
 
 /***/ }),
-/* 104 */
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var style = __webpack_require__(105);
-var template = __webpack_require__(108);
+var style = __webpack_require__(106);
+var template = __webpack_require__(109);
 
 var stateApply = {
   url: '/apply',
@@ -56604,13 +56610,13 @@ var stateApply = {
 module.exports = stateApply;
 
 /***/ }),
-/* 105 */
+/* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(106);
+var content = __webpack_require__(107);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -56618,7 +56624,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(59)(content, options);
+var update = __webpack_require__(18)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -56635,21 +56641,21 @@ if(false) {
 }
 
 /***/ }),
-/* 106 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(58)(undefined);
+exports = module.exports = __webpack_require__(17)(undefined);
 // imports
 
 
 // module
-exports.push([module.i, "@charset \"UTF-8\";\n\n.apply {\n  padding-bottom: 30px;\n}\n\n.apply_form {\n  margin-top: 20px;\n}\n\n.apply_form_left {\n  width: 0;\n  -webkit-box-flex: 1;\n  -webkit-flex: 1;\n  -ms-flex: 1;\n  flex: 1;\n}\n\n.apply_form_right {\n  margin-left: 30px;\n  width: 0;\n  -webkit-box-flex: 1;\n  -webkit-flex: 1;\n  -ms-flex: 1;\n  flex: 1;\n}\n\n.apply_form_submit {\n  margin-top: 10px;\n  text-align: center;\n}\n\n.apply_form_submit button {\n  padding: 0px 20px;\n  height: 40px;\n  line-height: 40px;\n  cursor: pointer;\n  background: #ff4400;\n}\n\n.uploader_left {\n  -webkit-box-flex: 3;\n  -webkit-flex: 3;\n  -ms-flex: 3;\n  flex: 3;\n}\n\n.uploader_drop {\n  height: 70px;\n  line-height: 64px;\n  background: #f5f5f5;\n  border: 3px dotted lightgray;\n  color: #bbb;\n  text-align: center;\n}\n\n.uploader_drop img {\n  display: none;\n}\n\n.uploader_right {\n  padding-left: 30px;\n}\n\n.uploader_table {\n  margin-bottom: 20px;\n  width: 100%;\n  border-collapse: collapse;\n  border-spacing: 0;\n}\n\n.uploader_table th {\n  padding: 8px;\n  text-align: left;\n  background: #fbfbfb;\n  border-top: 1px solid #ddd;\n  border-bottom: 2px solid #ddd;\n  vertical-align: bottom;\n}\n\n.uploader_table td {\n  padding: 8px;\n  vertical-align: middle;\n  border-top: 1px solid #ddd;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n\n.uploader_table td.pg {\n  vertical-align: middle;\n}\n\n.uploader_table td .progress,\n.uploader_progress {\n  height: 10px;\n  background: #f5f5f5;\n  border-radius: 4px;\n  overflow: hidden;\n  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);\n}\n\n.uploader_table td .progress_bar,\n.uploader_progress_bar {\n  /*float:left;*/\n  width: 0%;\n  height: 100%;\n  background: #428bca;\n  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);\n  transition: width .6s ease;\n}\n\n.uploader_table td.action button,\n.uploader_action button {\n  padding: 1px 5px;\n  font-size: 12px;\n  line-height: 1.5;\n  border: 1px solid transparent;\n  border-radius: 3px;\n  color: #fff;\n  cursor: pointer;\n}\n\n.uploader_table td.action button[disabled],\n.uploader_action button[disabled] {\n  pointer-events: none;\n  cursor: not-allowed;\n  opacity: .65;\n}\n\n.uploader_table td.action button.action_upload,\n.uploader_action_uploadall {\n  background: #5cb85c;\n  border-color: #4cae4c;\n}\n\n.uploader_table td.action button.action_cancel,\n.uploader_action_cancelall {\n  background: #f0ad4e;\n  border-color: #eea236;\n}\n\n.uploader_table td.action button.action_remove,\n.uploader_action_removeall {\n  background: #d9534f;\n  border-color: #d43f3a;\n}\n\n.uploader_table td.action button.action_upload:hover,\n.uploader_action_uploadall:hover {\n  background: #47a447;\n  border-color: #398439;\n}\n\n.uploader_table td.action button.action_cancel:hover,\n.uploader_action_cancelall:hover {\n  background: #ed9c28;\n  border-color: #d58512;\n}\n\n.uploader_table td.action button.action_remove:hover,\n.uploader_action_removeall:hover {\n  background: #d2322d;\n  border-color: #ac2925;\n}\n\n.uploader_table td.status {\n  text-align: center;\n}\n\n.uploader_progress {\n  margin-bottom: 20px;\n}\n\n.uploader_action button {\n  padding: 6px 12px;\n}\n\n.apply_header {\n  padding: 20px;\n  background: #FFFFFF;\n  color: #B53B3B;\n  border-bottom-left-radius: 5px;\n  border-bottom-right-radius: 5px;\n}\n\n.apply_header h2 {\n  font-size: 16px;\n  text-align: center;\n  font-weight: normal;\n  padding: 10px 0;\n}\n\n.apply_header p {\n  font-size: 12px;\n  text-align: center;\n  color: #C0C0C0;\n}\n\n#num {\n  font-size: 20px;\n  display: block;\n  text-align: center;\n  color: #B53B3B;\n  margin: 0 20px;\n  border-bottom: 1px solid #B53B3B;\n  padding: 10px 0;\n  font-family: Georgia, \"Trebuchet MS\";\n}\n\n.notice {\n  text-align: center;\n  font-size: 20px;\n  padding: 100px 0 20px;\n  background-image: url(" + __webpack_require__(112) + ");\n  background-repeat: no-repeat;\n  background-position: center;\n}\n\n#refresh,\n#checkthis {\n  display: block;\n  text-align: center;\n  margin: 20px;\n  padding: 10px 0;\n  border: 1px solid #666666;\n  border-radius: 4px;\n}\n\n#refresh:active,\n#checkthis:active {\n  background: #FFFFFF;\n}\n\n/* 整理区 */\n\n.form {\n  margin: 15px 0;\n}\n\ndl.form > dt {\n  margin: 0 0 6px;\n  font-weight: bold;\n  font-size: 16px;\n}\n\ndl.form > dd {\n  margin-left: 0;\n}\n\n.formfield_desc {\n  width: 100%;\n  font-size: 13px;\n  line-height: 21px;\n  min-height: 100px;\n  resize: vertical;\n}\n\n.apply_submiting {\n  z-index: 4;\n  width: 130px;\n  height: 66px;\n  line-height: 66px;\n  position: fixed;\n  top: 50%;\n  left: 50%;\n  background: rgba(0, 0, 0, 0.5);\n  border-radius: 5px;\n  font: 0/0 a;\n  text-align: center;\n  -webkit-transform: translate(-50%, -50%);\n  transform: translate(-50%, -50%);\n}\n\n.apply_submiting:after {\n  width: 26px;\n  height: 26px;\n  border-radius: 26px;\n  border: 2px solid #FFFFFF;\n  border-top: none;\n  border-right: none;\n  position: absolute;\n  content: \"\";\n  top: 50%;\n  left: 50%;\n  -webkit-transform: translate(-50%, -50%);\n  transform: translate(-50%, -50%);\n  -webkit-animation: rotate linear 1s infinite;\n  animation: rotate linear 1s infinite;\n}\n\n@-webkit-keyframes rotate {\n  0% {\n    -webkit-transform: translate(-50%, -50%) rotate(0deg);\n  }\n\n  100% {\n    -webkit-transform: translate(-50%, -50%) rotate(360deg);\n  }\n}\n\n@keyframes rotate {\n  0% {\n    transform: translate(-50%, -50%) rotate(0deg);\n  }\n\n  100% {\n    transform: translate(-50%, -50%) rotate(360deg);\n  }\n}\n\n.inp.dsbu {\n  width: 100%;\n}\n\n.highlight {\n  color: #ff4400;\n}\n\n.angucomplete-holder {\n  position: relative;\n}\n\n.angucomplete-dropdown {\n  z-index: 9999;\n  position: absolute;\n  padding: 6px 0;\n  width: 100%;\n  border-color: #ececec;\n  border-width: 1px;\n  border-style: solid;\n  border-radius: 2px;\n  cursor: pointer;\n  background: #ffffff;\n}\n\n.angucomplete-searching {\n  padding: 0 6px;\n  color: #acacac;\n  font-size: 14px;\n}\n\n.angucomplete-description {\n  font-size: 14px;\n}\n\n.angucomplete-row {\n  padding: 5px;\n  color: #000000;\n  margin-bottom: 4px;\n  clear: both;\n}\n\n.angucomplete-selected-row {\n  background-color: lightblue;\n  color: #ffffff;\n}\n\n.angucomplete-image-holder {\n  padding-top: 2px;\n  float: left;\n  margin-right: 10px;\n  margin-left: 5px;\n}\n\n.angucomplete-image {\n  height: 34px;\n  width: 34px;\n  border-radius: 50%;\n  border-color: #ececec;\n  border-style: solid;\n  border-width: 1px;\n}\n\n.angucomplete-image-default {\n  /* Add your own default image here\n     background-image:url('/assets/default.png'); */\n  background-position: center;\n  background-size: contain;\n  height: 34px;\n  width: 34px;\n}\n\n#editor .fr-wrapper ul,\n#editor .fr-wrapper ol {\n  padding-left: 40px;\n}\n\n#editor .fr-wrapper ul {\n  list-style: disc;\n}\n\n#editor .fr-wrapper ol {\n  list-style: decimal;\n}\n\n#editor .fr-wrapper em {\n  font-style: italic;\n}\n\n#editor .fr-wrapper h1,\n#editor .fr-wrapper h2,\n#editor .fr-wrapper h3,\n#editor .fr-wrapper h4 {\n  font-weight: bold;\n}\n\n#editor .fr-wrapper h1 {\n  font-size: 2em;\n}\n\n#editor .fr-wrapper h2 {\n  font-size: 1.5em;\n}\n\n#editor .fr-wrapper h3 {\n  font-size: 1.17em;\n}\n\n#editor > div:not(.fr-wrapper):not(.fr-toolbar):not(.fr-sticky-dummy),\n#editor > div > a[href=\"https://froala.com/wysiwyg-editor\"] {\n  display: none !important;\n}\n\n/* 业务选择 */\n\n.dropdown {\n  position: relative;\n  font-size: 13px;\n  color: #333;\n  vertical-align: middle;\n  background: #fff;\n  background-repeat: no-repeat;\n  background-position: right 8px center;\n  border: 1px solid #ccc;\n  border-radius: 3px;\n  outline: none;\n  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.075);\n  cursor: pointer;\n}\n\n.dropdown.active {\n  border-bottom-color: transparent;\n}\n\n.dropdown_triangle {\n  position: absolute;\n  right: 10px;\n  top: 10px;\n  -webkit-transition: 0.3s ease;\n  transition: 0.3s ease;\n}\n\n.dropdown.active .dropdown_triangle {\n  -webkit-transform: rotateX(180deg);\n  transform: rotateX(180deg);\n}\n\n.dropdown_text {\n  padding: 7px 8px;\n}\n\n.dropdown_menu {\n  display: none;\n  z-index: 5;\n  position: absolute;\n  top: 100%;\n  left: 0;\n  margin: 0 -1px;\n  width: calc(100% + 2px);\n  max-height: 15em;\n  border-radius: 0 0 3px 3px;\n  background: #fff;\n  border: 1px solid #ccc;\n  border-top: none;\n  overflow: auto;\n}\n\n.dropdown.active .dropdown_menu {\n  display: block;\n}\n\n.dropdown_menu_item {\n  padding: 7px 8px;\n  border-top: 1px solid #fafafa;\n}\n\n.dropdown_menu_item.selected,\n.dropdown_menu_item:hover {\n  background: rgba(0, 0, 0, 0.03);\n}\n\n.dropdown_menu_item .addsbu {\n  line-height: 1;\n}\n\n.dropdown_menu_item .addsbu input {\n  padding: 0 8px;\n}\n\n.dropdown_menu_item .addsbu button {\n  margin-left: 10px;\n  padding: 0 10px;\n  height: 30px;\n  line-height: 30px;\n  background: #ff4400;\n}\n\n/* 提交成功弹层 */\n\n.apply_succpop {\n  z-index: 4;\n  /*4才能掩盖编辑器*/\n  position: fixed;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background: rgba(0, 0, 0, 0.3);\n}\n\n.apply_succpop_main {\n  position: relative;\n  top: 25%;\n  margin: 0 auto;\n  width: 500px;\n}\n\n.apply_succpop_main_wrap {\n  background: #fff;\n  border-radius: 5px;\n  overflow: hidden;\n  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);\n  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);\n}\n\n.apply_succpop_top {\n  padding: 0 10px;\n  height: 40px;\n  line-height: 40px;\n  background: #384346;\n  color: #fff;\n}\n\n.apply_succpop_cont_text {\n  padding: 15px 10px;\n  line-height: 2;\n  border-left: 2px solid #252535;\n  border-right: 2px solid #ff4400;\n  background: #fafafa;\n}\n\n.apply_succpop_cont_text_num {\n  text-align: center;\n  color: #ff4400;\n}\n\n.apply_succpop_cont_continue,\n.apply_succpop_cont_checknow {\n  height: 40px;\n  line-height: 40px;\n  text-align: center;\n}\n\n.apply_succpop_cont_continue {\n  background: #252535;\n  color: #afaec5;\n}\n\n.apply_succpop_cont_continue:hover {\n  background: #2F2F44;\n  color: #afaec5;\n}\n\n.apply_succpop_cont_checknow {\n  background: #ff4400;\n  color: #f8f8f8;\n}\n\n.apply_succpop_cont_checknow:hover {\n  background: #dd4400;\n  color: #f8f8f8;\n}", ""]);
+exports.push([module.i, "@charset \"UTF-8\";\n\n.apply {\n  padding-bottom: 30px;\n}\n\n.apply_form {\n  margin-top: 20px;\n}\n\n.apply_form_left {\n  width: 0;\n  -webkit-box-flex: 1;\n  -webkit-flex: 1;\n  -ms-flex: 1;\n  flex: 1;\n}\n\n.apply_form_right {\n  margin-left: 30px;\n  width: 0;\n  -webkit-box-flex: 1;\n  -webkit-flex: 1;\n  -ms-flex: 1;\n  flex: 1;\n}\n\n.apply_form_submit {\n  margin-top: 10px;\n  text-align: center;\n}\n\n.apply_form_submit button {\n  padding: 0px 20px;\n  height: 40px;\n  line-height: 40px;\n  cursor: pointer;\n  background: #ff4400;\n}\n\n.uploader_left {\n  -webkit-box-flex: 3;\n  -webkit-flex: 3;\n  -ms-flex: 3;\n  flex: 3;\n}\n\n.uploader_drop {\n  height: 70px;\n  line-height: 64px;\n  background: #f5f5f5;\n  border: 3px dotted lightgray;\n  color: #bbb;\n  text-align: center;\n}\n\n.uploader_drop img {\n  display: none;\n}\n\n.uploader_right {\n  padding-left: 30px;\n}\n\n.uploader_table {\n  margin-bottom: 20px;\n  width: 100%;\n  border-collapse: collapse;\n  border-spacing: 0;\n}\n\n.uploader_table th {\n  padding: 8px;\n  text-align: left;\n  background: #fbfbfb;\n  border-top: 1px solid #ddd;\n  border-bottom: 2px solid #ddd;\n  vertical-align: bottom;\n}\n\n.uploader_table td {\n  padding: 8px;\n  vertical-align: middle;\n  border-top: 1px solid #ddd;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n\n.uploader_table td.pg {\n  vertical-align: middle;\n}\n\n.uploader_table td .progress,\n.uploader_progress {\n  height: 10px;\n  background: #f5f5f5;\n  border-radius: 4px;\n  overflow: hidden;\n  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);\n}\n\n.uploader_table td .progress_bar,\n.uploader_progress_bar {\n  /*float:left;*/\n  width: 0%;\n  height: 100%;\n  background: #428bca;\n  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);\n  transition: width .6s ease;\n}\n\n.uploader_table td.action button,\n.uploader_action button {\n  padding: 1px 5px;\n  font-size: 12px;\n  line-height: 1.5;\n  border: 1px solid transparent;\n  border-radius: 3px;\n  color: #fff;\n  cursor: pointer;\n}\n\n.uploader_table td.action button[disabled],\n.uploader_action button[disabled] {\n  pointer-events: none;\n  cursor: not-allowed;\n  opacity: .65;\n}\n\n.uploader_table td.action button.action_upload,\n.uploader_action_uploadall {\n  background: #5cb85c;\n  border-color: #4cae4c;\n}\n\n.uploader_table td.action button.action_cancel,\n.uploader_action_cancelall {\n  background: #f0ad4e;\n  border-color: #eea236;\n}\n\n.uploader_table td.action button.action_remove,\n.uploader_action_removeall {\n  background: #d9534f;\n  border-color: #d43f3a;\n}\n\n.uploader_table td.action button.action_upload:hover,\n.uploader_action_uploadall:hover {\n  background: #47a447;\n  border-color: #398439;\n}\n\n.uploader_table td.action button.action_cancel:hover,\n.uploader_action_cancelall:hover {\n  background: #ed9c28;\n  border-color: #d58512;\n}\n\n.uploader_table td.action button.action_remove:hover,\n.uploader_action_removeall:hover {\n  background: #d2322d;\n  border-color: #ac2925;\n}\n\n.uploader_table td.status {\n  text-align: center;\n}\n\n.uploader_progress {\n  margin-bottom: 20px;\n}\n\n.uploader_action button {\n  padding: 6px 12px;\n}\n\n.apply_header {\n  padding: 20px;\n  background: #FFFFFF;\n  color: #B53B3B;\n  border-bottom-left-radius: 5px;\n  border-bottom-right-radius: 5px;\n}\n\n.apply_header h2 {\n  font-size: 16px;\n  text-align: center;\n  font-weight: normal;\n  padding: 10px 0;\n}\n\n.apply_header p {\n  font-size: 12px;\n  text-align: center;\n  color: #C0C0C0;\n}\n\n#num {\n  font-size: 20px;\n  display: block;\n  text-align: center;\n  color: #B53B3B;\n  margin: 0 20px;\n  border-bottom: 1px solid #B53B3B;\n  padding: 10px 0;\n  font-family: Georgia, \"Trebuchet MS\";\n}\n\n.notice {\n  text-align: center;\n  font-size: 20px;\n  padding: 100px 0 20px;\n  background-image: url(" + __webpack_require__(60) + ");\n  background-repeat: no-repeat;\n  background-position: center;\n}\n\n#refresh,\n#checkthis {\n  display: block;\n  text-align: center;\n  margin: 20px;\n  padding: 10px 0;\n  border: 1px solid #666666;\n  border-radius: 4px;\n}\n\n#refresh:active,\n#checkthis:active {\n  background: #FFFFFF;\n}\n\n/* 整理区 */\n\n.form {\n  margin: 15px 0;\n}\n\ndl.form > dt {\n  margin: 0 0 6px;\n  font-weight: bold;\n  font-size: 16px;\n}\n\ndl.form > dd {\n  margin-left: 0;\n}\n\n.formfield_desc {\n  width: 100%;\n  font-size: 13px;\n  line-height: 21px;\n  min-height: 100px;\n  resize: vertical;\n}\n\n.apply_submiting {\n  z-index: 4;\n  width: 130px;\n  height: 66px;\n  line-height: 66px;\n  position: fixed;\n  top: 50%;\n  left: 50%;\n  background: rgba(0, 0, 0, 0.5);\n  border-radius: 5px;\n  font: 0/0 a;\n  text-align: center;\n  -webkit-transform: translate(-50%, -50%);\n  transform: translate(-50%, -50%);\n}\n\n.apply_submiting:after {\n  width: 26px;\n  height: 26px;\n  border-radius: 26px;\n  border: 2px solid #FFFFFF;\n  border-top: none;\n  border-right: none;\n  position: absolute;\n  content: \"\";\n  top: 50%;\n  left: 50%;\n  -webkit-transform: translate(-50%, -50%);\n  transform: translate(-50%, -50%);\n  -webkit-animation: rotate linear 1s infinite;\n  animation: rotate linear 1s infinite;\n}\n\n@-webkit-keyframes rotate {\n  0% {\n    -webkit-transform: translate(-50%, -50%) rotate(0deg);\n  }\n\n  100% {\n    -webkit-transform: translate(-50%, -50%) rotate(360deg);\n  }\n}\n\n@keyframes rotate {\n  0% {\n    transform: translate(-50%, -50%) rotate(0deg);\n  }\n\n  100% {\n    transform: translate(-50%, -50%) rotate(360deg);\n  }\n}\n\n.inp.dsbu {\n  width: 100%;\n}\n\n.highlight {\n  color: #ff4400;\n}\n\n.angucomplete-holder {\n  position: relative;\n}\n\n.angucomplete-dropdown {\n  z-index: 9999;\n  position: absolute;\n  padding: 6px 0;\n  width: 100%;\n  border-color: #ececec;\n  border-width: 1px;\n  border-style: solid;\n  border-radius: 2px;\n  cursor: pointer;\n  background: #ffffff;\n}\n\n.angucomplete-searching {\n  padding: 0 6px;\n  color: #acacac;\n  font-size: 14px;\n}\n\n.angucomplete-description {\n  font-size: 14px;\n}\n\n.angucomplete-row {\n  padding: 5px;\n  color: #000000;\n  margin-bottom: 4px;\n  clear: both;\n}\n\n.angucomplete-selected-row {\n  background-color: lightblue;\n  color: #ffffff;\n}\n\n.angucomplete-image-holder {\n  padding-top: 2px;\n  float: left;\n  margin-right: 10px;\n  margin-left: 5px;\n}\n\n.angucomplete-image {\n  height: 34px;\n  width: 34px;\n  border-radius: 50%;\n  border-color: #ececec;\n  border-style: solid;\n  border-width: 1px;\n}\n\n.angucomplete-image-default {\n  /* Add your own default image here\n     background-image:url('/assets/default.png'); */\n  background-position: center;\n  background-size: contain;\n  height: 34px;\n  width: 34px;\n}\n\n#editor .fr-wrapper ul,\n#editor .fr-wrapper ol {\n  padding-left: 40px;\n}\n\n#editor .fr-wrapper ul {\n  list-style: disc;\n}\n\n#editor .fr-wrapper ol {\n  list-style: decimal;\n}\n\n#editor .fr-wrapper em {\n  font-style: italic;\n}\n\n#editor .fr-wrapper h1,\n#editor .fr-wrapper h2,\n#editor .fr-wrapper h3,\n#editor .fr-wrapper h4 {\n  font-weight: bold;\n}\n\n#editor .fr-wrapper h1 {\n  font-size: 2em;\n}\n\n#editor .fr-wrapper h2 {\n  font-size: 1.5em;\n}\n\n#editor .fr-wrapper h3 {\n  font-size: 1.17em;\n}\n\n#editor > div:not(.fr-wrapper):not(.fr-toolbar):not(.fr-sticky-dummy),\n#editor > div > a[href=\"https://froala.com/wysiwyg-editor\"] {\n  display: none !important;\n}\n\n/* 业务选择 */\n\n.dropdown {\n  position: relative;\n  font-size: 13px;\n  color: #333;\n  vertical-align: middle;\n  background: #fff;\n  background-repeat: no-repeat;\n  background-position: right 8px center;\n  border: 1px solid #ccc;\n  border-radius: 3px;\n  outline: none;\n  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.075);\n  cursor: pointer;\n}\n\n.dropdown.active {\n  border-bottom-color: transparent;\n}\n\n.dropdown_triangle {\n  position: absolute;\n  right: 10px;\n  top: 10px;\n  -webkit-transition: 0.3s ease;\n  transition: 0.3s ease;\n}\n\n.dropdown.active .dropdown_triangle {\n  -webkit-transform: rotateX(180deg);\n  transform: rotateX(180deg);\n}\n\n.dropdown_text {\n  padding: 7px 8px;\n}\n\n.dropdown_menu {\n  display: none;\n  z-index: 5;\n  position: absolute;\n  top: 100%;\n  left: 0;\n  margin: 0 -1px;\n  width: calc(100% + 2px);\n  max-height: 15em;\n  border-radius: 0 0 3px 3px;\n  background: #fff;\n  border: 1px solid #ccc;\n  border-top: none;\n  overflow: auto;\n}\n\n.dropdown.active .dropdown_menu {\n  display: block;\n}\n\n.dropdown_menu_item {\n  padding: 7px 8px;\n  border-top: 1px solid #fafafa;\n}\n\n.dropdown_menu_item.selected,\n.dropdown_menu_item:hover {\n  background: rgba(0, 0, 0, 0.03);\n}\n\n.dropdown_menu_item .addsbu {\n  line-height: 1;\n}\n\n.dropdown_menu_item .addsbu input {\n  padding: 0 8px;\n}\n\n.dropdown_menu_item .addsbu button {\n  margin-left: 10px;\n  padding: 0 10px;\n  height: 30px;\n  line-height: 30px;\n  background: #ff4400;\n}\n\n/* 提交成功弹层 */\n\n.apply_succpop {\n  z-index: 4;\n  /*4才能掩盖编辑器*/\n  position: fixed;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background: rgba(0, 0, 0, 0.3);\n}\n\n.apply_succpop_main {\n  position: relative;\n  top: 25%;\n  margin: 0 auto;\n  width: 500px;\n}\n\n.apply_succpop_main_wrap {\n  background: #fff;\n  border-radius: 5px;\n  overflow: hidden;\n  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);\n  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);\n}\n\n.apply_succpop_top {\n  padding: 0 10px;\n  height: 40px;\n  line-height: 40px;\n  background: #384346;\n  color: #fff;\n}\n\n.apply_succpop_cont_text {\n  padding: 15px 10px;\n  line-height: 2;\n  border-left: 2px solid #252535;\n  border-right: 2px solid #ff4400;\n  background: #fafafa;\n}\n\n.apply_succpop_cont_text_num {\n  text-align: center;\n  color: #ff4400;\n}\n\n.apply_succpop_cont_continue,\n.apply_succpop_cont_checknow {\n  height: 40px;\n  line-height: 40px;\n  text-align: center;\n}\n\n.apply_succpop_cont_continue {\n  background: #252535;\n  color: #afaec5;\n}\n\n.apply_succpop_cont_continue:hover {\n  background: #2F2F44;\n  color: #afaec5;\n}\n\n.apply_succpop_cont_checknow {\n  background: #ff4400;\n  color: #f8f8f8;\n}\n\n.apply_succpop_cont_checknow:hover {\n  background: #dd4400;\n  color: #f8f8f8;\n}", ""]);
 
 // exports
 
 
 /***/ }),
-/* 107 */
+/* 108 */
 /***/ (function(module, exports) {
 
 
@@ -56744,23 +56750,23 @@ module.exports = function (css) {
 
 
 /***/ }),
-/* 108 */
+/* 109 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"apply\">\n  <form class=\"apply_form ly_box\">\n    <div class=\"apply_form_left\">\n      <dl class=\"form\">\n        <dt><label>需求名称</label></dt>\n        <dd><input class=\"inp\" type=\"text\" style=\"width:100%;\" placeholder=\"需求名称\" ng-model=\"d_title\"></dd>\n      </dl>\n\n      <dl class=\"form\">\n        <dt><label>所属业务{{searchStr}}</label></dt>\n        <dd>\n          <!-- <angucomplete-alt\n            id=\"sbu\"\n            placeholder=\"输入业务\"\n            pause=\"100\"\n            selected-object=\"d_sbu\"\n            local-data=\"sbus\"\n            search-fields=\"name\"\n            title-field=\"name\"\n            minlength=\"1\"\n            text-searching=\"正在搜索...\"\n            text-no-results=\"没有找到匹配的\"\n            match-class=\"highlight\"\n            input-class=\"inp dsbu form-control form-control-small\" /> -->\n          <div class=\"dropdown {{isdropdownactive ? 'active' : ''}}\" on-outside-element-click=\"isdropdownactive=false\">\n            <!-- <input type=\"hidden\"> -->\n            <i class=\"dropdown_triangle iconfont\" ng-click=\"isdropdownactive=!isdropdownactive\">&#xe603;</i>\n            <div class=\"dropdown_text\" ng-click=\"isdropdownactive=!isdropdownactive\">{{ d_sbuname || '选择一项业务' }}</div>\n            <div class=\"dropdown_menu\">\n              <div class=\"dropdown_menu_item\" ng-repeat=\"x in sbus\" ng-click=\"selectItem(x._id, x.name)\">{{ x.name }}\n              </div>\n              <div class=\"dropdown_menu_item\">\n                <div class=\"addsbu ly_box\">\n                  <input class=\"inp ly_box_flexone\" type=\"text\" ng-model=\"newsbu\">\n                  <button class=\"btn\" ng-click=\"addSbu(newsbu)\">添加</button>\n                </div>\n              </div>\n            </div>\n          </div>\n        </dd>\n      </dl>\n\n      <dl class=\"form\">\n        <dt><label>需求描述</label></dt>\n        <!-- <dd><textarea class=\"formfield_desc\" placeholder=\"需求描述\" ng-model=\"d_desc\"></textarea></dd> -->\n        <dd>\n          <div id=\"editor\"></div>\n        </dd>\n      </dl>\n    </div>\n    <div class=\"apply_form_right\">\n      <dl class=\"form\">\n        <dt><label>文件上传</label></dt>\n        <dd class=\"uploader\">\n          <table class=\"uploader_table\">\n            <thead>\n              <tr>\n                <th width=\"40%\">文件名</th>\n                <th>大小</th>\n                <th>进度</th>\n                <th>状态</th>\n                <th>操作</th>\n              </tr>\n            </thead>\n            <tbody>\n              <tr ng-repeat=\"item in uploader.queue\">\n                <td><strong style=\"word-break:break-all;\">{{ item.file.name }}</strong></td>\n                <td nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>\n                <td class=\"pg\">\n                  <div class=\"progress\">\n                    <div class=\"progress_bar\" role=\"progressbar\" ng-style=\"{ 'width':item.progress + '%' }\"></div>\n                  </div>\n                </td>\n                <td class=\"status\">\n                  <span ng-show=\"item.isSuccess\"><i class=\"iconfont\">&#xe605;</i></span>\n                  <span ng-show=\"item.isCancel\"><i class=\"iconfont\">&#xe604;</i></span>\n                  <span ng-show=\"item.isError\"><i class=\"iconfont\">&#xe606;</i></span>\n                </td>\n                <td class=\"action\" nowrap>\n                  <button class=\"action_upload\" ng-click=\"item.upload()\" ng-disabled=\"item.isReady || item.isUploading || item.isSuccess\">上传</button>\n                  <button class=\"action_cancel\" ng-click=\"item.cancel()\" ng-disabled=\"!item.isUploading\">取消</button>\n                  <button class=\"action_remove\" ng-click=\"item.remove()\">移除</button>\n                </td>\n              </tr>\n            </tbody>\n          </table>\n\n          <!-- 上传进度\n          <div class=\"uploader_progress\" style=\"\">\n              <div class=\"uploader_progress_bar\" role=\"progressbar\" ng-style=\"{ 'width': uploader.progress + '%' }\"></div>\n          </div>\n\n          <div class=\"uploader_action\">\n            <button class=\"uploader_action_uploadall\" ng-click=\"uploader.uploadAll()\" ng-disabled=\"!uploader.getNotUploadedItems().length\">上传全部</button>\n            <button class=\"uploader_action_cancelall\" ng-click=\"uploader.cancelAll()\" ng-disabled=\"!uploader.isUploading\">取消全部</button>\n            <button class=\"uploader_action_removeall\" ng-click=\"uploader.clearQueue()\" ng-disabled=\"!uploader.queue.length\">移除全部</button>\n          </div> -->\n          <div class=\"uploader_left\">\n            <div class=\"uploader_drop\" nv-file-drop uploader=\"uploader\" contenteditable>把文件拖到这里上传，或者直接粘贴截图文件</div>\n          </div>\n        </dd>\n      </dl>\n    </div>\n  </form>\n  <div class=\"apply_form_submit\"><button type=\"button\" class=\"btn\" ng-click=\"submit()\">提交需求</button></div>\n\n  <!-- S 提交成功弹层 -->\n  <div class=\"apply_succpop\" ng-show=\"isSubmitSucc\">\n    <div class=\"apply_succpop_main\">\n      <div class=\"apply_succpop_main_wrap\">\n        <div class=\"apply_succpop_top\">嘿！</div>\n        <div class=\"apply_succpop_cont\">\n          <div class=\"apply_succpop_cont_text\">\n            您的需求已经提交，编号：\n            <div class=\"apply_succpop_cont_text_num\" ng-bind=\"bugid\"></div>\n            快去告诉小伙伴来处理吧\n          </div>\n          <div class=\"ly_box\">\n            <a href=\"#\" class=\"apply_succpop_cont_continue ly_box_flexone\" ui-sref=\"apply\" ui-sref-opts=\"{reload:true}\">继续申请</a>\n            <a href=\"#\" class=\"apply_succpop_cont_checknow ly_box_flexone\" ui-sref=\"detail({id:bugid})\">查看需求</a>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n  <!-- E 提交成功弹层 -->\n</div>\n";
 
 /***/ }),
-/* 109 */
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var style = __webpack_require__(110);
+var style = __webpack_require__(111);
 var template = __webpack_require__(113);
 
 var stateList = {
-  url: '/list',
+  url: '/gallery',
   template: template,
   controller: function controller($rootScope, $scope, $http, $state, Session) {
     var preSelectBugState;
@@ -56889,13 +56895,13 @@ var stateList = {
 module.exports = stateList;
 
 /***/ }),
-/* 110 */
+/* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(111);
+var content = __webpack_require__(112);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -56903,7 +56909,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(59)(content, options);
+var update = __webpack_require__(18)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -56920,24 +56926,18 @@ if(false) {
 }
 
 /***/ }),
-/* 111 */
+/* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(58)(undefined);
+exports = module.exports = __webpack_require__(17)(undefined);
 // imports
 
 
 // module
-exports.push([module.i, ".plist {\n  padding: 0 4% 80px;\n}\n\n.dlist {\n  margin-top: 20px;\n}\n\n.dlist_item {\n  margin-bottom: 15px;\n  /*border-top:1px solid #ddd;border-bottom:1px solid #ddd;*/\n  border-radius: 3px;\n  box-shadow: 0 1px 3px 0 #d4d4d5, 0 0 0 1px #d4d4d5;\n  cursor: pointer;\n}\n\n.dlist_item:hover {\n  background: #f8f8f8;\n  /*transform:translate(-5px, 0);transition:.3s ease;*/\n}\n\n.dlist_item_cont {\n  padding: 10px 15px;\n}\n\n.dlist_item_label_box {\n  border-radius: 2px;\n  border: 1px solid #ff4400;\n  opacity: .9;\n}\n\n.dlist_item_label_box div {\n  height: 20px;\n  line-height: 20px;\n}\n\n.dlist_item_label_box > div:nth-child(1) {\n  padding: 0 15px 0 5px;\n  color: #fff;\n  background: #ff4400;\n}\n\n.dlist_item_label_box > div:nth-child(2) {\n  position: relative;\n  padding: 0 5px;\n  color: #ff4400;\n  border-left: 1px solid #ff4400;\n}\n\n.dlist_item_label_box > div:nth-child(2):before {\n  content: '';\n  position: absolute;\n  left: -1px;\n  top: 50%;\n  display: block;\n  width: 6px;\n  height: 6px;\n  border-bottom: 1px solid #ff4400;\n  border-left: 1px solid #ff4400;\n  background: #fff;\n  -webkit-transform: rotate(45deg) translate(-50%, -50%);\n  transform: rotate(45deg) translate(-50%, -50%);\n  -webkit-transform-origin: top left;\n  transform-origin: top left;\n}\n\n.dlist_item_info {\n  display: flex;\n  justify-content: space-between;\n  margin-top: 10px;\n}\n\n.dlist_item_stat i.iconfont {\n  margin-right: 3px;\n  color: #ff4400;\n}\n\n.dlist_item_state {\n  float: left;\n  font-weight: bold;\n}\n\n.dlist_item_state.state0 {\n  color: #CC3333;\n}\n\n.dlist_item_state.state1 {\n  color: #009966;\n}\n\n.dlist_item_date {\n  float: right;\n}\n\n.dlist_item_desc {\n  margin-top: 5px;\n}\n\n.buglist_none {\n  width: 100%;\n  height: 150px;\n  background: url(" + __webpack_require__(112) + ") no-repeat center;\n}\n\n.search {\n  margin: 15px;\n}\n\n.search input.inp {\n  width: 100%;\n  max-width: 200px;\n}\n\n.dlist_turnpage {\n  margin-top: 20px;\n  text-align: right;\n}\n\n.pagination {\n  display: inline-block;\n  margin: 0;\n  padding: 0;\n  border-radius: 4px;\n}\n\n.pagination > li {\n  float: left;\n  margin-left: -1px;\n  border: 1px solid #ddd;\n  list-style: none;\n  overflow: hidden;\n}\n\n.pagination > li:first-child {\n  margin-left: 0;\n  border-top-left-radius: 4px;\n  border-bottom-left-radius: 4px;\n}\n\n.pagination > li:last-child {\n  border-top-right-radius: 4px;\n  border-bottom-right-radius: 4px;\n}\n\n.pagination > li.active {\n  border-color: #E12228;\n}\n\n.pagination > li.active:hover {\n  border-color: #E12228;\n}\n\n.pagination > li > a {\n  display: block;\n  width: 30px;\n  height: 30px;\n  line-height: 30px;\n  text-align: center;\n  color: #E12228;\n  text-decoration: none;\n  background: #fff;\n}\n\n.pagination > li > a:hover {\n  background: #f0f0f0;\n}\n\n.pagination > .active > a {\n  color: #fff;\n  cursor: default;\n  background: #E12228;\n}\n\n.pagination > .active > a:hover {\n  color: #fff;\n  cursor: default;\n  background: #E12228;\n}\n\n.pagination > .disabled > a {\n  pointer-events: none;\n  cursor: default;\n}\n\n.cohead {\n  margin: 20px 0 0;\n  border-bottom: 2px solid #e5e5e5;\n}\n\n.cohead_collection_item {\n  margin-bottom: -2px;\n  padding: 0 5px;\n  height: 32px;\n  line-height: 30px;\n  border-bottom: 2px solid transparent;\n  cursor: pointer;\n}\n\n.cohead_collection_item.active {\n  color: #ff4400;\n  border-color: #ff4400;\n}\n\n.cohead_collection_item i.iconfont {\n  margin-right: 3px;\n}\n\n.cohead_state_main {\n  position: relative;\n  margin-top: 20px;\n  line-height: 30px;\n  cursor: pointer;\n}\n\n.cohead_state_main_show i.iconfont {\n  margin-left: 3px;\n}\n\n.cohead_state_main_dropdown {\n  z-index: 1;\n  display: none;\n  position: absolute;\n  top: 100%;\n  right: 0;\n  padding: 10px 0;\n  word-break: keep-all;\n  background: #252535;\n}\n\n.cohead_state_main:hover .cohead_state_main_dropdown {\n  display: block;\n}\n\n.cohead_state_main_dropdown li {\n  padding: 0 15px;\n  height: 30px;\n  line-height: 30px;\n  font-size: 12px;\n  color: #757393;\n}\n\n.cohead_state_main_dropdown li:hover {\n  background: #323242;\n  color: #fff;\n}\n\n.inp.dsbu {\n  width: 100%;\n}\n\n.highlight {\n  color: #ff4400;\n}\n\n.angucomplete-holder {\n  position: relative;\n}\n\n.angucomplete-dropdown {\n  z-index: 9999;\n  position: absolute;\n  padding: 6px 0;\n  width: 100%;\n  border-color: #ececec;\n  border-width: 1px;\n  border-style: solid;\n  border-radius: 2px;\n  cursor: pointer;\n  background: #ffffff;\n}\n\n.angucomplete-searching {\n  padding: 0 6px;\n  color: #acacac;\n  font-size: 14px;\n}\n\n.angucomplete-description {\n  font-size: 14px;\n}\n\n.angucomplete-row {\n  padding: 5px;\n  color: #000000;\n  margin-bottom: 4px;\n  clear: both;\n}\n\n.angucomplete-selected-row {\n  background-color: lightblue;\n  color: #ffffff;\n}\n\n.angucomplete-image-holder {\n  padding-top: 2px;\n  float: left;\n  margin-right: 10px;\n  margin-left: 5px;\n}\n\n.angucomplete-image {\n  height: 34px;\n  width: 34px;\n  border-radius: 50%;\n  border-color: #ececec;\n  border-style: solid;\n  border-width: 1px;\n}\n\n.angucomplete-image-default {\n  /* Add your own default image here\n     background-image:url('/assets/default.png'); */\n  background-position: center;\n  background-size: contain;\n  height: 34px;\n  width: 34px;\n}", ""]);
+exports.push([module.i, ".plist {\n  padding: 0 4% 80px;\n}\n\n.dlist {\n  margin-top: 20px;\n}\n\n.dlist_item {\n  margin-bottom: 15px;\n  /*border-top:1px solid #ddd;border-bottom:1px solid #ddd;*/\n  border-radius: 3px;\n  box-shadow: 0 1px 3px 0 #d4d4d5, 0 0 0 1px #d4d4d5;\n  cursor: pointer;\n}\n\n.dlist_item:hover {\n  background: #f8f8f8;\n  /*transform:translate(-5px, 0);transition:.3s ease;*/\n}\n\n.dlist_item_cont {\n  padding: 10px 15px;\n}\n\n.dlist_item_label_box {\n  border-radius: 2px;\n  border: 1px solid #ff4400;\n  opacity: .9;\n}\n\n.dlist_item_label_box div {\n  height: 20px;\n  line-height: 20px;\n}\n\n.dlist_item_label_box > div:nth-child(1) {\n  padding: 0 15px 0 5px;\n  color: #fff;\n  background: #ff4400;\n}\n\n.dlist_item_label_box > div:nth-child(2) {\n  position: relative;\n  padding: 0 5px;\n  color: #ff4400;\n  border-left: 1px solid #ff4400;\n}\n\n.dlist_item_label_box > div:nth-child(2):before {\n  content: '';\n  position: absolute;\n  left: -1px;\n  top: 50%;\n  display: block;\n  width: 6px;\n  height: 6px;\n  border-bottom: 1px solid #ff4400;\n  border-left: 1px solid #ff4400;\n  background: #fff;\n  -webkit-transform: rotate(45deg) translate(-50%, -50%);\n  transform: rotate(45deg) translate(-50%, -50%);\n  -webkit-transform-origin: top left;\n  transform-origin: top left;\n}\n\n.dlist_item_info {\n  display: flex;\n  justify-content: space-between;\n  margin-top: 10px;\n}\n\n.dlist_item_stat i.iconfont {\n  margin-right: 3px;\n  color: #ff4400;\n}\n\n.dlist_item_state {\n  float: left;\n  font-weight: bold;\n}\n\n.dlist_item_state.state0 {\n  color: #CC3333;\n}\n\n.dlist_item_state.state1 {\n  color: #009966;\n}\n\n.dlist_item_date {\n  float: right;\n}\n\n.dlist_item_desc {\n  margin-top: 5px;\n}\n\n.buglist_none {\n  width: 100%;\n  height: 150px;\n  background: url(" + __webpack_require__(60) + ") no-repeat center;\n}\n\n.search {\n  margin: 15px;\n}\n\n.search input.inp {\n  width: 100%;\n  max-width: 200px;\n}\n\n.dlist_turnpage {\n  margin-top: 20px;\n  text-align: right;\n}\n\n.pagination {\n  display: inline-block;\n  margin: 0;\n  padding: 0;\n  border-radius: 4px;\n}\n\n.pagination > li {\n  float: left;\n  margin-left: -1px;\n  border: 1px solid #ddd;\n  list-style: none;\n  overflow: hidden;\n}\n\n.pagination > li:first-child {\n  margin-left: 0;\n  border-top-left-radius: 4px;\n  border-bottom-left-radius: 4px;\n}\n\n.pagination > li:last-child {\n  border-top-right-radius: 4px;\n  border-bottom-right-radius: 4px;\n}\n\n.pagination > li.active {\n  border-color: #E12228;\n}\n\n.pagination > li.active:hover {\n  border-color: #E12228;\n}\n\n.pagination > li > a {\n  display: block;\n  width: 30px;\n  height: 30px;\n  line-height: 30px;\n  text-align: center;\n  color: #E12228;\n  text-decoration: none;\n  background: #fff;\n}\n\n.pagination > li > a:hover {\n  background: #f0f0f0;\n}\n\n.pagination > .active > a {\n  color: #fff;\n  cursor: default;\n  background: #E12228;\n}\n\n.pagination > .active > a:hover {\n  color: #fff;\n  cursor: default;\n  background: #E12228;\n}\n\n.pagination > .disabled > a {\n  pointer-events: none;\n  cursor: default;\n}\n\n.cohead {\n  margin: 20px 0 0;\n  border-bottom: 2px solid #e5e5e5;\n}\n\n.cohead_collection_item {\n  margin-bottom: -2px;\n  padding: 0 5px;\n  height: 32px;\n  line-height: 30px;\n  border-bottom: 2px solid transparent;\n  cursor: pointer;\n}\n\n.cohead_collection_item.active {\n  color: #ff4400;\n  border-color: #ff4400;\n}\n\n.cohead_collection_item i.iconfont {\n  margin-right: 3px;\n}\n\n.cohead_state_main {\n  position: relative;\n  margin-top: 20px;\n  line-height: 30px;\n  cursor: pointer;\n}\n\n.cohead_state_main_show i.iconfont {\n  margin-left: 3px;\n}\n\n.cohead_state_main_dropdown {\n  z-index: 1;\n  display: none;\n  position: absolute;\n  top: 100%;\n  right: 0;\n  padding: 10px 0;\n  word-break: keep-all;\n  background: #252535;\n}\n\n.cohead_state_main:hover .cohead_state_main_dropdown {\n  display: block;\n}\n\n.cohead_state_main_dropdown li {\n  padding: 0 15px;\n  height: 30px;\n  line-height: 30px;\n  font-size: 12px;\n  color: #757393;\n}\n\n.cohead_state_main_dropdown li:hover {\n  background: #323242;\n  color: #fff;\n}\n\n.inp.dsbu {\n  width: 100%;\n}\n\n.highlight {\n  color: #ff4400;\n}\n\n.angucomplete-holder {\n  position: relative;\n}\n\n.angucomplete-dropdown {\n  z-index: 9999;\n  position: absolute;\n  padding: 6px 0;\n  width: 100%;\n  border-color: #ececec;\n  border-width: 1px;\n  border-style: solid;\n  border-radius: 2px;\n  cursor: pointer;\n  background: #ffffff;\n}\n\n.angucomplete-searching {\n  padding: 0 6px;\n  color: #acacac;\n  font-size: 14px;\n}\n\n.angucomplete-description {\n  font-size: 14px;\n}\n\n.angucomplete-row {\n  padding: 5px;\n  color: #000000;\n  margin-bottom: 4px;\n  clear: both;\n}\n\n.angucomplete-selected-row {\n  background-color: lightblue;\n  color: #ffffff;\n}\n\n.angucomplete-image-holder {\n  padding-top: 2px;\n  float: left;\n  margin-right: 10px;\n  margin-left: 5px;\n}\n\n.angucomplete-image {\n  height: 34px;\n  width: 34px;\n  border-radius: 50%;\n  border-color: #ececec;\n  border-style: solid;\n  border-width: 1px;\n}\n\n.angucomplete-image-default {\n  /* Add your own default image here\n     background-image:url('/assets/default.png'); */\n  background-position: center;\n  background-size: contain;\n  height: 34px;\n  width: 34px;\n}", ""]);
 
 // exports
 
-
-/***/ }),
-/* 112 */
-/***/ (function(module, exports) {
-
-module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACUAAAAzCAYAAAAQEcGFAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAxRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNS1jMDIxIDc5LjE1NTc3MiwgMjAxNC8wMS8xMy0xOTo0NDowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6ODE0Q0VBQUIxMDE5MTFFNTg2OEFCNUJCRTdCNDVDQTEiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6ODE0Q0VBQUExMDE5MTFFNTg2OEFCNUJCRTdCNDVDQTEiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTQgV2luZG93cyI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSIxNjVGM0U1MjEwN0UxQjNBNUE0OTExMkMxQkI0QzExNyIgc3RSZWY6ZG9jdW1lbnRJRD0iMTY1RjNFNTIxMDdFMUIzQTVBNDkxMTJDMUJCNEMxMTciLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz4DS60jAAAI4ElEQVR42rRZWUxUVxg+c2eDGUZQcANpH1yiiUZpXRqNoigafTFqXRqVh8Y9plYTdxuLCdpUqTHGJ5fUB2yCSmINWBsxiHtdcUkUjWIUERWURWWbOf2+U+50gLmzAJ7k5N577rnnfOff//+apJQiUGtsbDRZrVZMkyY0Nbmurs6iaZowm80edtHJzRJsAoDYAOjLjx8/RjocDieenRERES6+AuBSgCp3u931uH+H8U+dAcrkh1ImbGIFJSzYaIrH4/kamy3FPMv169fNFy9etPTp08fau3dv05gxYySoVmC323/Fd0+bmpo0ULW4w6gIyrcDhL2qqmozNqgEOA8oJGfOnEnkMiEhQc6fP1+OGjVKdu/eXY1NnTpVlpWVNWDuLzjEVw0NDXFYw9R63XB664FI9J/RSy9duiQHDx4sIyMjZUZGhsSmlCuJTb33b968kdu3b1dzpk2bRqpdwfDIT58+DewIMO8NNotAz6iuri6dMGGCZ+DAgTI3N1dicQUAlPPe61c2UEc9p6amyh49esjy8vJKDM/CWAzA29oNCie0Y9MtAFUeGxvr2bRpk6JIqE0HuXfvXklNLSwsrMNYOkD1wrqWsEGRQriZiI8rJk+eLJcuXSo70vLz86XFYpEnTpyoB6gsAqPihAUKJ7KAZRsoJ9A42dFGql24cEEpAQA2YugBemK47IvCQpnZ2dly3rx5QTdk95Uvo3blyhUFLC8vz4P5+eDIIIhJZCigNHzopm3CIiI5OTmYIRWHDh0SlZWVQc3M8OHDxZ07dwS00vT06dMUyNoWsNUeipnScApupt2/fz8oKFBHwICKrKwsBTAQeFh6AQ0WZ86cEQMGDBCvXr36DmOrQC1XUFT19fWRkKe9NIiQrTYaZaRp4bTMzEw5duxYmo86PKbgqgVkH0hKbDZYbgKkAxZFRUUCQA2pEK7HWLNmjXj+/Lk4cuSIHc+/4WCxwaIAMyb+PmXKFHn58mV1Mq5148aNFlSBlW5ByXAoxzmlpaUSNlDChTU2ew1jSkGmbABhnTRpkqCws0FTxLBhwxRVOMnlcgmn0ynWr1//v9qGSTk4cDFjxgyRnp5OY7oE+5oNJ+OlA5MOPX78WCYmJvo9JZSghUlob3v//r3s2rUrfaYb+ya+ffs22tBOQZa20o3hNPLDhw9+N9adcEfbtm3b5Pjx43lbgh4PcFa/vg/y0hWb5u7atUtu3bq10wAYyR9MgywuLnZDvn7Eo8svKICgpU3FR+7o6GjFrs8FjA0GWA4dOpS3xdjnC3BK8xu6AFAcrukENGTIkE6RoUCN8f69e/eacPs99og0iqeINh6o/9i8ebNcsmSJotbnAMU14RVkUlISDepNDMWga34jTxhQqmsPAHvI+Pv06dPtBhXoO/1dVFSUhF9sBEEmQODtRuEw2dgFFEp98eJFbVxcnGSM3tnU0sVi5cqVcu3atbzPQY8COJNfUM2CHwvkaUePHn0P2+XpbDD6IaGBym7h4PSJfTCuGYLSNRJ9MRxp1f79+yVY2qlmQbd95MatW7f4+IMh+1oBIzmz+/bt6y4pKekUNvquwfvVq1fLPXv2MHDMRVhjDgqKHdrxze3bt6uZbrU3dAnUzp49K0eOHMl1v2AyGxIodAr+n2lpaXLHjh1tTtrRRkViBgQhTwuJfc32i2ZiIkjbyKSztra2Rf7XkWBQ/54+9+HDhyW+MXrAhlM0gYUPbDZbwYoVK8TBgwe94Yp+9Ve50cOeYDE/e//+/QWSWC8WLZRYCMBqwO+s5cuXM+FUsbq+YbBYPZTIdNCgQQJBZXigwLoahM25sFn1iInEu3fvWlDJd/Ng1PEHHOuKsrIyS1igIiIi6EArwMK/u3XrJl6+fMngsA01mjOjoJRp3RAmCyTC5rBA6RkWtPASnKj72rVrKoVCtNpio1OnToVEGT+cELCFml45DAcUgTyOj49vePTokXqmgMJVqMyHbJ0zZ46SN988MRiV2Eh5aKDWLL9SC7PG9gay1dSzZ0/1EBMTw0UE07Rz586JESNGkA3e9AxyEpBKOmhECsLhcPDZGS77hG5T9MXGjRsn8vLyFAWOHz8uFi5cqHJHsjYnJ0cgFg9IIYJETqDEICEhwY3nRL/lxSB90smTJ6tnzZqljB+SSzl79mx1z5wOqbm3kEbwdLT+Cm2+hhMhkipVgrr3WdoM1c2oDgqwQPstEtIPILVaGAKvNmeRbfr06d6KH6s3ixYt8mvV9TE9qk1JSZH79u3j0NqQ3YxP10CBLc+ePWtkHQvC6Y21IWOq/klAzIigSQHdjJ6UHD58WEIEOLcOaye1B5Qdmna+V69ecsGCBaq+ySSDoBBFqE0YhjSn5kFDF9ZTuUbz3L/AiW7tATV62bJlVevWrVOLMrmAMVWgyEKKJ1nILNiIXWxMdletWqW+ISC8/wlXB953CQsU2BIBWcqHLHn0xbkZI9K5c+fKgoICVoUNWcWiLssCu3fvVgfhAdgXL15Mll/FNOZ+5pCjhGajmQRZGg57ZPL1edBEAaEWo0ePFmBFG9XfuXMnVV25EdowRK8CrFbzXr9+rewZNJl1940A6zb842DUnzx5Uud0OltQgdHo1atXDYWaITTNAstIVILWNQnWRWGA+XE2tTss9lVUVNAYVbMqc/78eS/7KENkYaAATjcT+hhtGA4oN2zYoKrRmZmZdQC6MdBvEL8dwkkhLD5w4ICSBSaqNKC0McxG+MuEAuz7Q4BAaDYKCwvVb5Tk5GSlmZzPvxk0ukVFRcpogko9ffczhRL/YEMNcpWKECYDznjIsWPHrJANE9iiXMrdu3eVjKg6pc0m7Ha7irkAQIDFAocQSA5Ev3791BjCauX3MPcmYvSV8J//oLsD/Vozal2gulEul4tJ42AIPf1UNGUEVweo1BvjLvq+mpoaD+yZFUrhAmgX2KTK4nhfi/snGOfvt8ugZgFrwXTywf73BQyHmAaxHo7v+DPIQ7ax/AhQHqo7QZJ6eu30P12SekRAOaIGm0AhD8GCam3+rP4rwACky3NBX4guvgAAAABJRU5ErkJggg=="
 
 /***/ }),
 /* 113 */
@@ -56952,8 +56952,8 @@ module.exports = "<!-- <form class=\"search\">\n  <input class=\"inp\" type=\"te
 "use strict";
 
 
-var style = __webpack_require__(120);
-var template = __webpack_require__(122);
+var style = __webpack_require__(115);
+var template = __webpack_require__(117);
 
 var stateDetail = {
   url: '/detail/:id',
@@ -57210,14 +57210,65 @@ module.exports = stateDetail;
 /* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(116);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(18)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/resolve-url-loader/index.js!../../../node_modules/sass-loader/lib/loader.js!./style.scss", function() {
+			var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/resolve-url-loader/index.js!../../../node_modules/sass-loader/lib/loader.js!./style.scss");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 116 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(17)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, "@charset \"UTF-8\";\n\n.detail {\n  padding-bottom: 50px;\n}\n\n.detail_tit {\n  margin: 30px 0 20px;\n  text-align: center;\n  font-size: 18px;\n  font-weight: bold;\n}\n\n.detail_cont_item {\n  margin-bottom: 10px;\n}\n\n.detail_cont_item_hd {\n  font-weight: bold;\n  border-bottom: 1px solid #e1e1e2;\n}\n\n.detail_cont_item_hd_tit {\n  position: relative;\n  display: inline-block;\n  padding: 0 5px;\n  border-bottom: 2px solid #e1e1e2;\n  font-size: 16px;\n}\n\n/*sp*/\n\n.detail_cont_item_hd_tit_statename {\n  position: absolute;\n  top: 3px;\n  left: 100%;\n  margin-left: 10px;\n  padding: 0 5px;\n  height: 20px;\n  line-height: 20px;\n  background: #ff4400;\n  color: #fff;\n  font-size: 12px;\n  border-radius: 3px;\n  white-space: nowrap;\n}\n\n.detail_cont_item_hd_tit_statename:before {\n  content: '';\n  position: absolute;\n  left: -3px;\n  top: 7px;\n  width: 6px;\n  height: 6px;\n  background: #ff4400;\n  -webkit-transform: rotate(45deg);\n  transform: rotate(45deg);\n}\n\n.detail_cont_item_main {\n  padding: 15px 10px;\n}\n\n/*sp*/\n\n.detail_cont_item_files {\n  overflow: hidden;\n}\n\n.detail_cont_item_files li {\n  float: left;\n  margin-right: 20px;\n  line-height: 30px;\n}\n\n.detail_cont_item_files_preview button {\n  padding: 0 8px;\n  height: 30px;\n}\n\n.detail_cont_item_actions_item {\n  position: relative;\n  padding: 0 0 10px;\n}\n\n.detail_cont_item_actions_item:before {\n  content: '';\n  position: absolute;\n  top: 0;\n  left: 80px;\n  height: 100%;\n  border-right: 1px solid #252535;\n}\n\n.detail_cont_item_actions_item_date {\n  width: 80px;\n  text-align: right;\n}\n\n.detail_cont_item_actions_item_date div {\n  position: relative;\n  display: inline-block;\n  padding-right: 5px;\n  font-size: 12px;\n  color: #888;\n}\n\n.detail_cont_item_actions_item_date div:after {\n  content: '';\n  position: absolute;\n  top: 50%;\n  right: -3px;\n  display: block;\n  width: 3px;\n  height: 3px;\n  border: 1px solid #252535;\n  border-radius: 50%;\n  background: #fff;\n  -webkit-transform: translate(0, -3px);\n  transform: translate(0, -3px);\n}\n\n.detail_cont_item_actions_item_cont {\n  padding: 0 10px;\n}\n\n.detail_cont_item_actions_item_handle {\n  color: #ff4400;\n}\n\n.detail_cont_item_actions_item_handle.state0 {\n  color: #CC3333;\n}\n\n.detail_cont_item_actions_item_handle.state1 {\n  color: #009966;\n}\n\n.detail_cont_item_actions_item_user {\n  font-size: 12px;\n  color: #CC3333;\n}\n\n.detail_cont_item_actions_item_upload .fitem {\n  position: relative;\n  display: inline-block;\n  margin-right: 10px;\n  padding: 0 8px 0 15px;\n  height: 20px;\n  line-height: 20px;\n  font-size: 12px;\n  background: #99CCFF;\n  color: #fff;\n  border-radius: 5px 0 0 5px;\n  cursor: pointer;\n}\n\n.detail_cont_item_actions_item_upload .fitem:hover {\n  background: #80BFFF;\n}\n\n.detail_cont_item_actions_item_upload .fitem:before {\n  content: '';\n  position: absolute;\n  top: 50%;\n  left: 5px;\n  margin-top: -2px;\n  width: 3px;\n  height: 3px;\n  border: 1px solid #fff;\n  border-radius: 50%;\n}\n\n.detail_cont_item_actions_item_upload .fitem a {\n  color: #fff;\n}\n\n/*sp*/\n\n.fornow {\n  position: relative;\n}\n\n.fornow_btn {\n  display: inline-block;\n  padding: 5px 10px;\n  font-size: 12px;\n}\n\n.fornow_menu {\n  position: absolute;\n  bottom: 100%;\n  margin-bottom: 7px;\n  padding: 10px 15px;\n  border: 1px solid #ff4400;\n  border-radius: 3px;\n  background: #f0f0f0;\n}\n\n.fornow_menu:before {\n  content: '';\n  position: absolute;\n  bottom: -4px;\n  width: 6px;\n  height: 6px;\n  border-right: 1px solid #ff4400;\n  border-bottom: 1px solid #ff4400;\n  background: #f0f0f0;\n  -webkit-transform: rotate(45deg);\n  transform: rotate(45deg);\n}\n\n.fornow_menu_btns button {\n  width: 30px;\n  height: 30px;\n  line-height: 30px;\n  border-radius: 50%;\n}\n\n/* 评论 */\n\n.fornow_menu_comment {\n  width: 500px;\n}\n\n.fornow_menu_comment textarea {\n  display: block;\n  resize: none;\n  width: 300px;\n  height: 100px;\n}\n\n.fornow_menu_comment_confirm,\n.fornow_menu_comment_cancel {\n  float: right;\n  margin-top: 10px;\n  padding: 0 10px;\n  height: 30px;\n  font-size: 12px;\n}\n\n.fornow_menu_comment_confirm {\n  margin-left: 10px;\n}\n\n.fornow_menu_comment_cancel {\n  margin-left: 5px;\n}\n\n/* 文件上传，复用申请页的样式 */\n\n.fornow_menu_upload_cont {\n  width: 500px;\n}\n\n.uploader_left {\n  -webkit-box-flex: 3;\n  -webkit-flex: 3;\n  -ms-flex: 3;\n  flex: 3;\n}\n\n.uploader_drop {\n  height: 70px;\n  line-height: 64px;\n  background: #f5f5f5;\n  border: 3px dotted lightgray;\n  color: #bbb;\n  text-align: center;\n}\n\n.uploader_drop img {\n  display: none;\n}\n\n.uploader_table {\n  margin-bottom: 20px;\n  width: 100%;\n  border-collapse: collapse;\n  border-spacing: 0;\n}\n\n.uploader_table th {\n  padding: 8px;\n  text-align: left;\n  background: #fbfbfb;\n  border-top: 1px solid #ddd;\n  border-bottom: 2px solid #ddd;\n  vertical-align: bottom;\n}\n\n.uploader_table td {\n  padding: 8px;\n  vertical-align: middle;\n  border-top: 1px solid #ddd;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n\n.uploader_table td.pg {\n  vertical-align: middle;\n}\n\n.uploader_table td .progress,\n.uploader_progress {\n  height: 10px;\n  background: #f5f5f5;\n  border-radius: 4px;\n  overflow: hidden;\n  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);\n}\n\n.uploader_table td .progress_bar,\n.uploader_progress_bar {\n  /*float:left;*/\n  width: 0%;\n  height: 100%;\n  background: #428bca;\n  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);\n  transition: width .6s ease;\n}\n\n.uploader_table td.action button,\n.uploader_action button {\n  padding: 1px 5px;\n  font-size: 12px;\n  line-height: 1.5;\n  border: 1px solid transparent;\n  border-radius: 3px;\n  color: #fff;\n  cursor: pointer;\n}\n\n.uploader_table td.action button[disabled],\n.uploader_action button[disabled] {\n  pointer-events: none;\n  cursor: not-allowed;\n  opacity: .65;\n}\n\n.uploader_table td.action button.action_upload,\n.uploader_action_uploadall {\n  background: #5cb85c;\n  border-color: #4cae4c;\n}\n\n.uploader_table td.action button.action_cancel,\n.uploader_action_cancelall {\n  background: #f0ad4e;\n  border-color: #eea236;\n}\n\n.uploader_table td.action button.action_remove,\n.uploader_action_removeall {\n  background: #d9534f;\n  border-color: #d43f3a;\n}\n\n.uploader_table td.action button.action_upload:hover,\n.uploader_action_uploadall:hover {\n  background: #47a447;\n  border-color: #398439;\n}\n\n.uploader_table td.action button.action_cancel:hover,\n.uploader_action_cancelall:hover {\n  background: #ed9c28;\n  border-color: #d58512;\n}\n\n.uploader_table td.action button.action_remove:hover,\n.uploader_action_removeall:hover {\n  background: #d2322d;\n  border-color: #ac2925;\n}\n\n.uploader_table td.status {\n  text-align: center;\n}\n\n.uploader_progress {\n  margin: 10px 0;\n}\n\n.uploader_action button {\n  padding: 6px 12px;\n}\n\n/* 需求处理 */\n\n.fornow_menu_handle_btn {\n  padding: 0 5px;\n  height: 30px;\n  font-size: 12px;\n}\n\n.fornow_menu_handle_btn[disabled],\n.fornow_menu_handle_btn[disabled]:hover {\n  background: #999;\n  cursor: not-allowed;\n}\n\n.shape {\n  width: 100%;\n  position: relative;\n  vertical-align: top;\n  -webkit-perspective: 2000px;\n  perspective: 2000px;\n  -webkit-transition: -webkit-transform .6s ease-in-out, left .6s ease-in-out, width .6s ease-in-out, height .6s ease-in-out;\n  transition: transform .6s ease-in-out, left .6s ease-in-out, width .6s ease-in-out, height .6s ease-in-out;\n}\n\n.sides {\n  width: 100%;\n  -webkit-transform-style: preserve-3d;\n  transform-style: preserve-3d;\n}\n\n.side {\n  min-width: 15em;\n  height: 15em;\n  line-height: 15em;\n  text-align: center;\n  background: #e6e6e6;\n  color: #000;\n  box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);\n  opacity: 1;\n  width: 100%;\n  margin: 0 !important;\n  -webkit-backface-visibility: hidden;\n  backface-visibility: hidden;\n  display: none;\n}\n\n.shape .side.active {\n  display: block;\n}\n\n.shape .side.hidden {\n  opacity: .6;\n}\n\n.shape .side.animating {\n  position: absolute;\n  top: 0;\n  left: 0;\n  display: block;\n  z-index: 100;\n}\n\n.shape .side * {\n  -webkit-backface-visibility: visible !important;\n  backface-visibility: visible !important;\n}\n\n.shape .side img {\n  width: 100%;\n}\n\n.shape.animating .sides {\n  position: absolute;\n  -webkit-transition: -webkit-transform .6s ease-in-out,left .6s ease-in-out,width .6s ease-in-out,height .6s ease-in-out;\n  transition: transform .6s ease-in-out,left .6s ease-in-out,width .6s ease-in-out,height .6s ease-in-out;\n}\n\n.shape.animating .side {\n  -webkit-transition: opacity .6s ease-in-out;\n  transition: opacity .6s ease-in-out;\n}\n\n/* HACK */\n\n#editor > div:not(.fr-wrapper):not(.fr-toolbar):not(.fr-sticky-dummy),\n#editor > div > a[href=\"https://froala.com/wysiwyg-editor\"] {\n  display: none !important;\n}\n\n/* 图片预览 */\n\n.picpreview {\n  position: fixed;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background: rgba(0, 0, 0, 0.3);\n}\n\n.preview_close {\n  position: absolute;\n  top: 20px;\n  right: 20px;\n}\n\n.preview_close i.iconfont {\n  font-size: 24px;\n  border: 3px solid #bbb;\n  color: #bbb;\n  border-radius: 50%;\n  cursor: pointer;\n}\n\n.preview_close i.iconfont:hover {\n  border-color: #fff;\n  color: #fff;\n}\n\n.picpreview .shape {\n  margin: 20px auto 0;\n  max-width: 80%;\n}", ""]);
+
+// exports
+
+
+/***/ }),
+/* 117 */
+/***/ (function(module, exports) {
+
+module.exports = "{{ data.filescount }}\n\n<div class=\"detail\" data-id=\"{{ data._id }}\">\n  <h3 class=\"detail_tit\">\n    {{ data.sbu.name }} · {{ data.title }}\n  </h3>\n  <!-- <div class=\"detail_sbu\">\n    {{ data.sbu.name }}\n  </div> -->\n  <div class=\"detail_cont\">\n    <div class=\"detail_cont_item\">\n      <div class=\"detail_cont_item_hd\">\n        <div class=\"detail_cont_item_hd_tit\">需求描述</div>\n      </div>\n      <div class=\"detail_cont_item_main fr-view\" ng-bind-html=\"(data.desc || '<span style=color:#ddd>某人这么懒，什么都没说</sp[an>') | scehtml\"></div>\n    </div>\n    <div class=\"detail_cont_item\">\n      <div class=\"detail_cont_item_hd\">\n        <div class=\"detail_cont_item_hd_tit\">附件</div>\n      </div>\n      <div class=\"detail_cont_item_main\">\n        <ul class=\"detail_cont_item_files\">\n          <span style=\"color:#ddd\" ng-show=\"data.totalFiles.length==0\">没有附件</span>\n          <li ng-repeat=\"x in data.totalFiles\"><a href=\"api/attachment/{{ x.name }}/{{ x.oname }}\">{{ x.oname }}</a></li>\n          <li class=\"detail_cont_item_files_preview\" ng-show=\"(data.totalFiles | regex:'type':'^image/').length>0\">\n            <button class=\"btn\" ng-click=\"isShowPicpreview=true\">图片预览</button>\n          </li>\n        </ul>\n      </div>\n    </div>\n    <div class=\"detail_cont_item\">\n      <div class=\"detail_cont_item_hd\">\n        <div class=\"detail_cont_item_hd_tit\">动态<div class=\"detail_cont_item_hd_tit_statename\">{{ data.stateName }}</div></div>\n      </div>\n      <div class=\"detail_cont_item_main\">\n        <ul class=\"detail_cont_item_actions\">\n          <li class=\"detail_cont_item_actions_item ly_box\">\n            <div class=\"detail_cont_item_actions_item_date\">\n              <div>{{ data.createdAt | fmtDateNormal }}</div>\n            </div>\n            <div class=\"detail_cont_item_actions_item_cont ly_box_flexone\">\n              <span class=\"detail_cont_item_actions_item_user\">佚名</span> 提交了需求\n              <div class=\"detail_cont_item_actions_item_upload\">\n                <div class=\"flist\">\n                  <div class=\"fitem\" ng-repeat=\"f in data.files\"><a href=\"api/attachment/{{ f.name }}/{{ f.oname }}\">{{ f.oname }}</a></div>\n                </div>\n              </div>\n            </div>\n          </li>\n          <li class=\"detail_cont_item_actions_item ly_box\" ng-repeat=\"x in data.news\">\n            <div class=\"detail_cont_item_actions_item_date\">\n              <div>{{ x.date | fmtDateNormal }}</div>\n            </div>\n            <div class=\"detail_cont_item_actions_item_cont ly_box_flexone\">\n              <div class=\"fr-view\" ng-show=\"x.type==1\"><span class=\"detail_cont_item_actions_item_user\">{{ x.user.name || '佚名' }}</span> 说：<br><div ng-bind-html=\"x.comment | scehtml\"></div></div>\n\n              <div class=\"detail_cont_item_actions_item_handle state{{ x.handle }}\" ng-show=\"x.type==3\"><span class=\"detail_cont_item_actions_item_user\">{{ x.user.name || '佚名' }}</span> {{ x.handle==0 ? '驳回了需求' : '' }}{{ x.handle==1 ? '完成了需求' : '' }}</div>\n\n              <div class=\"detail_cont_item_actions_item_upload\" ng-show=\"x.type==2\">\n                <span class=\"detail_cont_item_actions_item_user\">{{ x.user.name || '佚名' }}</span> 上传了文件\n                <div class=\"flist\">\n                  <div class=\"fitem\" ng-repeat=\"f in x.files\"><a href=\"api/attachment/{{ f.name }}/{{ f.oname }}\">{{ f.oname }}</a></div>\n                </div>\n              </div>\n            </div>\n          </li>\n          <li class=\"detail_cont_item_actions_item ly_box\">\n            <div class=\"detail_cont_item_actions_item_date\">\n              <div>现在</div>\n            </div>\n            <div class=\"detail_cont_item_actions_item_cont ly_box_flexone\">\n              <div class=\"fornow\" on-outside-element-click=\"isShowFornowmenu=whatNowhandling=false\">\n                <button class=\"fornow_btn btn\" ng-click=\"(whatNowhandling=false) || (isShowFornowmenu=!isShowFornowmenu)\">做点什么</button>\n\n                <div class=\"fornow_menu\" ng-show=\"isShowFornowmenu\">\n                  <div class=\"fornow_menu_btns\" ng-show=\"!whatNowhandling\">\n                    <button class=\"btn\" ng-click=\"whatNowhandling='comment'\"><i class=\"iconfont\">&#xe607;</i></button>\n                    <button class=\"btn\" ng-click=\"whatNowhandling='upload'\"><i class=\"iconfont\">&#xe609;</i></button>\n                    <button class=\"btn\" ng-click=\"whatNowhandling='handle'\"><i class=\"iconfont\">&#xe608;</i></button>\n                  </div>\n\n                  <div class=\"fornow_menu_comment\" ng-show=\"whatNowhandling=='comment'\">\n                    <!-- <input class=\"inp\" type=\"text\" ng-model=\"nowcomment\"> -->\n                    <div><div id=\"editor\" class=\"inp\" ng-model=\"nowcomment\"></div></div>\n                    <button class=\"fornow_menu_comment_confirm btn\" ng-click=\"nowcommentfn()\">确定</button>\n                    <button class=\"fornow_menu_comment_cancel btn\" ng-click=\"whatNowhandling=isShowFornowmenu=null\">取消</button>\n                  </div>\n\n                  <div class=\"fornow_menu_upload\" ng-show=\"whatNowhandling=='upload'\">\n                    <div class=\"fornow_menu_upload_cont\">\n                      <table class=\"uploader_table\">\n                        <thead>\n                          <tr>\n                            <th width=\"40%\">文件名</th>\n                            <th>大小</th>\n                            <th>进度</th>\n                            <th>状态</th>\n                            <th>操作</th>\n                          </tr>\n                        </thead>\n                        <tbody>\n                          <tr ng-repeat=\"item in uploader.queue\">\n                            <td><strong style=\"word-break:break-all;\">{{ item.file.name }}</strong></td>\n                            <td nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>\n                            <td class=\"pg\">\n                              <div class=\"progress\">\n                                <div class=\"progress_bar\" role=\"progressbar\" ng-style=\"{ 'width':item.progress + '%' }\"></div>\n                              </div>\n                            </td>\n                            <td class=\"status\">\n                              <span ng-show=\"item.isSuccess\"><i class=\"iconfont\">&#xe605;</i></span>\n                              <span ng-show=\"item.isCancel\"><i class=\"iconfont\">&#xe604;</i></span>\n                              <span ng-show=\"item.isError\"><i class=\"iconfont\">&#xe606;</i></span>\n                            </td>\n                            <td class=\"action\" nowrap>\n                              <!-- <button class=\"action_upload\" ng-click=\"item.upload()\" ng-disabled=\"item.isReady || item.isUploading || item.isSuccess\">上传</button> -->\n                              <!-- <button class=\"action_cancel\" ng-click=\"item.cancel()\" ng-disabled=\"!item.isUploading\">取消</button> -->\n                              <button class=\"action_remove\" ng-click=\"item.remove()\">移除</button>\n                            </td>\n                          </tr>\n                        </tbody>\n                      </table>\n                      <div class=\"uploader_left\">\n                        <div class=\"uploader_drop\" nv-file-drop uploader=\"uploader\" contenteditable>把文件拖到这里上传，或者直接粘贴截图文件</div>\n                      </div>\n                      <div class=\"uploader_progress\" style=\"\">\n                        <div class=\"uploader_progress_bar\" role=\"progressbar\" ng-style=\"{ 'width': uploader.progress + '%' }\"></div>\n                      </div>\n\n                      <div class=\"uploader_action\">\n                        <button class=\"uploader_action_uploadall\" ng-click=\"uploader.uploadAll()\" ng-disabled=\"!uploader.getNotUploadedItems().length\">上传全部</button>\n                        <!-- <button class=\"uploader_action_cancelall\" ng-click=\"uploader.cancelAll()\" ng-disabled=\"!uploader.isUploading\">取消全部</button> -->\n                        <button class=\"uploader_action_removeall\" ng-click=\"uploader.clearQueue()\" ng-disabled=\"!uploader.queue.length\">移除全部</button>\n                      </div>\n                    </div>\n                  </div>\n\n                  <div class=\"fornow_menu_handle\" ng-show=\"whatNowhandling=='handle'\">\n                    <button class=\"fornow_menu_handle_btn btn\" ng-click=\"nowhandlefn(0)\" ng-disabled=\"data.state===0\">驳回需求</button>\n                    <button class=\"fornow_menu_handle_btn btn\" ng-click=\"nowhandlefn(1)\" ng-disabled=\"data.state===1 || !Session.userId\">完成需求</button>\n                  </div>\n                </div>\n              </div>\n            </div>\n          </li>\n        </ul>\n      </div>\n    </div>\n  </div>\n</div>\n\n<div class=\"picpreview\" ng-show=\"isShowPicpreview\">\n  <div class=\"shape\">\n    <div class=\"sides\">\n      <div class=\"side {{ $index===0 ? 'active' : ''}}\" ng-repeat=\"img in data.totalFiles | regex:'type':'^image/'\">\n        <div><img ng-src=\"upload/{{img.name}}\"></div>\n      </div>\n    </div>\n  </div>\n  <div class=\"preview_close\" ng-click=\"isShowPicpreview=false\"><i class=\"iconfont\">&#xe606;</i></div>\n</div>\n\n<script>\nvar idx = 0;\njQuery('.picpreview').on('click', function() {\n    var shape = document.querySelector('.shape');\n    var sides = document.querySelector('.sides');\n    var side = document.querySelectorAll('.side');\n    var len = side.length;\n    if(len<=1) {\n        return;\n    }\n    var preidx = idx;\n    idx = (idx+1)%len;\n    shape.style.cssText = 'width:'+sides.clientWidth+'px;height:'+sides.clientHeight+'px';\n    shape.classList.add('animating');\n    sides.style.cssText = 'transform:translateX(0px) rotateY(-180deg)';\n    side[preidx].style.cssText = 'transform:rotateY(0deg)';\n    side[preidx].classList.add('hidden');\n    side[idx].style.cssText = 'left:0;transform:rotateY(180deg)';\n    side[idx].classList.add('animating');\n    setTimeout(function() {\n        shape.removeAttribute('style');\n        shape.classList.remove('animating');\n        sides.removeAttribute('style');\n        side[preidx].removeAttribute('style');\n        side[preidx].classList.remove('hidden');\n        side[preidx].classList.remove('active');\n        side[idx].removeAttribute('style');\n        side[idx].classList.remove('animating');\n        side[idx].classList.add('active');\n    }, 600);\n});\n// shape.addEventListener('click', function() {\n\n// });\n</script>\n";
+
+/***/ }),
+/* 118 */
+/***/ (function(module, exports, __webpack_require__) {
+
 "use strict";
 
 
-var style = __webpack_require__(123);
-var template = __webpack_require__(125);
+var style = __webpack_require__(119);
+var template = __webpack_require__(121);
 
 var stateIdlist = {
-     url: '/idlist',
+     url: '/users',
      template: template,
      controller: function controller($rootScope, $scope, $http) {
           $http.get('api/user/list').then(function (res) {
@@ -57274,17 +57325,68 @@ var stateIdlist = {
 module.exports = stateIdlist;
 
 /***/ }),
-/* 116 */
+/* 119 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(120);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(18)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/resolve-url-loader/index.js!../../../node_modules/sass-loader/lib/loader.js!./style.scss", function() {
+			var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/resolve-url-loader/index.js!../../../node_modules/sass-loader/lib/loader.js!./style.scss");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 120 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(17)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, ".dblist table {\n  width: 100%;\n  text-align: center;\n}\n\n.dblist th {\n  padding: 5px 0;\n  width: 20%;\n  border-bottom: 1px solid #D20000;\n}\n\n.dblist tr:nth-child(2n+1) {\n  background: #EAEAEA;\n}\n\n.dblist td {\n  padding: 5px 0;\n  border-bottom: 1px solid #D7D7D7;\n}\n\n.dblist td input.inp {\n  padding: 5px;\n  width: 80%;\n  border: 1px solid #D20000;\n  border-radius: 2px;\n  background: #fff;\n  text-align: center;\n}\n\n.dblist td:last-child button {\n  display: inline-block;\n  margin: 0 3px;\n  padding: 0 8px;\n  height: 24px;\n  font-size: 12px;\n  border-radius: 2px;\n  background: #D7D7D7;\n  -webkit-appearance: none;\n  border: none;\n}\n\n.dblist td:last-child button.btndel {\n  color: #fff;\n  background: #DB2828;\n}\n\n.dblist td:last-child button.btnsave,\n.dblist td:last-child button.btnconfirm {\n  background: #16ab39;\n  color: #fff;\n}\n\n.dblist td:last-child button.btnmodify {\n  background: #2185d0;\n  color: #fff;\n}\n\n.dblist td:last-child button.btncancel {\n  background: orange;\n  color: #fff;\n}\n\n.dblist_ft {\n  text-align: right;\n}\n\n.dblist_ft button {\n  display: inline-block;\n  margin: 10px 10px 10px auto;\n  padding: 0 8px;\n  height: 24px;\n  border-radius: 2px;\n  background: #D7D7D7;\n  -webkit-appearance: none;\n  border: none;\n}", ""]);
+
+// exports
+
+
+/***/ }),
+/* 121 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"loading\" ng-hide=\"isLoaded\"></div>\n<div class=\"dblist\">\n  <table class=\"dblist\">\n    <thead><th>ERP帐号</th><th>用户名</th><th>邮箱</th><th>管理员</th><th></th></thead>\n    <tbody>\n      <tr ng-repeat=\"x in userList\">\n        <td ng-bind=\"x.erp\"></td>\n        <td><span ng-bind=\"x.name\" ng-hide=\"x.isEditing\">EC</span><input class=\"inp\" type=\"text\" ng-model=\"x.name\" ng-show=\"x.isEditing\"></td>\n        <td><span ng-bind=\"x.email\" ng-hide=\"x.isEditing\">EC@jd.com</span><input class=\"inp\" type=\"text\" ng-model=\"x.email\" ng-show=\"x.isEditing\"></td>\n        <td ng-bind=\"x.isadmin\"></td>\n        <td>\n          <button class=\"btnsave\" ng-click=\"update($index, x._id, x.name, x.email)\" ng-show=\"x.isEditing\">保存</button>\n          <button class=\"btnmodify\" ng-click=\"(x.isEditing=true) && (x.originalName=x.name) && (x.originalEmail=x.email)\" ng-hide=\"x.isEditing\">修改</button>\n          <button class=\"btncancel\" ng-click=\"(x.isEditing=false) || ( (x.name=x.originalName) && (x.email=x.originalEmail) )\" ng-show=\"x.isEditing\">取消</button>\n          <button class=\"btndel\" ng-click=\"del($index, x._id)\" ng-hide=\"x.isEditing\">删除</button>\n        </td>\n      </tr>\n      <tr ng-show=\"isAdding\">\n        <td><input class=\"inp\" type=\"text\" ng-model=\"newErp\"></td>\n        <td><input class=\"inp\" type=\"text\" ng-model=\"newName\"></td>\n        <td><input class=\"inp\" type=\"text\" ng-model=\"newEmail\"></td>\n        <td>\n          <button class=\"btnconfirm\" ng-click=\"add()\">确定</button>\n          <button class=\"btncancel\" ng-click=\"isAdding=false\">取消</button>\n        </td>\n      </tr>\n    </tbody>\n  </table>\n  <div class=\"dblist_ft\"><button ng-click=\"isAdding=true\">添加</button></div>\n</div>\n";
+
+/***/ }),
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var style = __webpack_require__(117);
-var template = __webpack_require__(119);
+var style = __webpack_require__(123);
+var template = __webpack_require__(125);
 
 var stateSbulist = {
-  url: '/sbulist',
+  url: '/business',
   template: template,
   controller: function controller($rootScope, $scope, $http) {
     $http.get('api/sbu/list').then(function (res) {
@@ -57325,108 +57427,6 @@ var stateSbulist = {
 module.exports = stateSbulist;
 
 /***/ }),
-/* 117 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(118);
-if(typeof content === 'string') content = [[module.i, content, '']];
-// Prepare cssTransformation
-var transform;
-
-var options = {}
-options.transform = transform
-// add the styles to the DOM
-var update = __webpack_require__(59)(content, options);
-if(content.locals) module.exports = content.locals;
-// Hot Module Replacement
-if(false) {
-	// When the styles change, update the <style> tags
-	if(!content.locals) {
-		module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/resolve-url-loader/index.js!../../../node_modules/sass-loader/lib/loader.js!./style.scss", function() {
-			var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/resolve-url-loader/index.js!../../../node_modules/sass-loader/lib/loader.js!./style.scss");
-			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-			update(newContent);
-		});
-	}
-	// When the module is disposed, remove the <style> tags
-	module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 118 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(58)(undefined);
-// imports
-
-
-// module
-exports.push([module.i, ".sbulist_ul {\n  margin-top: 20px;\n}\n\n.sbulist_ul_item {\n  margin-top: 10px;\n  overflow: hidden;\n}\n\n.sbulist_ul_item_name {\n  float: left;\n}\n\n.sbulist_ul_item_name_field {\n  width: 200px;\n  height: 30px;\n  line-height: 30px;\n  border: 1px solid #ddd;\n  border-right: 0;\n  border-radius: 3px 0 0 3px;\n  text-align: center;\n}\n\n.sbulist_ul_item.editing .sbulist_ul_item_name_field {\n  border-color: #ff4400;\n}\n\n.sbulist_ul_item_name_field > span {\n  display: block;\n  width: 100%;\n  height: 100%;\n  cursor: context-menu;\n}\n\n.sbulist_ul_item_name_field > input {\n  display: block;\n  width: 100%;\n  height: 100%;\n  border: 0;\n  background: transparent;\n  text-align: center;\n}\n\n.sbulist_ul_item_name_edit.btn {\n  padding: 0 10px;\n  height: 30px;\n  border-radius: 0 3px 3px 0;\n}\n\n.sbulist_ul_item_name_cancel.btn {\n  margin-left: 5px;\n  padding: 0 10px;\n  height: 30px;\n}\n\n.sbulist_ul_item_demandcount {\n  width: 50px;\n  line-height: 30px;\n  text-align: center;\n}", ""]);
-
-// exports
-
-
-/***/ }),
-/* 119 */
-/***/ (function(module, exports) {
-
-module.exports = "<div class=\"sbulist\">\n  <ul class=\"sbulist_ul\">\n    <li class=\"sbulist_ul_item ly_box\" ng-repeat=\"x in sbuList\" ng-class=\" x.isEditing ? 'editing' : '' \">\n      <div class=\"sbulist_ul_item_demandcount\">{{ x.count }}</div>\n      <div class=\"sbulist_ul_item_name ly_box\">\n        <div class=\"sbulist_ul_item_name_field\">\n          <span ng-hide=\"x.isEditing\">{{ x.name }}</span>\n          <input type=\"text\" ng-model=\"x.name\" ng-show=\"x.isEditing\">\n        </div>\n        <button class=\"sbulist_ul_item_name_edit btn\" ng-click=\"toggleEditing(x)\"><i class=\"iconfont\" ng-hide=\"x.isEditing\">&#xe60b;</i><span ng-show=\"x.isEditing\">保存</span></button>\n        <button class=\"sbulist_ul_item_name_cancel btn\" ng-click=\"toggleEditing(x, true)\" ng-show=\"x.isEditing\">取消</button>\n      </div>\n      <div ng-repeat=\"y in x.historyname\">{{'黑恶黑'}}</div>\n    </li>\n  </ul>\n</div>\n";
-
-/***/ }),
-/* 120 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(121);
-if(typeof content === 'string') content = [[module.i, content, '']];
-// Prepare cssTransformation
-var transform;
-
-var options = {}
-options.transform = transform
-// add the styles to the DOM
-var update = __webpack_require__(59)(content, options);
-if(content.locals) module.exports = content.locals;
-// Hot Module Replacement
-if(false) {
-	// When the styles change, update the <style> tags
-	if(!content.locals) {
-		module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/resolve-url-loader/index.js!../../../node_modules/sass-loader/lib/loader.js!./style.scss", function() {
-			var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/resolve-url-loader/index.js!../../../node_modules/sass-loader/lib/loader.js!./style.scss");
-			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-			update(newContent);
-		});
-	}
-	// When the module is disposed, remove the <style> tags
-	module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 121 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(58)(undefined);
-// imports
-
-
-// module
-exports.push([module.i, "@charset \"UTF-8\";\n\n.detail {\n  padding-bottom: 50px;\n}\n\n.detail_tit {\n  margin: 30px 0 20px;\n  text-align: center;\n  font-size: 18px;\n  font-weight: bold;\n}\n\n.detail_cont_item {\n  margin-bottom: 10px;\n}\n\n.detail_cont_item_hd {\n  font-weight: bold;\n  border-bottom: 1px solid #e1e1e2;\n}\n\n.detail_cont_item_hd_tit {\n  position: relative;\n  display: inline-block;\n  padding: 0 5px;\n  border-bottom: 2px solid #e1e1e2;\n  font-size: 16px;\n}\n\n/*sp*/\n\n.detail_cont_item_hd_tit_statename {\n  position: absolute;\n  top: 3px;\n  left: 100%;\n  margin-left: 10px;\n  padding: 0 5px;\n  height: 20px;\n  line-height: 20px;\n  background: #ff4400;\n  color: #fff;\n  font-size: 12px;\n  border-radius: 3px;\n  white-space: nowrap;\n}\n\n.detail_cont_item_hd_tit_statename:before {\n  content: '';\n  position: absolute;\n  left: -3px;\n  top: 7px;\n  width: 6px;\n  height: 6px;\n  background: #ff4400;\n  -webkit-transform: rotate(45deg);\n  transform: rotate(45deg);\n}\n\n.detail_cont_item_main {\n  padding: 15px 10px;\n}\n\n/*sp*/\n\n.detail_cont_item_files {\n  overflow: hidden;\n}\n\n.detail_cont_item_files li {\n  float: left;\n  margin-right: 20px;\n  line-height: 30px;\n}\n\n.detail_cont_item_files_preview button {\n  padding: 0 8px;\n  height: 30px;\n}\n\n.detail_cont_item_actions_item {\n  position: relative;\n  padding: 0 0 10px;\n}\n\n.detail_cont_item_actions_item:before {\n  content: '';\n  position: absolute;\n  top: 0;\n  left: 80px;\n  height: 100%;\n  border-right: 1px solid #252535;\n}\n\n.detail_cont_item_actions_item_date {\n  width: 80px;\n  text-align: right;\n}\n\n.detail_cont_item_actions_item_date div {\n  position: relative;\n  display: inline-block;\n  padding-right: 5px;\n  font-size: 12px;\n  color: #888;\n}\n\n.detail_cont_item_actions_item_date div:after {\n  content: '';\n  position: absolute;\n  top: 50%;\n  right: -3px;\n  display: block;\n  width: 3px;\n  height: 3px;\n  border: 1px solid #252535;\n  border-radius: 50%;\n  background: #fff;\n  -webkit-transform: translate(0, -3px);\n  transform: translate(0, -3px);\n}\n\n.detail_cont_item_actions_item_cont {\n  padding: 0 10px;\n}\n\n.detail_cont_item_actions_item_handle {\n  color: #ff4400;\n}\n\n.detail_cont_item_actions_item_handle.state0 {\n  color: #CC3333;\n}\n\n.detail_cont_item_actions_item_handle.state1 {\n  color: #009966;\n}\n\n.detail_cont_item_actions_item_user {\n  font-size: 12px;\n  color: #CC3333;\n}\n\n.detail_cont_item_actions_item_upload .fitem {\n  position: relative;\n  display: inline-block;\n  margin-right: 10px;\n  padding: 0 8px 0 15px;\n  height: 20px;\n  line-height: 20px;\n  font-size: 12px;\n  background: #99CCFF;\n  color: #fff;\n  border-radius: 5px 0 0 5px;\n  cursor: pointer;\n}\n\n.detail_cont_item_actions_item_upload .fitem:hover {\n  background: #80BFFF;\n}\n\n.detail_cont_item_actions_item_upload .fitem:before {\n  content: '';\n  position: absolute;\n  top: 50%;\n  left: 5px;\n  margin-top: -2px;\n  width: 3px;\n  height: 3px;\n  border: 1px solid #fff;\n  border-radius: 50%;\n}\n\n.detail_cont_item_actions_item_upload .fitem a {\n  color: #fff;\n}\n\n/*sp*/\n\n.fornow {\n  position: relative;\n}\n\n.fornow_btn {\n  display: inline-block;\n  padding: 5px 10px;\n  font-size: 12px;\n}\n\n.fornow_menu {\n  position: absolute;\n  bottom: 100%;\n  margin-bottom: 7px;\n  padding: 10px 15px;\n  border: 1px solid #ff4400;\n  border-radius: 3px;\n  background: #f0f0f0;\n}\n\n.fornow_menu:before {\n  content: '';\n  position: absolute;\n  bottom: -4px;\n  width: 6px;\n  height: 6px;\n  border-right: 1px solid #ff4400;\n  border-bottom: 1px solid #ff4400;\n  background: #f0f0f0;\n  -webkit-transform: rotate(45deg);\n  transform: rotate(45deg);\n}\n\n.fornow_menu_btns button {\n  width: 30px;\n  height: 30px;\n  line-height: 30px;\n  border-radius: 50%;\n}\n\n/* 评论 */\n\n.fornow_menu_comment {\n  width: 500px;\n}\n\n.fornow_menu_comment textarea {\n  display: block;\n  resize: none;\n  width: 300px;\n  height: 100px;\n}\n\n.fornow_menu_comment_confirm,\n.fornow_menu_comment_cancel {\n  float: right;\n  margin-top: 10px;\n  padding: 0 10px;\n  height: 30px;\n  font-size: 12px;\n}\n\n.fornow_menu_comment_confirm {\n  margin-left: 10px;\n}\n\n.fornow_menu_comment_cancel {\n  margin-left: 5px;\n}\n\n/* 文件上传，复用申请页的样式 */\n\n.fornow_menu_upload_cont {\n  width: 500px;\n}\n\n.uploader_left {\n  -webkit-box-flex: 3;\n  -webkit-flex: 3;\n  -ms-flex: 3;\n  flex: 3;\n}\n\n.uploader_drop {\n  height: 70px;\n  line-height: 64px;\n  background: #f5f5f5;\n  border: 3px dotted lightgray;\n  color: #bbb;\n  text-align: center;\n}\n\n.uploader_drop img {\n  display: none;\n}\n\n.uploader_table {\n  margin-bottom: 20px;\n  width: 100%;\n  border-collapse: collapse;\n  border-spacing: 0;\n}\n\n.uploader_table th {\n  padding: 8px;\n  text-align: left;\n  background: #fbfbfb;\n  border-top: 1px solid #ddd;\n  border-bottom: 2px solid #ddd;\n  vertical-align: bottom;\n}\n\n.uploader_table td {\n  padding: 8px;\n  vertical-align: middle;\n  border-top: 1px solid #ddd;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n\n.uploader_table td.pg {\n  vertical-align: middle;\n}\n\n.uploader_table td .progress,\n.uploader_progress {\n  height: 10px;\n  background: #f5f5f5;\n  border-radius: 4px;\n  overflow: hidden;\n  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);\n}\n\n.uploader_table td .progress_bar,\n.uploader_progress_bar {\n  /*float:left;*/\n  width: 0%;\n  height: 100%;\n  background: #428bca;\n  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);\n  transition: width .6s ease;\n}\n\n.uploader_table td.action button,\n.uploader_action button {\n  padding: 1px 5px;\n  font-size: 12px;\n  line-height: 1.5;\n  border: 1px solid transparent;\n  border-radius: 3px;\n  color: #fff;\n  cursor: pointer;\n}\n\n.uploader_table td.action button[disabled],\n.uploader_action button[disabled] {\n  pointer-events: none;\n  cursor: not-allowed;\n  opacity: .65;\n}\n\n.uploader_table td.action button.action_upload,\n.uploader_action_uploadall {\n  background: #5cb85c;\n  border-color: #4cae4c;\n}\n\n.uploader_table td.action button.action_cancel,\n.uploader_action_cancelall {\n  background: #f0ad4e;\n  border-color: #eea236;\n}\n\n.uploader_table td.action button.action_remove,\n.uploader_action_removeall {\n  background: #d9534f;\n  border-color: #d43f3a;\n}\n\n.uploader_table td.action button.action_upload:hover,\n.uploader_action_uploadall:hover {\n  background: #47a447;\n  border-color: #398439;\n}\n\n.uploader_table td.action button.action_cancel:hover,\n.uploader_action_cancelall:hover {\n  background: #ed9c28;\n  border-color: #d58512;\n}\n\n.uploader_table td.action button.action_remove:hover,\n.uploader_action_removeall:hover {\n  background: #d2322d;\n  border-color: #ac2925;\n}\n\n.uploader_table td.status {\n  text-align: center;\n}\n\n.uploader_progress {\n  margin: 10px 0;\n}\n\n.uploader_action button {\n  padding: 6px 12px;\n}\n\n/* 需求处理 */\n\n.fornow_menu_handle_btn {\n  padding: 0 5px;\n  height: 30px;\n  font-size: 12px;\n}\n\n.fornow_menu_handle_btn[disabled],\n.fornow_menu_handle_btn[disabled]:hover {\n  background: #999;\n  cursor: not-allowed;\n}\n\n.shape {\n  width: 100%;\n  position: relative;\n  vertical-align: top;\n  -webkit-perspective: 2000px;\n  perspective: 2000px;\n  -webkit-transition: -webkit-transform .6s ease-in-out, left .6s ease-in-out, width .6s ease-in-out, height .6s ease-in-out;\n  transition: transform .6s ease-in-out, left .6s ease-in-out, width .6s ease-in-out, height .6s ease-in-out;\n}\n\n.sides {\n  width: 100%;\n  -webkit-transform-style: preserve-3d;\n  transform-style: preserve-3d;\n}\n\n.side {\n  min-width: 15em;\n  height: 15em;\n  line-height: 15em;\n  text-align: center;\n  background: #e6e6e6;\n  color: #000;\n  box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);\n  opacity: 1;\n  width: 100%;\n  margin: 0 !important;\n  -webkit-backface-visibility: hidden;\n  backface-visibility: hidden;\n  display: none;\n}\n\n.shape .side.active {\n  display: block;\n}\n\n.shape .side.hidden {\n  opacity: .6;\n}\n\n.shape .side.animating {\n  position: absolute;\n  top: 0;\n  left: 0;\n  display: block;\n  z-index: 100;\n}\n\n.shape .side * {\n  -webkit-backface-visibility: visible !important;\n  backface-visibility: visible !important;\n}\n\n.shape .side img {\n  width: 100%;\n}\n\n.shape.animating .sides {\n  position: absolute;\n  -webkit-transition: -webkit-transform .6s ease-in-out,left .6s ease-in-out,width .6s ease-in-out,height .6s ease-in-out;\n  transition: transform .6s ease-in-out,left .6s ease-in-out,width .6s ease-in-out,height .6s ease-in-out;\n}\n\n.shape.animating .side {\n  -webkit-transition: opacity .6s ease-in-out;\n  transition: opacity .6s ease-in-out;\n}\n\n/* HACK */\n\n#editor > div:not(.fr-wrapper):not(.fr-toolbar):not(.fr-sticky-dummy),\n#editor > div > a[href=\"https://froala.com/wysiwyg-editor\"] {\n  display: none !important;\n}\n\n/* 图片预览 */\n\n.picpreview {\n  position: fixed;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background: rgba(0, 0, 0, 0.3);\n}\n\n.preview_close {\n  position: absolute;\n  top: 20px;\n  right: 20px;\n}\n\n.preview_close i.iconfont {\n  font-size: 24px;\n  border: 3px solid #bbb;\n  color: #bbb;\n  border-radius: 50%;\n  cursor: pointer;\n}\n\n.preview_close i.iconfont:hover {\n  border-color: #fff;\n  color: #fff;\n}\n\n.picpreview .shape {\n  margin: 20px auto 0;\n  max-width: 80%;\n}", ""]);
-
-// exports
-
-
-/***/ }),
-/* 122 */
-/***/ (function(module, exports) {
-
-module.exports = "{{ data.filescount }}\n\n<div class=\"detail\" data-id=\"{{ data._id }}\">\n  <h3 class=\"detail_tit\">\n    {{ data.sbu.name }} · {{ data.title }}\n  </h3>\n  <!-- <div class=\"detail_sbu\">\n    {{ data.sbu.name }}\n  </div> -->\n  <div class=\"detail_cont\">\n    <div class=\"detail_cont_item\">\n      <div class=\"detail_cont_item_hd\">\n        <div class=\"detail_cont_item_hd_tit\">需求描述</div>\n      </div>\n      <div class=\"detail_cont_item_main fr-view\" ng-bind-html=\"(data.desc || '<span style=color:#ddd>某人这么懒，什么都没说</sp[an>') | scehtml\"></div>\n    </div>\n    <div class=\"detail_cont_item\">\n      <div class=\"detail_cont_item_hd\">\n        <div class=\"detail_cont_item_hd_tit\">附件</div>\n      </div>\n      <div class=\"detail_cont_item_main\">\n        <ul class=\"detail_cont_item_files\">\n          <span style=\"color:#ddd\" ng-show=\"data.totalFiles.length==0\">没有附件</span>\n          <li ng-repeat=\"x in data.totalFiles\"><a href=\"api/attachment/{{ x.name }}/{{ x.oname }}\">{{ x.oname }}</a></li>\n          <li class=\"detail_cont_item_files_preview\" ng-show=\"(data.totalFiles | regex:'type':'^image/').length>0\">\n            <button class=\"btn\" ng-click=\"isShowPicpreview=true\">图片预览</button>\n          </li>\n        </ul>\n      </div>\n    </div>\n    <div class=\"detail_cont_item\">\n      <div class=\"detail_cont_item_hd\">\n        <div class=\"detail_cont_item_hd_tit\">动态<div class=\"detail_cont_item_hd_tit_statename\">{{ data.stateName }}</div></div>\n      </div>\n      <div class=\"detail_cont_item_main\">\n        <ul class=\"detail_cont_item_actions\">\n          <li class=\"detail_cont_item_actions_item ly_box\">\n            <div class=\"detail_cont_item_actions_item_date\">\n              <div>{{ data.createdAt | fmtDateNormal }}</div>\n            </div>\n            <div class=\"detail_cont_item_actions_item_cont ly_box_flexone\">\n              <span class=\"detail_cont_item_actions_item_user\">佚名</span> 提交了需求\n              <div class=\"detail_cont_item_actions_item_upload\">\n                <div class=\"flist\">\n                  <div class=\"fitem\" ng-repeat=\"f in data.files\"><a href=\"api/attachment/{{ f.name }}/{{ f.oname }}\">{{ f.oname }}</a></div>\n                </div>\n              </div>\n            </div>\n          </li>\n          <li class=\"detail_cont_item_actions_item ly_box\" ng-repeat=\"x in data.news\">\n            <div class=\"detail_cont_item_actions_item_date\">\n              <div>{{ x.date | fmtDateNormal }}</div>\n            </div>\n            <div class=\"detail_cont_item_actions_item_cont ly_box_flexone\">\n              <div class=\"fr-view\" ng-show=\"x.type==1\"><span class=\"detail_cont_item_actions_item_user\">{{ x.user.name || '佚名' }}</span> 说：<br><div ng-bind-html=\"x.comment | scehtml\"></div></div>\n\n              <div class=\"detail_cont_item_actions_item_handle state{{ x.handle }}\" ng-show=\"x.type==3\"><span class=\"detail_cont_item_actions_item_user\">{{ x.user.name || '佚名' }}</span> {{ x.handle==0 ? '驳回了需求' : '' }}{{ x.handle==1 ? '完成了需求' : '' }}</div>\n\n              <div class=\"detail_cont_item_actions_item_upload\" ng-show=\"x.type==2\">\n                <span class=\"detail_cont_item_actions_item_user\">{{ x.user.name || '佚名' }}</span> 上传了文件\n                <div class=\"flist\">\n                  <div class=\"fitem\" ng-repeat=\"f in x.files\"><a href=\"api/attachment/{{ f.name }}/{{ f.oname }}\">{{ f.oname }}</a></div>\n                </div>\n              </div>\n            </div>\n          </li>\n          <li class=\"detail_cont_item_actions_item ly_box\">\n            <div class=\"detail_cont_item_actions_item_date\">\n              <div>现在</div>\n            </div>\n            <div class=\"detail_cont_item_actions_item_cont ly_box_flexone\">\n              <div class=\"fornow\" on-outside-element-click=\"isShowFornowmenu=whatNowhandling=false\">\n                <button class=\"fornow_btn btn\" ng-click=\"(whatNowhandling=false) || (isShowFornowmenu=!isShowFornowmenu)\">做点什么</button>\n\n                <div class=\"fornow_menu\" ng-show=\"isShowFornowmenu\">\n                  <div class=\"fornow_menu_btns\" ng-show=\"!whatNowhandling\">\n                    <button class=\"btn\" ng-click=\"whatNowhandling='comment'\"><i class=\"iconfont\">&#xe607;</i></button>\n                    <button class=\"btn\" ng-click=\"whatNowhandling='upload'\"><i class=\"iconfont\">&#xe609;</i></button>\n                    <button class=\"btn\" ng-click=\"whatNowhandling='handle'\"><i class=\"iconfont\">&#xe608;</i></button>\n                  </div>\n\n                  <div class=\"fornow_menu_comment\" ng-show=\"whatNowhandling=='comment'\">\n                    <!-- <input class=\"inp\" type=\"text\" ng-model=\"nowcomment\"> -->\n                    <div><div id=\"editor\" class=\"inp\" ng-model=\"nowcomment\"></div></div>\n                    <button class=\"fornow_menu_comment_confirm btn\" ng-click=\"nowcommentfn()\">确定</button>\n                    <button class=\"fornow_menu_comment_cancel btn\" ng-click=\"whatNowhandling=isShowFornowmenu=null\">取消</button>\n                  </div>\n\n                  <div class=\"fornow_menu_upload\" ng-show=\"whatNowhandling=='upload'\">\n                    <div class=\"fornow_menu_upload_cont\">\n                      <table class=\"uploader_table\">\n                        <thead>\n                          <tr>\n                            <th width=\"40%\">文件名</th>\n                            <th>大小</th>\n                            <th>进度</th>\n                            <th>状态</th>\n                            <th>操作</th>\n                          </tr>\n                        </thead>\n                        <tbody>\n                          <tr ng-repeat=\"item in uploader.queue\">\n                            <td><strong style=\"word-break:break-all;\">{{ item.file.name }}</strong></td>\n                            <td nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>\n                            <td class=\"pg\">\n                              <div class=\"progress\">\n                                <div class=\"progress_bar\" role=\"progressbar\" ng-style=\"{ 'width':item.progress + '%' }\"></div>\n                              </div>\n                            </td>\n                            <td class=\"status\">\n                              <span ng-show=\"item.isSuccess\"><i class=\"iconfont\">&#xe605;</i></span>\n                              <span ng-show=\"item.isCancel\"><i class=\"iconfont\">&#xe604;</i></span>\n                              <span ng-show=\"item.isError\"><i class=\"iconfont\">&#xe606;</i></span>\n                            </td>\n                            <td class=\"action\" nowrap>\n                              <!-- <button class=\"action_upload\" ng-click=\"item.upload()\" ng-disabled=\"item.isReady || item.isUploading || item.isSuccess\">上传</button> -->\n                              <!-- <button class=\"action_cancel\" ng-click=\"item.cancel()\" ng-disabled=\"!item.isUploading\">取消</button> -->\n                              <button class=\"action_remove\" ng-click=\"item.remove()\">移除</button>\n                            </td>\n                          </tr>\n                        </tbody>\n                      </table>\n                      <div class=\"uploader_left\">\n                        <div class=\"uploader_drop\" nv-file-drop uploader=\"uploader\" contenteditable>把文件拖到这里上传，或者直接粘贴截图文件</div>\n                      </div>\n                      <div class=\"uploader_progress\" style=\"\">\n                        <div class=\"uploader_progress_bar\" role=\"progressbar\" ng-style=\"{ 'width': uploader.progress + '%' }\"></div>\n                      </div>\n\n                      <div class=\"uploader_action\">\n                        <button class=\"uploader_action_uploadall\" ng-click=\"uploader.uploadAll()\" ng-disabled=\"!uploader.getNotUploadedItems().length\">上传全部</button>\n                        <!-- <button class=\"uploader_action_cancelall\" ng-click=\"uploader.cancelAll()\" ng-disabled=\"!uploader.isUploading\">取消全部</button> -->\n                        <button class=\"uploader_action_removeall\" ng-click=\"uploader.clearQueue()\" ng-disabled=\"!uploader.queue.length\">移除全部</button>\n                      </div>\n                    </div>\n                  </div>\n\n                  <div class=\"fornow_menu_handle\" ng-show=\"whatNowhandling=='handle'\">\n                    <button class=\"fornow_menu_handle_btn btn\" ng-click=\"nowhandlefn(0)\" ng-disabled=\"data.state===0\">驳回需求</button>\n                    <button class=\"fornow_menu_handle_btn btn\" ng-click=\"nowhandlefn(1)\" ng-disabled=\"data.state===1 || !Session.userId\">完成需求</button>\n                  </div>\n                </div>\n              </div>\n            </div>\n          </li>\n        </ul>\n      </div>\n    </div>\n  </div>\n</div>\n\n<div class=\"picpreview\" ng-show=\"isShowPicpreview\">\n  <div class=\"shape\">\n    <div class=\"sides\">\n      <div class=\"side {{ $index===0 ? 'active' : ''}}\" ng-repeat=\"img in data.totalFiles | regex:'type':'^image/'\">\n        <div><img ng-src=\"upload/{{img.name}}\"></div>\n      </div>\n    </div>\n  </div>\n  <div class=\"preview_close\" ng-click=\"isShowPicpreview=false\"><i class=\"iconfont\">&#xe606;</i></div>\n</div>\n\n<script>\nvar idx = 0;\njQuery('.picpreview').on('click', function() {\n    var shape = document.querySelector('.shape');\n    var sides = document.querySelector('.sides');\n    var side = document.querySelectorAll('.side');\n    var len = side.length;\n    if(len<=1) {\n        return;\n    }\n    var preidx = idx;\n    idx = (idx+1)%len;\n    shape.style.cssText = 'width:'+sides.clientWidth+'px;height:'+sides.clientHeight+'px';\n    shape.classList.add('animating');\n    sides.style.cssText = 'transform:translateX(0px) rotateY(-180deg)';\n    side[preidx].style.cssText = 'transform:rotateY(0deg)';\n    side[preidx].classList.add('hidden');\n    side[idx].style.cssText = 'left:0;transform:rotateY(180deg)';\n    side[idx].classList.add('animating');\n    setTimeout(function() {\n        shape.removeAttribute('style');\n        shape.classList.remove('animating');\n        sides.removeAttribute('style');\n        side[preidx].removeAttribute('style');\n        side[preidx].classList.remove('hidden');\n        side[preidx].classList.remove('active');\n        side[idx].removeAttribute('style');\n        side[idx].classList.remove('animating');\n        side[idx].classList.add('active');\n    }, 600);\n});\n// shape.addEventListener('click', function() {\n\n// });\n</script>\n";
-
-/***/ }),
 /* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -57441,7 +57441,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(59)(content, options);
+var update = __webpack_require__(18)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -57461,12 +57461,12 @@ if(false) {
 /* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(58)(undefined);
+exports = module.exports = __webpack_require__(17)(undefined);
 // imports
 
 
 // module
-exports.push([module.i, ".dblist table {\n  width: 100%;\n  text-align: center;\n}\n\n.dblist th {\n  padding: 5px 0;\n  width: 20%;\n  border-bottom: 1px solid #D20000;\n}\n\n.dblist tr:nth-child(2n+1) {\n  background: #EAEAEA;\n}\n\n.dblist td {\n  padding: 5px 0;\n  border-bottom: 1px solid #D7D7D7;\n}\n\n.dblist td input.inp {\n  padding: 5px;\n  width: 80%;\n  border: 1px solid #D20000;\n  border-radius: 2px;\n  background: #fff;\n  text-align: center;\n}\n\n.dblist td:last-child button {\n  display: inline-block;\n  margin: 0 3px;\n  padding: 0 8px;\n  height: 24px;\n  font-size: 12px;\n  border-radius: 2px;\n  background: #D7D7D7;\n  -webkit-appearance: none;\n  border: none;\n}\n\n.dblist td:last-child button.btndel {\n  color: #fff;\n  background: #DB2828;\n}\n\n.dblist td:last-child button.btnsave,\n.dblist td:last-child button.btnconfirm {\n  background: #16ab39;\n  color: #fff;\n}\n\n.dblist td:last-child button.btnmodify {\n  background: #2185d0;\n  color: #fff;\n}\n\n.dblist td:last-child button.btncancel {\n  background: orange;\n  color: #fff;\n}\n\n.dblist_ft {\n  text-align: right;\n}\n\n.dblist_ft button {\n  display: inline-block;\n  margin: 10px 10px 10px auto;\n  padding: 0 8px;\n  height: 24px;\n  border-radius: 2px;\n  background: #D7D7D7;\n  -webkit-appearance: none;\n  border: none;\n}", ""]);
+exports.push([module.i, ".sbulist_ul {\n  margin-top: 20px;\n}\n\n.sbulist_ul_item {\n  margin-top: 10px;\n  overflow: hidden;\n}\n\n.sbulist_ul_item_name {\n  float: left;\n}\n\n.sbulist_ul_item_name_field {\n  width: 200px;\n  height: 30px;\n  line-height: 30px;\n  border: 1px solid #ddd;\n  border-right: 0;\n  border-radius: 3px 0 0 3px;\n  text-align: center;\n}\n\n.sbulist_ul_item.editing .sbulist_ul_item_name_field {\n  border-color: #ff4400;\n}\n\n.sbulist_ul_item_name_field > span {\n  display: block;\n  width: 100%;\n  height: 100%;\n  cursor: context-menu;\n}\n\n.sbulist_ul_item_name_field > input {\n  display: block;\n  width: 100%;\n  height: 100%;\n  border: 0;\n  background: transparent;\n  text-align: center;\n}\n\n.sbulist_ul_item_name_edit.btn {\n  padding: 0 10px;\n  height: 30px;\n  border-radius: 0 3px 3px 0;\n}\n\n.sbulist_ul_item_name_cancel.btn {\n  margin-left: 5px;\n  padding: 0 10px;\n  height: 30px;\n}\n\n.sbulist_ul_item_demandcount {\n  width: 50px;\n  line-height: 30px;\n  text-align: center;\n}", ""]);
 
 // exports
 
@@ -57475,7 +57475,7 @@ exports.push([module.i, ".dblist table {\n  width: 100%;\n  text-align: center;\
 /* 125 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"loading\" ng-hide=\"isLoaded\"></div>\n<div class=\"dblist\">\n  <table class=\"dblist\">\n    <thead><th>ERP帐号</th><th>用户名</th><th>邮箱</th><th>管理员</th><th></th></thead>\n    <tbody>\n      <tr ng-repeat=\"x in userList\">\n        <td ng-bind=\"x.erp\"></td>\n        <td><span ng-bind=\"x.name\" ng-hide=\"x.isEditing\">EC</span><input class=\"inp\" type=\"text\" ng-model=\"x.name\" ng-show=\"x.isEditing\"></td>\n        <td><span ng-bind=\"x.email\" ng-hide=\"x.isEditing\">EC@jd.com</span><input class=\"inp\" type=\"text\" ng-model=\"x.email\" ng-show=\"x.isEditing\"></td>\n        <td ng-bind=\"x.isadmin\"></td>\n        <td>\n          <button class=\"btnsave\" ng-click=\"update($index, x._id, x.name, x.email)\" ng-show=\"x.isEditing\">保存</button>\n          <button class=\"btnmodify\" ng-click=\"(x.isEditing=true) && (x.originalName=x.name) && (x.originalEmail=x.email)\" ng-hide=\"x.isEditing\">修改</button>\n          <button class=\"btncancel\" ng-click=\"(x.isEditing=false) || ( (x.name=x.originalName) && (x.email=x.originalEmail) )\" ng-show=\"x.isEditing\">取消</button>\n          <button class=\"btndel\" ng-click=\"del($index, x._id)\" ng-hide=\"x.isEditing\">删除</button>\n        </td>\n      </tr>\n      <tr ng-show=\"isAdding\">\n        <td><input class=\"inp\" type=\"text\" ng-model=\"newErp\"></td>\n        <td><input class=\"inp\" type=\"text\" ng-model=\"newName\"></td>\n        <td><input class=\"inp\" type=\"text\" ng-model=\"newEmail\"></td>\n        <td>\n          <button class=\"btnconfirm\" ng-click=\"add()\">确定</button>\n          <button class=\"btncancel\" ng-click=\"isAdding=false\">取消</button>\n        </td>\n      </tr>\n    </tbody>\n  </table>\n  <div class=\"dblist_ft\"><button ng-click=\"isAdding=true\">添加</button></div>\n</div>\n";
+module.exports = "<div class=\"sbulist\">\n  <ul class=\"sbulist_ul\">\n    <li class=\"sbulist_ul_item ly_box\" ng-repeat=\"x in sbuList\" ng-class=\" x.isEditing ? 'editing' : '' \">\n      <div class=\"sbulist_ul_item_demandcount\">{{ x.count }}</div>\n      <div class=\"sbulist_ul_item_name ly_box\">\n        <div class=\"sbulist_ul_item_name_field\">\n          <span ng-hide=\"x.isEditing\">{{ x.name }}</span>\n          <input type=\"text\" ng-model=\"x.name\" ng-show=\"x.isEditing\">\n        </div>\n        <button class=\"sbulist_ul_item_name_edit btn\" ng-click=\"toggleEditing(x)\"><i class=\"iconfont\" ng-hide=\"x.isEditing\">&#xe60b;</i><span ng-show=\"x.isEditing\">保存</span></button>\n        <button class=\"sbulist_ul_item_name_cancel btn\" ng-click=\"toggleEditing(x, true)\" ng-show=\"x.isEditing\">取消</button>\n      </div>\n      <div ng-repeat=\"y in x.historyname\">{{'黑恶黑'}}</div>\n    </li>\n  </ul>\n</div>\n";
 
 /***/ })
 /******/ ]);

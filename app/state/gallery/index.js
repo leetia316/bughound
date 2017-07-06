@@ -2,7 +2,7 @@ var style = require('./style.scss')
 var template = require('./template.html')
 
 var stateList = {
-  url: '/list',
+  url: '/gallery',
   template: template,
   controller: function ($rootScope, $scope, $http, $state, Session) {
   	var preSelectBugState

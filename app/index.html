@@ -35,10 +35,10 @@
     </div>
     <nav class="mod_hd_nav ly_box_flexone">
       <ul class="mod_hd_nav_ul ly_box">
-        <li class="{{navidx === 'list' && 'active'}}" ui-sref="list">广场</li>
+        <li class="{{navidx === 'gallery' && 'active'}}" ui-sref="gallery">广场</li>
         <li class="{{navidx === 'apply' && 'active'}}" ui-sref="apply">申请</li>
-        <li class="{{navidx === 'sbulist' && 'active'}}" ui-sref="sbulist">业务</li>
-        <li class="{{navidx === 'idlist' && 'active'}}" ng-show="userIsAdmin" ui-sref="idlist">开发者</li>
+        <li class="{{navidx === 'business' && 'active'}}" ui-sref="business">业务</li>
+        <li class="{{navidx === 'users' && 'active'}}" ng-show="userIsAdmin" ui-sref="users">开发者</li>
       </ul>
     </nav>
     <div class="mod_hd_info">

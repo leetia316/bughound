@@ -2,7 +2,7 @@ var style = require('./style.scss')
 var template = require('./template.html')
 
 var stateSbulist = {
-  url: '/sbulist',
+  url: '/business',
   template: template,
   controller: function ($rootScope, $scope, $http) {
    	$http.get('api/sbu/list').then(function (res) {
